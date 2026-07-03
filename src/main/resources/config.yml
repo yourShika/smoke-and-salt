@@ -1,0 +1,102 @@
+# ==========================================================================
+#  Smoke & Salt - Konfiguration
+#  Ein vanilla-treues Koch-System. Diese Datei steuert die Funktionen.
+#  Konkrete Zutaten, Rezepte, Gerichte und Seeds werden weiter unten
+#  ergaenzt (standardmaessig leer).
+# ==========================================================================
+
+# Interne Struktur-Version. NICHT von Hand aendern.
+config-version: 1
+
+# Sprache der Nachrichten (messages_<lang>.yml). Mitgeliefert: de, en.
+language: de
+
+# Zusaetzliche Log-Ausgaben fuer die Fehlersuche.
+debug: false
+
+# --------------------------------------------------------------------------
+#  Koch-System
+# --------------------------------------------------------------------------
+cooking:
+  enabled: true
+  # Globale Schalter fuer Partikel und Sounds aller Stationen.
+  particles: true
+  sounds: true
+  stations:
+    smoker: true          # Raeuchern im Smoker-Block
+    campfire: true        # Garen ueber dem Lagerfeuer
+    cauldron-water: true  # Kochen in kochendem Wasser (Kessel ueber Waermequelle)
+    cauldron-lava: true   # Braten/Frittieren im Lavakessel
+    cutting: true         # Schneiden mit der Axt (Haupthand) + Zutat (Zweithand)
+
+# --------------------------------------------------------------------------
+#  Custom Seeds
+# --------------------------------------------------------------------------
+seeds:
+  enabled: true
+  # Definitionen der Custom-Seeds. Standardmaessig leer.
+  # Schema pro Eintrag:
+  #   <seed_id>:
+  #     material: WHEAT_SEEDS        # Basis-Optik des Seed-Items
+  #     display-name: "<green>Name"  # MiniMessage
+  #     provider-id: sas_seed_xyz    # optional: Oraxen-Item-ID fuer Textur
+  #     crop-material: WHEAT         # Vanilla-Crop-Block beim Anpflanzen (Ageable)
+  #     result-item: <item_id>       # Custom-Item als Ernte (siehe items:)
+  #     result-material: WHEAT       # alternativ: Vanilla-Material als Ernte
+  #     result-amount: 1
+  #     grass-chance: 0.0            # Drop-Chance beim Abbauen von Gras (0..1)
+  #     composter-chance: 0.0        # Drop-Chance an einem vollen Komposter (0..1)
+  definitions: {}
+
+# --------------------------------------------------------------------------
+#  Ketten (Aufhaengung fuer Kessel-Behang / Raeucherware)
+# --------------------------------------------------------------------------
+chain:
+  enabled: true
+
+# --------------------------------------------------------------------------
+#  Custom-Items (Zutaten, Werkzeuge, Ergebnisse)
+#  Standardmaessig leer. Schema pro Eintrag:
+#    <item_id>:
+#      material: PAPER
+#      display-name: "<gold>Name"    # MiniMessage
+#      lore:
+#        - "<gray>Zeile 1"
+#      provider-id: sas_item_xyz      # optional: Oraxen-Item-ID fuer Textur
+#      glow: false
+# --------------------------------------------------------------------------
+items: {}
+
+# --------------------------------------------------------------------------
+#  Koch-Rezepte
+#  Standardmaessig leer. Fuer sequentielles (mehrstufiges) Kochen verweist die
+#  Zutat einer Stufe einfach auf das Custom-Ergebnis der vorherigen Stufe.
+#  Schema pro Eintrag:
+#    <recipe_id>:
+#      station: SMOKER | CAMPFIRE | CAULDRON_WATER | CAULDRON_LAVA | CUTTING
+#      input-item: <item_id>        # Custom-Item als Zutat ...
+#      input-material: PORKCHOP     # ... oder Vanilla-Material
+#      result-item: <item_id>       # Custom-Item als Ergebnis ...
+#      result-material: COOKED_PORKCHOP  # ... oder Vanilla-Material
+#      result-amount: 1
+#      duration-ticks: 100          # 20 Ticks = 1 Sekunde
+# --------------------------------------------------------------------------
+recipes: {}
+
+# --------------------------------------------------------------------------
+#  Welten-Beschraenkung (optional)
+# --------------------------------------------------------------------------
+worlds:
+  # Ist die Whitelist nicht leer, funktioniert das Plugin NUR in diesen Welten.
+  whitelist: []
+  # Andernfalls: in allen Welten AUSSER diesen.
+  blacklist: []
+
+# --------------------------------------------------------------------------
+#  Externe Module (Hooks) - live steuerbar ueber /sas modules
+#  Sie aktivieren sich automatisch, sobald das jeweilige Plugin installiert ist.
+# --------------------------------------------------------------------------
+hooks:
+  modules:
+    oraxen: true          # Custom-Modelle/Texturen fuer alle Items
+    placeholderapi: true  # Platzhalter (%sas_*%)

@@ -1,0 +1,69 @@
+# Smoke & Salt - Messages (English). MiniMessage + &-codes are supported.
+# Placeholders are inserted as <name>.
+
+prefix: "<gradient:#e2a76f:#c65b3a><bold>Smoke & Salt</bold></gradient> <dark_gray>»</dark_gray> "
+
+command:
+  no-permission: "<red>You don't have permission for that."
+  unknown: "<red>Unknown subcommand: <white><sub></white>. Use <yellow>/sas help</yellow>."
+
+help:
+  header: "<gradient:#e2a76f:#c65b3a><bold>Smoke & Salt - Commands</bold></gradient>"
+  line-help: "<yellow>/sas help</yellow> <dark_gray>-</dark_gray> <gray>Open the overview"
+  line-recipes: "<yellow>/sas recipes</yellow> <dark_gray>-</dark_gray> <gray>Show cooking recipes"
+  line-version: "<yellow>/sas version</yellow> <dark_gray>-</dark_gray> <gray>Version & info"
+  line-give: "<yellow>/sas give [player] <id> [amount]</yellow> <dark_gray>-</dark_gray> <gray>Give a custom item"
+  line-reload: "<yellow>/sas reload</yellow> <dark_gray>-</dark_gray> <gray>Reload everything"
+  line-modules: "<yellow>/sas modules</yellow> <dark_gray>-</dark_gray> <gray>Manage external modules"
+  line-update: "<yellow>/sas update</yellow> <dark_gray>-</dark_gray> <gray>Download the latest release"
+  line-assets: "<yellow>/sas assets [status|redeploy]</yellow> <dark_gray>-</dark_gray> <gray>Oraxen assets"
+
+recipes:
+  count: "<gray>Registered cooking recipes: <white><count></white>"
+
+version:
+  header: "<gradient:#e2a76f:#c65b3a><bold>Smoke & Salt</bold></gradient>"
+  plugin: "<gray>Plugin version: <white><version></white>"
+  server: "<gray>Server: <white><server></white>"
+  hooks: "<gray>Active hooks: <white><hooks></white>"
+  stats: "<gray>Items: <white><items></white> <dark_gray>|</dark_gray> Recipes: <white><recipes></white> <dark_gray>|</dark_gray> Seeds: <white><seeds></white>"
+
+give:
+  usage: "<red>Usage: <yellow>/sas give [player] <id> [amount]</yellow>"
+  no-target: "<red>No target player found."
+  unknown: "<red>Unknown item/seed: <white><item></white>"
+  self: "<green>You received <white><amount>x <item></white>."
+  other: "<green>You gave <white><amount>x <item></white> to <white><player></white>."
+  received: "<green>You received <white><amount>x <item></white>."
+
+reload:
+  done: "<green>Smoke & Salt reloaded."
+
+modules:
+  header: "<gradient:#a68bff:#5be8d4><bold>External Modules</bold></gradient>"
+  line: "<gray>- <white><name></white>: <status> <dark_gray>(<plugin>)</dark_gray>"
+  required: "<red>This module is required and cannot be disabled."
+
+update:
+  checking: "<gray>Checking for updates ..."
+  up-to-date: "<green>Already up to date (v<version>)."
+  downloading: "<gray>Downloading version <white><version></white> ..."
+  success: "<green>Update to v<version> downloaded. It will be applied on next restart."
+  failed: "<red>Update failed: <white><error></white>"
+
+assets:
+  no-oraxen: "<red>Oraxen is not active - redeploy not possible."
+  redeployed: "<green>Oraxen assets redeployed. Please run '/oraxen reload'."
+  status-header: "<gradient:#5be88a:#5be8d4><bold>Oraxen Asset Status</bold></gradient>"
+  status-oraxen: "<gray>Oraxen installed: <white><present></white>"
+  status-version: "<gray>Version bundled/deployed: <white><bundled></white> / <white><deployed></white>"
+  status-files: "<gray>Managed: <white><managed>/<total></white> <dark_gray>|</dark_gray> Missing: <white><missing></white>"
+
+cooking:
+  busy: "<red>A process is already running at this station."
+  started: "<green><station>: process started."
+
+chain:
+  hung: "<green>Hung on the chain."
+  removed: "<green>Removed from the chain."
+  occupied: "<red>Something is already hanging on this chain."

@@ -14,63 +14,137 @@
 
 ---
 
-## ✨ What is Smoke & Salt?
+## ✨ Was ist Smoke & Salt?
 
-**Smoke & Salt** brings a deep, immersive cooking system to your Minecraft server — without breaking the vanilla feel. No bloated GUIs, no magic machines. Just a cauldron, a fire, and the right ingredients.
+**Smoke & Salt** bringt ein tiefes, immersives Koch-System auf deinen Server –
+ohne den Vanilla-Charme zu brechen. Kein aufgeblähtes GUI-Gewusel, keine
+Magie-Maschinen. Nur ein Kessel, ein Feuer und die richtigen Zutaten.
 
-Combine raw materials, discover recipes, and cook dishes that matter — with real effects, custom textures, and a flavor that feels like it was always meant to be in the game.
-
----
-
-## 🔥 Planned Features
-
-- **Cauldron-based cooking** — place ingredients in a cauldron over fire and let it simmer
-- **Custom recipes** — soups, stews, breads, roasts, and more
-- **Real effects** — each dish has unique saturation, hunger, and potion effects
-- **Custom textures** — every dish has its own hand-crafted item texture via resource pack
-- **Recipe discovery** — no recipe book by default; learn by experimenting or finding notes in the world
-- **Seasonal ingredients** — some recipes only work in certain seasons *(optional)*
-- **Fully configurable** — toggle every feature, tweak every recipe
+Diese Version liefert die **Koch-Funktionen** (Mechaniken, Partikel, Timing,
+Stationen). Konkrete **Rezepte, Zutaten und Gerichte** kommen bewusst später und
+werden komplett über die `config.yml` definiert – ganz ohne Code.
 
 ---
 
-## 🍽️ Dishes (Concept)
+## 🔥 Funktionen
 
-| Dish | Ingredients | Effect |
-|------|-------------|--------|
-| 🥣 Mushroom Stew | Brown + Red Mushroom, Water | Hunger IV, Regen I |
-| 🍞 Hearth Bread | Wheat x3, Salt | Long-lasting saturation |
-| 🍖 Ember Roast | Meat, Spice, Coal | Strength I (short) |
-| 🫙 Root Broth | Carrot, Potato, Kelp | Slow Falling, Speed I |
-| 🌿 Verdant Soup | Various plants | Night Vision, Saturation |
+| Station | Interaktion | Effekt |
+|---------|-------------|--------|
+| 🪵 **Smoker** | Rechtsklick auf einen Smoker mit Zutat | Zeitliches Räuchern mit Rauch-Partikeln |
+| 🔥 **Lagerfeuer** | Rechtsklick auf ein brennendes Lagerfeuer | Garen mit Rauch-Partikeln |
+| 🫧 **Wasserkessel** | Item in kochendes Wasser werfen | Item schwebt & kocht (Kochen, Waschen, Brühen, Suppe) |
+| 🌋 **Lavakessel** | Item hineinwerfen | Vorsichtige Frittier-/Bratstation – nur bestimmte Items |
+| 🪓 **Schneiden** | Axt (Haupthand) + Zutat (Zweithand), Rechtsklick | Schnitt-Effekt + Partikel |
+| ⛓️ **Ketten** | Rechtsklick auf eine Kette | Aufhängung für Kessel-Behang / Räucherware |
+| 🌱 **Custom Seeds** | Anpflanzen auf Ackerland | Wächst zur Ernte; Drops von Gras & Komposter |
+| 🪜 **Sequentielles Kochen** | mehrstufige Rezepte | Ergebnis einer Stufe ist Zutat der nächsten |
 
-*These are early concepts — recipes and effects are subject to change.*
+**Kochendes Wasser** entsteht nur, wenn direkt unter einem Wasserkessel eine
+Wärmequelle liegt (Lagerfeuer, Feuer, Lava oder Magmablock) – der Kessel blubbert
+dann sichtbar.
+
+Alle Custom-Items, Seeds und Ergebnisse können über das **Oraxen-Modul**
+eigene Texturen erhalten.
+
+---
+
+## 🎮 Befehle
+
+| Befehl | Beschreibung | Permission |
+|--------|--------------|------------|
+| `/sas` · `/sas help` | Schön gestaltete Übersichts-GUI | `smokeandsalt.command.help` |
+| `/sas recipes` | Rezept-Übersicht (GUI) | `smokeandsalt.command.recipes` |
+| `/sas version` | Version, Server, aktive Hooks | `smokeandsalt.command.version` |
+| `/sas give [Spieler] <id> [Menge]` | Custom-Item/Seed ausgeben (GUI ohne Args) | `smokeandsalt.admin.give` |
+| `/sas modules` | Externe Module live verwalten (GUI) | `smokeandsalt.admin.modules` |
+| `/sas assets [status\|redeploy]` | Oraxen-Assets prüfen/erneut ausrollen | `smokeandsalt.admin.assets` |
+| `/sas update` | Neueste Release von GitHub laden | `smokeandsalt.admin.update` |
+| `/sas reload` | Config, Nachrichten, Items, Rezepte, Module neu laden | `smokeandsalt.admin.reload` |
+
+Aliase: `/smokeandsalt`, `/smokesalt`. Fast alles ist auch **per GUI** bedienbar.
+
+### Permissions
+
+- `smokeandsalt.*` – alles (Standard: OP)
+- `smokeandsalt.use` – Koch-Funktionen benutzen (Standard: an)
+- `smokeandsalt.seed.plant` – Custom-Seeds anpflanzen (Standard: an)
+- `smokeandsalt.command.*` – öffentliche Unterbefehle (Standard: an)
+- `smokeandsalt.admin.*` – Admin-Funktionen (Standard: OP)
+
+---
+
+## 🧩 Module (Hooks)
+
+Über `/sas modules` (oder die `config.yml` unter `hooks.modules`) lassen sich
+externe Hooks **live** ab-/anschalten. Sie aktivieren sich automatisch, sobald
+das jeweilige Plugin installiert ist – fehlt es, bleibt das Modul still inaktiv
+und das Plugin läuft vollständig eigenständig weiter.
+
+| Modul | Zweck | Erforderlich |
+|-------|-------|--------------|
+| **Oraxen** | Custom-Modelle/Texturen für alle Items, Seeds und Ergebnisse | optional (nötig für Custom-Texturen) |
+| **PlaceholderAPI** | Platzhalter `%sas_version%`, `%sas_items%`, `%sas_recipes%`, `%sas_active_cooks%` | optional |
+
+### Oraxen-Assets
+
+Ist das Oraxen-Modul aktiv, stellt der Asset-Deployer die mitgelieferten
+Item-YAMLs und Texturen **versioniert und mit Backup** in Oraxen bereit. Status
+und Redeploy laufen über `/sas assets`. Details siehe
+[`src/main/resources/oraxen/README.md`](src/main/resources/oraxen/README.md).
+
+---
+
+## ⚙️ Konfiguration
+
+Alle Inhalte werden über die `config.yml` definiert (standardmäßig **leer**):
+
+- `items:` – Custom-Items (Zutaten, Werkzeuge, Ergebnisse)
+- `seeds.definitions:` – Custom-Seeds inkl. Wachstum & Drop-Chancen
+- `recipes:` – Koch-Rezepte pro Station (inkl. sequentieller Ketten)
+
+Jeder Abschnitt enthält ein dokumentiertes Schema als Kommentar. Zusätzlich:
+globale Schalter pro Station, Partikel/Sounds, Welten-Whitelist/Blacklist und die
+Sprache (`de` / `en`).
+
+---
+
+## 📋 Voraussetzungen
+
+- Paper oder Spigot `26.1.2`
+- Java `25+`
+- *(optional)* Oraxen · PlaceholderAPI
+
+---
+
+## 🛠️ Bauen
+
+```bash
+mvn clean package
+```
+
+Das fertige Plugin liegt danach unter `target/Smoke-and-Salt-<version>.jar`.
+GitHub Actions bauen jeden Push (`build.yml`) und veröffentlichen bei einem
+`v*`-Tag automatisch ein Release (`release.yml`) – von dem `/sas update` die
+neueste JAR zieht.
 
 ---
 
 ## 🗺️ Roadmap
 
-- [ ] Core cooking engine (Cauldron-based)
-- [ ] Custom textures & resource pack
-- [ ] Recipe discovery system
-- [ ] In-world recipe notes (loot table integration)
-- [ ] Seasonal recipes
-- [ ] Campfire cooking (alternative to cauldron)
-- [ ] PlaceholderAPI support
-- [ ] Language support (EN / DE)
+- [x] Koch-Engine (Stationen, Partikel, Timing, sequentiell)
+- [x] Smoker · Lagerfeuer · Wasserkessel · Lavakessel · Schneiden
+- [x] Custom Seeds (Anpflanzen, Gras-/Komposter-Drops)
+- [x] Ketten als Aufhängung
+- [x] Modul-System (Oraxen, PlaceholderAPI) + Oraxen-Asset-Deployer
+- [x] GUIs, Befehle, Permissions, Self-Updater
+- [ ] Konkrete Rezepte, Zutaten & Gerichte
+- [ ] Mitgelieferte Oraxen-Texturen
 
 ---
 
-## 📋 Requirements
+## 📄 Lizenz
 
-- Paper or Spigot `26.1.2`
-- Java `25+`
-
----
-
-## 📄 License
-
-MIT — see [`LICENSE`](LICENSE) for details.
+MIT — siehe [`LICENSE`](LICENSE).
 
 ---
 

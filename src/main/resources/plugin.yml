@@ -1,0 +1,66 @@
+name: SmokeAndSalt
+version: '${project.version}'
+main: de.yourshika.smokeandsalt.SmokeAndSalt
+api-version: '1.21'
+author: yourShika
+description: Vanilla-treues Koch-System (Smoker, Lagerfeuer, Kessel, Schneiden) mit Custom-Items, Seeds und Ketten.
+website: https://github.com/yourShika/smoke-and-salt
+folia-supported: false
+
+# Optionale Module - brechen das Plugin nicht, wenn sie fehlen. Sie laden zur
+# Laufzeit automatisch, sobald das jeweilige Plugin installiert und das Modul in
+# config.yml unter hooks.modules aktiviert ist. Steuerbar ueber /sas modules.
+softdepend:
+  - PlaceholderAPI
+  - Oraxen
+
+commands:
+  smokeandsalt:
+    description: Hauptbefehl von Smoke & Salt.
+    usage: /sas help
+    aliases: [sas, smokesalt]
+
+permissions:
+  smokeandsalt.*:
+    description: Alle Smoke & Salt Berechtigungen.
+    default: op
+    children:
+      smokeandsalt.use: true
+      smokeandsalt.command.*: true
+      smokeandsalt.admin.*: true
+
+  # --- Gameplay ---
+  smokeandsalt.use:
+    description: Koch-Funktionen grundsaetzlich benutzen (Smoker, Lagerfeuer, Kessel, Schneiden).
+    default: true
+  smokeandsalt.seed.plant:
+    description: Custom-Seeds anpflanzen.
+    default: true
+
+  # --- Befehle (fuer alle) ---
+  smokeandsalt.command.*:
+    description: Alle oeffentlichen Unterbefehle.
+    default: true
+    children:
+      smokeandsalt.command.help: true
+      smokeandsalt.command.recipes: true
+      smokeandsalt.command.version: true
+  smokeandsalt.command.help: { default: true }
+  smokeandsalt.command.recipes: { default: true }
+  smokeandsalt.command.version: { default: true }
+
+  # --- Admin ---
+  smokeandsalt.admin.*:
+    description: Alle Admin-Funktionen.
+    default: op
+    children:
+      smokeandsalt.admin.give: true
+      smokeandsalt.admin.reload: true
+      smokeandsalt.admin.modules: true
+      smokeandsalt.admin.update: true
+      smokeandsalt.admin.assets: true
+  smokeandsalt.admin.give: { default: op }
+  smokeandsalt.admin.reload: { default: op }
+  smokeandsalt.admin.modules: { default: op }
+  smokeandsalt.admin.update: { default: op }
+  smokeandsalt.admin.assets: { default: op }

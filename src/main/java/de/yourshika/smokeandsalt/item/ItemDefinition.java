@@ -14,6 +14,7 @@ import java.util.List;
  * @param lore        MiniMessage-Zeilen fuer die Lore (kann leer sein)
  * @param providerId  Oraxen-Item-ID fuer Custom-Textur (kann {@code null} sein)
  * @param glow        soll das Item verzaubert schimmern?
+ * @param food        optionale Nahrungseigenschaften (kann {@code null} sein)
  */
 public record ItemDefinition(
         String id,
@@ -21,8 +22,14 @@ public record ItemDefinition(
         String displayName,
         List<String> lore,
         String providerId,
-        boolean glow
+        boolean glow,
+        FoodProfile food
 ) {
+    public ItemDefinition(String id, org.bukkit.Material material, String displayName,
+                          List<String> lore, String providerId, boolean glow) {
+        this(id, material, displayName, lore, providerId, glow, null);
+    }
+
     public ItemDefinition {
         if (id == null || id.isBlank()) {
             throw new IllegalArgumentException("ItemDefinition benoetigt eine id");

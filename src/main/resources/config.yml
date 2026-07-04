@@ -72,6 +72,10 @@ chain:
 #        - "<gray>Zeile 1"
 #      provider-id: sas_item_xyz      # optional: Oraxen-Item-ID fuer Textur
 #      glow: false
+#      food:                          # optional: macht das Item essbar
+#        nutrition: 3                 # halbe Hungerkeulen
+#        saturation: 3.0              # Saturation-Wert
+#        can-always-eat: false
 # --------------------------------------------------------------------------
 items: {}
 

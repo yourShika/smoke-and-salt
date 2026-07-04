@@ -145,6 +145,7 @@ public final class SmokeAndSalt extends JavaPlugin {
         cookingRegistry.loadFromConfig();
         cauldron.clearRecipes();
         crafting.unregisterAll();
+        crafting.disableVanillaBreadRecipe();
         stationRecipes.unregisterAll();
         de.yourshika.smokeandsalt.content.DefaultContent.register(this);
         // Smoker-/Lagerfeuer-Rezepte als Vanilla-Rezepte registrieren (nach DefaultContent).

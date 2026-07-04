@@ -11,7 +11,7 @@ sas_teig:
 
 sas_spiegelei:
   displayname: "<#fff3c0>Fried Egg"
-  material: EGG
+  material: PAPER
   Pack:
     generate_model: true
     parent_model: "item/generated"
@@ -59,14 +59,14 @@ sas_marshmallow:
       - sas/marshmallow.png
     custom_model_data: 3006
 
-sas_stockbrot:
-  displayname: "<#d9a441>Stick Bread"
+sas_kaiserbroetchen:
+  displayname: "<#d9a441>Kaiser Roll"
   material: BREAD
   Pack:
     generate_model: true
     parent_model: "item/generated"
     textures:
-      - sas/stockbrot.png
+      - sas/kaiserbroetchen.png
     custom_model_data: 3007
 
 sas_nudeln:
@@ -198,4 +198,14 @@ sas_reis_samen:
     textures:
       - sas/reis_samen.png
     custom_model_data: 3020
+
+sas_sourcream:
+  displayname: "<#fff8e7>Sour Cream"
+  material: SNOWBALL
+  Pack:
+    generate_model: true
+    parent_model: "item/generated"
+    textures:
+      - sas/sourcream.png
+    custom_model_data: 3021
 

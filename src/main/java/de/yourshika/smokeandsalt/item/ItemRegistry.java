@@ -2,7 +2,13 @@ package de.yourshika.smokeandsalt.item;
 
 import de.yourshika.smokeandsalt.SmokeAndSalt;
 import de.yourshika.smokeandsalt.util.Text;
+import io.papermc.paper.datacomponent.DataComponentTypes;
+import io.papermc.paper.datacomponent.item.Consumable;
+import io.papermc.paper.datacomponent.item.FoodProperties;
+import io.papermc.paper.datacomponent.item.consumable.ConsumeEffect;
+import io.papermc.paper.datacomponent.item.consumable.ItemUseAnimation;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.key.Key;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.enchantments.Enchantment;
@@ -29,6 +35,7 @@ public final class ItemRegistry {
     private final SmokeAndSalt plugin;
     private final ItemKeys keys;
     private final Map<String, ItemDefinition> definitions = new LinkedHashMap<>();
+    private static final Key EAT_SOUND = Key.key("minecraft", "entity.generic.eat");
 
     public ItemRegistry(SmokeAndSalt plugin, ItemKeys keys) {
         this.plugin = plugin;
@@ -56,7 +63,8 @@ public final class ItemRegistry {
                         sec.getString("display-name", id),
                         sec.getStringList("lore"),
                         sec.getString("provider-id", null),
-                        sec.getBoolean("glow", false));
+                        sec.getBoolean("glow", false),
+                        parseFood(sec));
                 register(def);
             } catch (Exception ex) {
                 plugin.getLogger().warning("Item '" + id + "' konnte nicht geladen werden: " + ex.getMessage());
@@ -65,6 +73,15 @@ public final class ItemRegistry {
         if (!definitions.isEmpty()) {
             plugin.getLogger().info("Custom-Items geladen: " + definitions.size());
         }
+    }
+
+    private FoodProfile parseFood(ConfigurationSection itemSection) {
+        ConfigurationSection food = itemSection.getConfigurationSection("food");
+        if (food == null) return null;
+        int nutrition = food.getInt("nutrition", 0);
+        float saturation = (float) food.getDouble("saturation", 0.0);
+        boolean always = food.getBoolean("can-always-eat", false);
+        return nutrition > 0 ? new FoodProfile(nutrition, saturation, always, List.of()) : null;
     }
 
     /** Registriert oder ueberschreibt eine Item-Definition. */
@@ -114,7 +131,27 @@ public final class ItemRegistry {
         }
         // Optionale Custom-Textur via aktivem Item-Modul (Oraxen).
         plugin.moduleManager().applyExternalModel(item, def.providerId());
+        applyFood(item, def.food());
         return item;
+    }
+
+    private void applyFood(ItemStack item, FoodProfile food) {
+        if (food == null || food.nutrition() <= 0) return;
+
+        item.setData(DataComponentTypes.FOOD, FoodProperties.food()
+                .nutrition(food.nutrition())
+                .saturation(food.saturation())
+                .canAlwaysEat(food.canAlwaysEat()));
+
+        var consumable = Consumable.consumable()
+                .consumeSeconds(1.6f)
+                .animation(ItemUseAnimation.EAT)
+                .sound(EAT_SOUND)
+                .hasConsumeParticles(true);
+        if (!food.effects().isEmpty()) {
+            consumable.effects(List.of(ConsumeEffect.applyStatusEffects(food.effects(), 1.0f)));
+        }
+        item.setData(DataComponentTypes.CONSUMABLE, consumable);
     }
 
     /** Liest die Custom-Item-ID aus einem Stack (oder {@code null}). */

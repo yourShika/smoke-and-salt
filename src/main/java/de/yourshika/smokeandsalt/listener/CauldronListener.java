@@ -73,6 +73,7 @@ public final class CauldronListener implements Listener {
             ItemStack input = stack.clone();
             input.setAmount(1);
             if (plugin.cooking().startBlockCook(cauldron, CookingStation.CAULDRON_LAVA, recipe.get(), input)) {
+                dropExtra(entity);
                 entity.remove();
                 plugin.effects().sizzle(cauldron.getLocation(), true);
                 plugin.effects().fry(cauldron.getLocation(), 8);
@@ -87,6 +88,17 @@ public final class CauldronListener implements Listener {
         if (event.getHand() != EquipmentSlot.HAND) return;
         Block block = event.getClickedBlock();
         if (block == null || block.getType() != Material.WATER_CAULDRON) return;
+        ItemStack hand = event.getPlayer().getInventory().getItemInMainHand();
+        if (plugin.cauldron().tryServe(block, event.getPlayer())) {
+            event.setCancelled(true);
+            plugin.messages().send(event.getPlayer(), "cauldron.served");
+            return;
+        }
+        if (plugin.cauldron().isServing(block) && isCauldronLiquidTool(hand.getType())) {
+            event.setCancelled(true);
+            plugin.messages().send(event.getPlayer(), "cauldron.serving");
+            return;
+        }
         if (plugin.cauldron().cancel(block, event.getPlayer())) {
             event.setCancelled(true);
             plugin.messages().send(event.getPlayer(), "cauldron.cancelled");
@@ -120,5 +132,20 @@ public final class CauldronListener implements Listener {
 
     private boolean isCauldron(Block block) {
         return block.getType() == Material.WATER_CAULDRON || block.getType() == Material.LAVA_CAULDRON;
+    }
+
+    private boolean isCauldronLiquidTool(Material material) {
+        return material == Material.BUCKET
+                || material == Material.WATER_BUCKET
+                || material == Material.GLASS_BOTTLE;
+    }
+
+    private void dropExtra(Item entity) {
+        ItemStack stack = entity.getItemStack();
+        if (stack.getAmount() <= 1 || entity.getWorld() == null) return;
+        ItemStack extra = stack.clone();
+        extra.setAmount(stack.getAmount() - 1);
+        Item rem = entity.getWorld().dropItem(entity.getLocation().add(0, 0.25, 0), extra);
+        rem.setVelocity(new org.bukkit.util.Vector(0, 0.2, 0));
     }
 }

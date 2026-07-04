@@ -68,6 +68,8 @@ cooking:
 
 cauldron:
   cancelled: "<yellow>Kessel-Vorgang abgebrochen - Zutaten zurueckgegeben."
+  served: "<green>Du hast eine Bowl aus dem Kessel gefuellt."
+  serving: "<yellow>Dieser Kessel serviert Essen - nutze Bowls, bis er leer ist."
 
 chain:
   hung: "<green>An der Kette aufgehaengt."

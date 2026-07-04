@@ -97,6 +97,7 @@ public final class SmokeAndSalt extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(new CustomItemSafetyListener(this), this);
         Bukkit.getPluginManager().registerEvents(new SeedListener(this, seeds), this);
         Bukkit.getPluginManager().registerEvents(new ChainListener(this, chains), this);
+        Bukkit.getPluginManager().registerEvents(new de.yourshika.smokeandsalt.listener.LeafDropListener(this), this);
         Bukkit.getPluginManager().registerEvents(crafting, this);
 
         // Befehl.

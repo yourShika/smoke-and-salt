@@ -1,6 +1,7 @@
 package de.yourshika.smokeandsalt.cooking;
 
 import de.yourshika.smokeandsalt.SmokeAndSalt;
+import de.yourshika.smokeandsalt.content.Ingredient;
 import de.yourshika.smokeandsalt.content.RecipeMatch;
 import de.yourshika.smokeandsalt.util.Heat;
 import org.bukkit.Location;
@@ -101,11 +102,11 @@ public final class CauldronManager {
             pots.put(key(cauldron), pot);
         }
 
-        if (stack.getAmount() > take && entity.getWorld() != null) {
+        if (stack.getAmount() > take) {
+            // Ueberschuss als Warteschlange puffern (wird nach dem Kochen nachverarbeitet).
             ItemStack extra = stack.clone();
             extra.setAmount(stack.getAmount() - take);
-            Item rem = entity.getWorld().dropItem(entity.getLocation().add(0, 0.25, 0), extra);
-            rem.setVelocity(new Vector(0, 0.2, 0));
+            addToBuffer(pot, extra);
         }
 
         ItemStack one = stack.clone();
@@ -183,6 +184,12 @@ public final class CauldronManager {
             leftover.values().forEach(s -> player.getWorld().dropItemNaturally(player.getLocation(), s));
         }
         pot.entities.clear();
+        // Auch die gepufferte Warteschlange zurueckgeben.
+        for (ItemStack stack : pot.buffer) {
+            Map<Integer, ItemStack> leftover = player.getInventory().addItem(stack);
+            leftover.values().forEach(s -> player.getWorld().dropItemNaturally(player.getLocation(), s));
+        }
+        pot.buffer.clear();
         plugin.effects().sizzle(cauldron.getLocation(), false);
         return true;
     }
@@ -240,41 +247,155 @@ public final class CauldronManager {
             if (pot.cooking != null) {
                 pot.elapsed += TICK_INTERVAL;
                 if (pot.elapsed >= pot.cooking.duration()) {
-                    complete(pot);
-                    it.remove();
+                    boolean continues = complete(pot);
+                    if (!continues) it.remove();
                 }
             }
         }
     }
 
-    private void complete(Pot pot) {
+    /** Schliesst eine Charge ab. Gibt {@code true}, wenn eine weitere Charge aus der
+     *  Warteschlange gestartet wurde (der Kessel also weiterlaeuft). */
+    private boolean complete(Pot pot) {
         Block block = pot.block;
         Location out = block.getLocation().add(0.5, 1.05, 0.5);
+        CauldronRecipe recipe = pot.cooking;
         // Zutaten entfernen, Behaelter-Reste (Eimer) zurueckgeben.
         for (Item entity : pot.entities) {
             if (entity.isValid()) {
                 ItemStack remainder = remainderOf(entity.getItemStack());
                 entity.remove();
-                if (remainder != null && out.getWorld() != null) {
-                    out.getWorld().dropItem(out, remainder);
+                if (remainder != null) {
+                    dropSafe(out, remainder);
                 }
             }
         }
         pot.entities.clear();
+        pot.cooking = null;
+        pot.elapsed = 0;
 
-        if (pot.cooking.serveWithBowl()) {
-            servings.put(key(block), new ServingPot(block, pot.cooking.result()));
+        if (recipe.serveWithBowl()) {
+            servings.put(key(block), new ServingPot(block, recipe.result()));
+            dropBuffer(pot);
             plugin.effects().finish(block.getLocation());
-            return;
+            return false;
         }
 
-        ItemStack result = pot.cooking.result().build(plugin);
-        if (result != null && out.getWorld() != null) {
-            Item drop = out.getWorld().dropItem(out, result);
-            drop.setVelocity(new Vector(0, 0.15, 0));
+        ItemStack result = recipe.result().build(plugin);
+        if (result != null) {
+            dropSafe(out, result);
         }
-        reduceWater(block, pot.cooking.waterCost());
+        reduceWater(block, recipe.waterCost());
         plugin.effects().finish(block.getLocation());
+
+        // Warteschlange: naechste Charge aus dem Puffer starten, wenn noch Wasser kocht.
+        if (block.getType() == Material.WATER_CAULDRON && Heat.hasHeatSourceBelow(block)) {
+            return refillFromBuffer(pot);
+        }
+        dropBuffer(pot);
+        return false;
+    }
+
+    /** Startet die naechste Charge aus dem Puffer. Gibt {@code true} bei Erfolg. */
+    private boolean refillFromBuffer(Pot pot) {
+        if (pot.buffer.isEmpty()) return false;
+        List<ItemStack> units = expandBuffer(pot.buffer);
+        for (CauldronRecipe recipe : recipes) {
+            List<ItemStack> chosen = selectForRecipe(units, recipe);
+            if (chosen == null) continue;
+            for (ItemStack unit : chosen) spawnFrozen(pot, unit);
+            consumeFromBuffer(pot, chosen);
+            pot.cooking = recipe;
+            pot.elapsed = 0;
+            arrange(pot);
+            plugin.effects().boil(pot.block.getLocation(), 6);
+            return true;
+        }
+        dropBuffer(pot);
+        return false;
+    }
+
+    /** Waehlt aus den Einheiten genau die aus, die ein Rezept exakt erfuellen (oder {@code null}). */
+    private List<ItemStack> selectForRecipe(List<ItemStack> units, CauldronRecipe recipe) {
+        List<Ingredient> ingredients = recipe.ingredients();
+        boolean[] used = new boolean[units.size()];
+        List<ItemStack> chosen = new ArrayList<>();
+        for (Ingredient ingredient : ingredients) {
+            int found = -1;
+            for (int i = 0; i < units.size(); i++) {
+                if (!used[i] && ingredient.matches(plugin, units.get(i))) {
+                    found = i;
+                    break;
+                }
+            }
+            if (found < 0) return null;
+            used[found] = true;
+            chosen.add(units.get(found));
+        }
+        return chosen;
+    }
+
+    private void addToBuffer(Pot pot, ItemStack stack) {
+        for (ItemStack existing : pot.buffer) {
+            if (existing.isSimilar(stack)) {
+                existing.setAmount(existing.getAmount() + stack.getAmount());
+                return;
+            }
+        }
+        pot.buffer.add(stack.clone());
+    }
+
+    private List<ItemStack> expandBuffer(List<ItemStack> buffer) {
+        List<ItemStack> out = new ArrayList<>();
+        for (ItemStack stack : buffer) {
+            for (int i = 0; i < stack.getAmount(); i++) {
+                ItemStack one = stack.clone();
+                one.setAmount(1);
+                out.add(one);
+            }
+        }
+        return out;
+    }
+
+    private void consumeFromBuffer(Pot pot, List<ItemStack> chosen) {
+        for (ItemStack unit : chosen) {
+            for (Iterator<ItemStack> it = pot.buffer.iterator(); it.hasNext(); ) {
+                ItemStack stack = it.next();
+                if (stack.isSimilar(unit)) {
+                    stack.setAmount(stack.getAmount() - 1);
+                    if (stack.getAmount() <= 0) it.remove();
+                    break;
+                }
+            }
+        }
+    }
+
+    private void spawnFrozen(Pot pot, ItemStack unit) {
+        Location loc = pot.block.getLocation().add(0.5, 0.55, 0.5);
+        if (loc.getWorld() == null) return;
+        Item item = loc.getWorld().dropItem(loc, unit.clone());
+        freeze(item);
+        pot.entities.add(item);
+    }
+
+    private void dropBuffer(Pot pot) {
+        if (pot.buffer.isEmpty()) return;
+        Location out = pot.block.getLocation().add(0.5, 1.05, 0.5);
+        for (ItemStack stack : pot.buffer) dropSafe(out, stack);
+        pot.buffer.clear();
+    }
+
+    /**
+     * Gibt ein Ergebnis sicher ueber dem Kessel aus. Der Kessel steht oft ueber
+     * einer Waermequelle (Lava/Feuer); damit das Ergebnis nicht verbrennt, wird
+     * die Item-Entity unverwundbar gemacht und nur minimal nach oben gestossen,
+     * sodass sie auf dem Kessel liegen bleibt.
+     */
+    private void dropSafe(Location loc, ItemStack stack) {
+        if (loc.getWorld() == null) return;
+        Item drop = loc.getWorld().dropItem(loc, stack);
+        drop.setVelocity(new Vector(0, 0.08, 0));
+        drop.setInvulnerable(true);
     }
 
     private void releaseEntities(Pot pot) {
@@ -282,6 +403,7 @@ public final class CauldronManager {
             if (entity.isValid()) unfreeze(entity);
         }
         pot.entities.clear();
+        dropBuffer(pot);
     }
 
     private void freeze(Item entity) {
@@ -373,6 +495,8 @@ public final class CauldronManager {
     private static final class Pot {
         private final Block block;
         private final List<Item> entities = new ArrayList<>();
+        /** Ueberschuss-Zutaten, die als Warteschlange nacheinander verarbeitet werden. */
+        private final List<ItemStack> buffer = new ArrayList<>();
         private CauldronRecipe cooking;
         private int elapsed;
 

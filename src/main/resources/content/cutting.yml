@@ -15,5 +15,7 @@ recipes:
   cutting_chicken_nuggets:
     input-material: COOKED_CHICKEN
     result-item: chicken_nuggets
-    result-amount: 3
+    # Random yield between min and max (inclusive).
+    result-amount-min: 1
+    result-amount-max: 4
     duration-ticks: 60

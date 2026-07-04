@@ -73,6 +73,7 @@ public final class CookingRegistry {
                 sec.getString("station", defaultStation.name()).toUpperCase(Locale.ROOT));
         CookingRecipe.Builder b = CookingRecipe.builder(id, station)
                 .resultAmount(sec.getInt("result-amount", 1))
+                .resultAmountRange(sec.getInt("result-amount-min", 0), sec.getInt("result-amount-max", 0))
                 .duration(sec.getInt("duration-ticks", 100));
 
         String inputItem = sec.getString("input-item", null);

@@ -8,10 +8,19 @@ GUIs, and optional Oraxen textures.
 ![Minecraft](https://img.shields.io/badge/Minecraft-26.1.2-62b47a?style=flat-square&logo=minecraft&logoColor=white)
 ![Platform](https://img.shields.io/badge/Platform-Paper%2FSpigot-f7a41d?style=flat-square)
 ![Java](https://img.shields.io/badge/Java-25-ED8B00?style=flat-square&logo=openjdk&logoColor=white)
-![Version](https://img.shields.io/badge/Version-0.3.1-blue?style=flat-square)
+![Version](https://img.shields.io/badge/Version-0.3.2-blue?style=flat-square)
 ![License](https://img.shields.io/badge/License-MIT-blue?style=flat-square)
 
 ## What's new in 0.3.x
+
+### 0.3.2
+
+- All bundled dishes use the balanced hunger/saturation/effect values (e.g. Burger 9/11.5 + Strength I, Miso Soup 7/8.4 + Regeneration I).
+- Cauldron results no longer burn in the lava/fire below - they drop fire-proof onto the cauldron.
+- Cauldron works as a queue: drop a whole stack and it is processed batch after batch; right-click still cancels and returns everything.
+- Cutting takes a random 1-5 durability (configurable) and yields a random amount (Chicken Nuggets 1-4).
+- `/sas recipes` gains cross-cutting **Finished Dishes** and **Ingredients** categories on top of the per-station ones.
+- New optional **leaf-drops** function (config `leaf-drops.drops`) - drops items/seeds when breaking leaves.
 
 ### 0.3.1
 
@@ -188,8 +197,8 @@ Pushing a tag named `v*` triggers the GitHub Actions release workflow. The actio
 builds the plugin and publishes the jar as a GitHub Release asset.
 
 ```bash
-git tag v0.3.1
-git push origin v0.3.1
+git tag v0.3.2
+git push origin v0.3.2
 ```
 
 ## License

@@ -36,51 +36,50 @@ public final class DefaultContent {
     // --- Custom-Items -------------------------------------------------------
 
     private static void registerItems(SmokeAndSalt plugin) {
-        // Intermediates / base
-        item(plugin, "teig", Material.PAPER, "<#e8d8a8>Dough", "Ingredient");
+        // Fallback-Werte (falls content/items.yml fehlt) - identisch zur config.
+        item(plugin, "teig", Material.PAPER, "<#e8d8a8>Dough", "Ingredient",
+                FoodProfile.withEffect(1, 0.4f, effect(PotionEffectType.HUNGER, 100)));
         item(plugin, "sourcream", Material.PAPER, "<#fff8e7>Sour Cream", "Ingredient",
                 FoodProfile.of(2, 1.2f));
-        // Smoker results
         item(plugin, "spiegelei", Material.PAPER, "<#fff3c0>Fried Egg", "Dish",
-                FoodProfile.of(3, 3.0f));
-        item(plugin, "rotebeete_chips", Material.BEETROOT, "<#c0392b>Beetroot Chips", "Snack",
-                FoodProfile.of(3, 3.6f));
-        item(plugin, "geroestete_karotte", Material.CARROT, "<#e67e22>Roasted Carrot", "Dish",
                 FoodProfile.of(4, 4.8f));
+        item(plugin, "rotebeete_chips", Material.BEETROOT, "<#c0392b>Beetroot Chips", "Snack",
+                FoodProfile.of(3, 2.4f));
+        item(plugin, "geroestete_karotte", Material.CARROT, "<#e67e22>Roasted Carrot", "Dish",
+                FoodProfile.withEffect(4, 4.8f, effect(PotionEffectType.NIGHT_VISION, 100)));
         item(plugin, "pommes", Material.POTATO, "<#f1c40f>Fries", "Snack",
                 FoodProfile.of(5, 6.0f));
-        // Campfire results
         item(plugin, "marshmallow", Material.PAPER, "<#ffeef2>Marshmallow", "Snack",
-                FoodProfile.withEffect(2, 0.8f,
-                        new PotionEffect(PotionEffectType.SPEED, 120, 0, true, true, true)));
+                FoodProfile.withEffect(3, 1.8f, effect(PotionEffectType.SPEED, 80)));
         item(plugin, "kaiserbroetchen", Material.BREAD, "<#d9a441>Kaiser Roll", "Dish",
                 FoodProfile.of(5, 6.0f));
-        // Cauldron results
-        item(plugin, "nudeln", Material.PAPER, "<#f0e2b0>Noodles", "Ingredient");
+        item(plugin, "nudeln", Material.PAPER, "<#f0e2b0>Noodles", "Ingredient",
+                FoodProfile.of(4, 4.8f));
         item(plugin, "kaese", Material.HONEYCOMB, "<#f2c94c>Cheese", "Ingredient",
-                FoodProfile.of(2, 2.4f));
-        item(plugin, "sauce", Material.BRICK, "<#c0392b>Sauce", "Ingredient");
-        // Crafting results
+                FoodProfile.of(3, 3.6f));
+        item(plugin, "sauce", Material.BRICK, "<#c0392b>Sauce", "Ingredient",
+                FoodProfile.of(2, 1.6f));
         item(plugin, "burger", Material.BREAD, "<#e2a76f>Burger", "Dish",
-                FoodProfile.withEffect(8, 12.8f,
-                        new PotionEffect(PotionEffectType.ABSORPTION, 160, 0, true, true, true)));
+                FoodProfile.withEffect(9, 11.5f, effect(PotionEffectType.STRENGTH, 100)));
         item(plugin, "cheeseburger", Material.BREAD, "<#f2c94c>Cheeseburger", "Dish",
-                FoodProfile.withEffect(10, 14.4f,
-                        new PotionEffect(PotionEffectType.ABSORPTION, 200, 0, true, true, true)));
+                FoodProfile.withEffect(10, 13.0f, effect(PotionEffectType.STRENGTH, 120)));
         item(plugin, "chicken_nuggets", Material.COOKED_CHICKEN, "<#e6b566>Chicken Nuggets", "Snack",
-                FoodProfile.of(2, 1.2f));
+                FoodProfile.of(6, 7.2f));
         item(plugin, "schaschlik", Material.COOKED_BEEF, "<#b5651d>Shashlik", "Dish",
-                FoodProfile.of(7, 10.0f));
+                FoodProfile.withEffect(8, 10.0f, effect(PotionEffectType.STRENGTH, 100)));
         item(plugin, "ofenkartoffel_sourcream", Material.BAKED_POTATO, "<#e9d8a6>Baked Potato with Sour Cream", "Dish",
-                FoodProfile.of(6, 7.2f));
+                FoodProfile.withEffect(8, 10.0f, effect(PotionEffectType.RESISTANCE, 80)));
         item(plugin, "spaghetti", Material.PAPER, "<#f0e2b0>Spaghetti", "Dish",
-                FoodProfile.of(6, 7.2f));
+                FoodProfile.of(8, 9.6f));
         item(plugin, "misosuppe", Material.MUSHROOM_STEW, "<#c98a3a>Miso Soup", "Soup",
-                FoodProfile.of(6, 7.2f));
+                FoodProfile.withEffect(7, 8.4f, effect(PotionEffectType.REGENERATION, 80)));
         item(plugin, "kandierter_apfel", Material.APPLE, "<#e74c3c>Candy Apple", "Snack",
-                FoodProfile.of(5, 6.0f));
-        // Custom seed harvest
+                FoodProfile.withEffect(5, 4.0f, effect(PotionEffectType.SPEED, 120)));
         item(plugin, "reis", Material.PAPER, "<#f7f3e3>Rice", "Ingredient");
+    }
+
+    private static PotionEffect effect(PotionEffectType type, int durationTicks) {
+        return new PotionEffect(type, durationTicks, 0, true, true, true);
     }
 
     private static void item(SmokeAndSalt plugin, String id, Material base, String name, String kind) {

@@ -4,18 +4,26 @@ import de.yourshika.smokeandsalt.SmokeAndSalt;
 import de.yourshika.smokeandsalt.seed.SeedDefinition;
 import de.yourshika.smokeandsalt.seed.SeedManager;
 import org.bukkit.GameMode;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockState;
 import org.bukkit.block.data.Ageable;
 import org.bukkit.block.data.Levelled;
+import org.bukkit.entity.Display;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.ItemDisplay;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.block.BlockFertilizeEvent;
+import org.bukkit.event.block.BlockGrowEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.persistence.PersistentDataType;
 
 /**
  * Custom-Seed-Funktionen: Anpflanzen auf Ackerland, Ernte des Custom-Ergebnisses
@@ -63,6 +71,7 @@ public final class SeedListener implements Listener {
                 above.setBlockData(ageable, false);
             }
             seeds.cropStore().put(above, def.id());
+            spawnOrUpdateCropDisplay(above, def, 0);
             if (player.getGameMode() != GameMode.CREATIVE) {
                 hand.setAmount(hand.getAmount() - 1);
             }
@@ -84,6 +93,7 @@ public final class SeedListener implements Listener {
             String seedId = seeds.cropStore().remove(block);
             SeedDefinition def = seeds.definition(seedId);
             if (def != null) {
+                removeCropDisplays(block);
                 event.setDropItems(false);
                 var loc = block.getLocation().add(0.5, 0.3, 0.5);
                 boolean ripe = !(block.getBlockData() instanceof Ageable a) || a.getAge() >= a.getMaximumAge();
@@ -120,6 +130,18 @@ public final class SeedListener implements Listener {
                     }
                 }
             }
+        }
+    }
+
+    @EventHandler(ignoreCancelled = true)
+    public void onGrow(BlockGrowEvent event) {
+        updateCropDisplayNextTick(event.getBlock());
+    }
+
+    @EventHandler(ignoreCancelled = true)
+    public void onFertilize(BlockFertilizeEvent event) {
+        for (BlockState state : event.getBlocks()) {
+            updateCropDisplayNextTick(state.getBlock());
         }
     }
 
@@ -173,5 +195,69 @@ public final class SeedListener implements Listener {
 
     private boolean isSeagrass(Material material) {
         return material == Material.SEAGRASS || material == Material.TALL_SEAGRASS;
+    }
+
+    private void updateCropDisplayNextTick(Block block) {
+        if (!seeds.cropStore().contains(block)) return;
+        plugin.getServer().getScheduler().runTask(plugin, () -> {
+            String seedId = seeds.cropStore().get(block);
+            SeedDefinition def = seeds.definition(seedId);
+            if (def != null) {
+                spawnOrUpdateCropDisplay(block, def, cropStage(block));
+            }
+        });
+    }
+
+    private void spawnOrUpdateCropDisplay(Block crop, SeedDefinition def, int stage) {
+        removeCropDisplays(crop);
+        String providerId = cropProviderId(def, stage);
+        if (providerId == null || !plugin.moduleManager().isActive("oraxen")) return;
+
+        ItemStack visual = new ItemStack(Material.PAPER);
+        plugin.moduleManager().applyExternalModel(visual, providerId);
+        Location loc = crop.getLocation().add(0.5, 0.42, 0.5);
+        crop.getWorld().spawn(loc, ItemDisplay.class, display -> {
+            display.setItemStack(visual);
+            display.setItemDisplayTransform(ItemDisplay.ItemDisplayTransform.FIXED);
+            display.setBillboard(Display.Billboard.VERTICAL);
+            display.setShadowRadius(0.0f);
+            display.setShadowStrength(0.0f);
+            display.setViewRange(24.0f);
+            display.getPersistentDataContainer().set(plugin.keys().cropDisplay,
+                    PersistentDataType.STRING, cropKey(crop));
+        });
+    }
+
+    private void removeCropDisplays(Block crop) {
+        String key = cropKey(crop);
+        Location center = crop.getLocation().add(0.5, 0.5, 0.5);
+        for (Entity entity : crop.getWorld().getNearbyEntities(center, 0.9, 1.2, 0.9)) {
+            if (!(entity instanceof ItemDisplay display)) continue;
+            String displayKey = display.getPersistentDataContainer()
+                    .get(plugin.keys().cropDisplay, PersistentDataType.STRING);
+            if (key.equals(displayKey)) {
+                display.remove();
+            }
+        }
+    }
+
+    /** Highest available crop-display stage (textures reis_stage0..reis_stage7). */
+    private static final int MAX_CROP_STAGE = 7;
+
+    private String cropProviderId(SeedDefinition def, int stage) {
+        if (!def.id().equalsIgnoreCase("reis_samen")) return null;
+        return "sas_reis_crop_" + Math.max(0, Math.min(MAX_CROP_STAGE, stage));
+    }
+
+    private int cropStage(Block crop) {
+        if (crop.getBlockData() instanceof Ageable ageable && ageable.getMaximumAge() > 0) {
+            // Map the crop's age (wheat: 0..7) onto the available display stages.
+            return Math.min(MAX_CROP_STAGE, (ageable.getAge() * MAX_CROP_STAGE) / ageable.getMaximumAge());
+        }
+        return 0;
+    }
+
+    private String cropKey(Block block) {
+        return block.getWorld().getName() + ";" + block.getX() + ";" + block.getY() + ";" + block.getZ();
     }
 }

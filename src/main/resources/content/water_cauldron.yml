@@ -1,0 +1,63 @@
+# Water cauldron recipes. Ingredients are unordered and are dropped into a
+# boiling water cauldron above a heat source.
+
+cauldron-recipes:
+  cauldron_teig:
+    ingredients:
+      - material: WHEAT
+        display: Wheat
+      - material: WHEAT
+        display: Wheat
+      - material: WHEAT
+        display: Wheat
+    result:
+      item: teig
+      amount: 1
+    duration-ticks: 120
+    water-cost: 1
+
+  cauldron_nudeln:
+    ingredients:
+      - item: teig
+        display: Dough
+    result:
+      item: nudeln
+      amount: 1
+    duration-ticks: 200
+
+  cauldron_kaese:
+    ingredients:
+      - material: MILK_BUCKET
+        display: Milk
+    result:
+      item: kaese
+      amount: 1
+    duration-ticks: 200
+
+  cauldron_sauce:
+    ingredients:
+      - material: BEETROOT
+        display: Beetroot
+      - material: CARROT
+        display: Carrot
+    result:
+      item: sauce
+      amount: 1
+    duration-ticks: 220
+
+  cauldron_misosuppe:
+    ingredients:
+      - item: nudeln
+        display: Noodles
+      - material: CARROT
+        display: Carrot
+      - material: KELP
+        display: Kelp
+      - material: COD
+        display: Fish
+    result:
+      item: misosuppe
+      amount: 1
+    duration-ticks: 260
+    water-cost: 0
+    serve-with-bowl: true

@@ -4,9 +4,12 @@ import de.yourshika.smokeandsalt.SmokeAndSalt;
 import de.yourshika.smokeandsalt.content.RecipeMatch;
 import de.yourshika.smokeandsalt.util.Heat;
 import org.bukkit.Location;
+import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.block.data.Levelled;
 import org.bukkit.entity.Item;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.scheduler.BukkitTask;
@@ -31,6 +34,7 @@ public final class CauldronManager {
     private final SmokeAndSalt plugin;
     private final List<CauldronRecipe> recipes = new ArrayList<>();
     private final Map<String, Pot> pots = new LinkedHashMap<>();
+    private final Map<String, ServingPot> servings = new LinkedHashMap<>();
 
     private BukkitTask task;
 
@@ -54,6 +58,11 @@ public final class CauldronManager {
         return recipes.size();
     }
 
+    public boolean contains(String id) {
+        if (id == null) return false;
+        return recipes.stream().anyMatch(recipe -> recipe.id().equalsIgnoreCase(id));
+    }
+
     public void start() {
         if (task == null) {
             task = plugin.getServer().getScheduler().runTaskTimer(plugin, this::tick, TICK_INTERVAL, TICK_INTERVAL);
@@ -69,6 +78,7 @@ public final class CauldronManager {
             releaseEntities(pot);
         }
         pots.clear();
+        servings.clear();
     }
 
     /**
@@ -78,38 +88,40 @@ public final class CauldronManager {
      */
     public boolean tryAdd(Block cauldron, Item entity) {
         if (recipes.isEmpty()) return false;
+        if (serving(cauldron) != null) return false;
         Pot pot = pots.get(key(cauldron));
         if (pot != null && pot.cooking != null) return false; // kocht gerade
 
-        List<ItemStack> candidate = new ArrayList<>();
-        if (pot != null) {
-            for (Item existing : pot.entities) candidate.add(existing.getItemStack());
-        }
-        candidate.add(entity.getItemStack());
-
-        // Nur aufnehmen, wenn die Kombination Teil (oder Ganzes) eines Rezepts ist.
-        boolean fits = recipes.stream().anyMatch(r -> RecipeMatch.partial(plugin, candidate, r.ingredients()));
-        if (!fits) return false;
+        ItemStack stack = entity.getItemStack();
+        int take = countToTake(pot, stack);
+        if (take <= 0) return false;
 
         if (pot == null) {
             pot = new Pot(cauldron);
             pots.put(key(cauldron), pot);
         }
-        // Nur ein einzelnes Stueck aufnehmen, den Rest zurueckgeben.
-        ItemStack stack = entity.getItemStack();
-        if (stack.getAmount() > 1 && entity.getWorld() != null) {
+
+        if (stack.getAmount() > take && entity.getWorld() != null) {
             ItemStack extra = stack.clone();
-            extra.setAmount(stack.getAmount() - 1);
-            ItemStack one = stack.clone();
-            one.setAmount(1);
-            entity.setItemStack(one);
+            extra.setAmount(stack.getAmount() - take);
             Item rem = entity.getWorld().dropItem(entity.getLocation().add(0, 0.25, 0), extra);
             rem.setVelocity(new Vector(0, 0.2, 0));
         }
+
+        ItemStack one = stack.clone();
+        one.setAmount(1);
+        entity.setItemStack(one);
         freeze(entity);
         pot.entities.add(entity);
+
+        for (int i = 1; i < take && entity.getWorld() != null; i++) {
+            Item copy = entity.getWorld().dropItem(entity.getLocation(), one.clone());
+            freeze(copy);
+            pot.entities.add(copy);
+        }
         arrange(pot);
 
+        List<ItemStack> candidate = stacks(pot);
         CauldronRecipe complete = recipes.stream()
                 .filter(r -> RecipeMatch.exact(plugin, candidate, r.ingredients()))
                 .findFirst().orElse(null);
@@ -122,12 +134,45 @@ public final class CauldronManager {
         return true;
     }
 
+    private int countToTake(Pot pot, ItemStack stack) {
+        int maxRecipeSize = recipes.stream().mapToInt(r -> r.ingredients().size()).max().orElse(1);
+        int existing = pot == null ? 0 : pot.entities.size();
+        int limit = Math.min(stack.getAmount(), Math.max(1, maxRecipeSize - existing));
+        int best = 0;
+        for (int take = 1; take <= limit; take++) {
+            List<ItemStack> candidate = candidateStacks(pot, stack, take);
+            boolean fits = recipes.stream().anyMatch(r -> RecipeMatch.partial(plugin, candidate, r.ingredients()));
+            if (fits) best = take;
+        }
+        return best;
+    }
+
+    private List<ItemStack> candidateStacks(Pot pot, ItemStack stack, int take) {
+        List<ItemStack> candidate = new ArrayList<>();
+        if (pot != null) {
+            for (Item existing : pot.entities) candidate.add(existing.getItemStack());
+        }
+        for (int i = 0; i < take; i++) {
+            ItemStack one = stack.clone();
+            one.setAmount(1);
+            candidate.add(one);
+        }
+        return candidate;
+    }
+
+    private List<ItemStack> stacks(Pot pot) {
+        List<ItemStack> out = new ArrayList<>();
+        for (Item entity : pot.entities) out.add(entity.getItemStack());
+        return out;
+    }
+
     /**
      * Bricht einen laufenden Sammel-/Koch-Vorgang an diesem Kessel ab und gibt
      * die enthaltenen Zutaten an den Spieler zurueck. Gibt {@code true}, wenn es
      * etwas abzubrechen gab.
      */
     public boolean cancel(Block cauldron, org.bukkit.entity.Player player) {
+        if (serving(cauldron) != null) return false;
         Pot pot = pots.remove(key(cauldron));
         if (pot == null) return false;
         for (Item entity : pot.entities) {
@@ -140,6 +185,34 @@ public final class CauldronManager {
         pot.entities.clear();
         plugin.effects().sizzle(cauldron.getLocation(), false);
         return true;
+    }
+
+    /** Gibt eine fertige Kessel-Suppe mit einer Bowl aus und senkt den Wasserstand. */
+    public boolean tryServe(Block cauldron, Player player) {
+        ServingPot serving = serving(cauldron);
+        if (serving == null) return false;
+
+        ItemStack hand = player.getInventory().getItemInMainHand();
+        if (hand.getType() != Material.BOWL) return false;
+
+        if (player.getGameMode() != GameMode.CREATIVE) {
+            hand.setAmount(hand.getAmount() - 1);
+        }
+        ItemStack result = serving.result.build(plugin);
+        if (result != null) {
+            Map<Integer, ItemStack> leftover = player.getInventory().addItem(result);
+            leftover.values().forEach(s -> player.getWorld().dropItemNaturally(player.getLocation(), s));
+        }
+        plugin.effects().sizzle(cauldron.getLocation(), false);
+        if (reduceWater(cauldron, 1) <= 0) {
+            servings.remove(key(cauldron));
+        }
+        return true;
+    }
+
+    /** Laeuft in diesem Kessel gerade ein fertiges, bowl-portionierbares Ergebnis? */
+    public boolean isServing(Block cauldron) {
+        return serving(cauldron) != null;
     }
 
     private void tick() {
@@ -189,11 +262,18 @@ public final class CauldronManager {
         }
         pot.entities.clear();
 
+        if (pot.cooking.serveWithBowl()) {
+            servings.put(key(block), new ServingPot(block, pot.cooking.result()));
+            plugin.effects().finish(block.getLocation());
+            return;
+        }
+
         ItemStack result = pot.cooking.result().build(plugin);
         if (result != null && out.getWorld() != null) {
             Item drop = out.getWorld().dropItem(out, result);
             drop.setVelocity(new Vector(0, 0.15, 0));
         }
+        reduceWater(block, pot.cooking.waterCost());
         plugin.effects().finish(block.getLocation());
     }
 
@@ -252,6 +332,40 @@ public final class CauldronManager {
         };
     }
 
+    private ServingPot serving(Block block) {
+        String key = key(block);
+        ServingPot serving = servings.get(key);
+        if (serving != null && block.getType() != Material.WATER_CAULDRON) {
+            servings.remove(key);
+            return null;
+        }
+        return serving;
+    }
+
+    private int reduceWater(Block block, int levels) {
+        if (levels <= 0 || block.getType() != Material.WATER_CAULDRON) {
+            return currentWaterLevel(block);
+        }
+        int current = currentWaterLevel(block);
+        int next = Math.max(0, current - levels);
+        if (next <= 0) {
+            block.setType(Material.CAULDRON, false);
+            return 0;
+        }
+        if (block.getBlockData() instanceof Levelled levelled) {
+            levelled.setLevel(next);
+            block.setBlockData(levelled, false);
+        }
+        return next;
+    }
+
+    private int currentWaterLevel(Block block) {
+        if (block.getType() == Material.WATER_CAULDRON && block.getBlockData() instanceof Levelled levelled) {
+            return levelled.getLevel();
+        }
+        return 0;
+    }
+
     private String key(Block block) {
         return block.getWorld().getName() + ":" + block.getX() + ":" + block.getY() + ":" + block.getZ();
     }
@@ -265,5 +379,8 @@ public final class CauldronManager {
         private Pot(Block block) {
             this.block = block;
         }
+    }
+
+    private record ServingPot(Block block, de.yourshika.smokeandsalt.content.ResultSpec result) {
     }
 }

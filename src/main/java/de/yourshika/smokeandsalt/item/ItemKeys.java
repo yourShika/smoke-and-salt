@@ -19,6 +19,8 @@ public final class ItemKeys {
     public final NamespacedKey chainHung;
     /** Markiert eine im Kessel schwebende, kochende Item-Entity. */
     public final NamespacedKey cookingFloat;
+    /** Markiert ein visuelles Crop-Overlay fuer Custom-Pflanzen. */
+    public final NamespacedKey cropDisplay;
 
     public ItemKeys(SmokeAndSalt plugin) {
         this.itemId = new NamespacedKey(plugin, "item_id");
@@ -26,5 +28,6 @@ public final class ItemKeys {
         this.stage = new NamespacedKey(plugin, "stage");
         this.chainHung = new NamespacedKey(plugin, "chain_hung");
         this.cookingFloat = new NamespacedKey(plugin, "cooking_float");
+        this.cropDisplay = new NamespacedKey(plugin, "crop_display");
     }
 }

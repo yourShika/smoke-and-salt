@@ -42,24 +42,35 @@ public final class CookingRegistry {
         byId.clear();
         byStation.values().forEach(List::clear);
         ConfigurationSection root = plugin.getConfig().getConfigurationSection("recipes");
-        if (root == null) return;
-        for (String id : root.getKeys(false)) {
-            ConfigurationSection sec = root.getConfigurationSection(id);
-            if (sec == null) continue;
-            try {
-                register(parse(id.toLowerCase(Locale.ROOT), sec));
-            } catch (Exception ex) {
-                plugin.getLogger().warning("Rezept '" + id + "' konnte nicht geladen werden: " + ex.getMessage());
-            }
-        }
-        if (!byId.isEmpty()) {
+        int loaded = loadFromSection(root, CookingStation.SMOKER, false, "config.yml");
+        if (loaded > 0) {
             plugin.getLogger().info("Koch-Rezepte geladen: " + byId.size());
         }
     }
 
-    private CookingRecipe parse(String id, ConfigurationSection sec) {
+    /** Liest einfache Ein-Zutaten-Rezepte aus einer beliebigen YAML-Section. */
+    public int loadFromSection(ConfigurationSection root, CookingStation defaultStation,
+                               boolean skipExisting, String source) {
+        if (root == null) return 0;
+        int loaded = 0;
+        for (String id : root.getKeys(false)) {
+            ConfigurationSection sec = root.getConfigurationSection(id);
+            if (sec == null) continue;
+            if (skipExisting && contains(id)) continue;
+            try {
+                register(parse(id.toLowerCase(Locale.ROOT), sec, defaultStation));
+                loaded++;
+            } catch (Exception ex) {
+                plugin.getLogger().warning(source + " Rezept '" + id
+                        + "' konnte nicht geladen werden: " + ex.getMessage());
+            }
+        }
+        return loaded;
+    }
+
+    private CookingRecipe parse(String id, ConfigurationSection sec, CookingStation defaultStation) {
         CookingStation station = CookingStation.valueOf(
-                sec.getString("station", "SMOKER").toUpperCase(Locale.ROOT));
+                sec.getString("station", defaultStation.name()).toUpperCase(Locale.ROOT));
         CookingRecipe.Builder b = CookingRecipe.builder(id, station)
                 .resultAmount(sec.getInt("result-amount", 1))
                 .duration(sec.getInt("duration-ticks", 100));

@@ -1,0 +1,27 @@
+# Smoke & Salt seed definitions.
+
+seeds:
+  definitions:
+    reis_samen:
+      material: WHEAT_SEEDS
+      display-name: "<#e6dfbf>Rice Seeds"
+      provider-id: sas_reis_samen
+      crop-material: WHEAT
+      result-item: reis
+      result-amount: 1
+      seed-return-min: 1
+      seed-return-max: 2
+      grass-chance: 0.0
+      seagrass-chance: 0.35
+      composter-chance: 0.0
+      # Oraxen crop display textures used while planted (8 stages for wheat age 0..7):
+      # sas/crops/reis_stage0.png ... sas/crops/reis_stage7.png
+      crop-textures:
+        - sas/crops/reis_stage0.png
+        - sas/crops/reis_stage1.png
+        - sas/crops/reis_stage2.png
+        - sas/crops/reis_stage3.png
+        - sas/crops/reis_stage4.png
+        - sas/crops/reis_stage5.png
+        - sas/crops/reis_stage6.png
+        - sas/crops/reis_stage7.png

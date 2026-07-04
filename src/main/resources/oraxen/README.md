@@ -1,37 +1,31 @@
-# Oraxen-Assets für Smoke & Salt
+# Oraxen Assets for Smoke & Salt
 
-Dieses Verzeichnis ist die **Ablage für die mitgelieferten Oraxen-Assets** von
-Smoke & Salt. Sobald das Oraxen-Modul aktiv ist (`/sas modules`), stellt der
-Asset-Deployer alle hier abgelegten Dateien automatisch in Oraxen bereit –
-versioniert, mit Backup und ohne eigene Server-Texturen zu überschreiben.
+This directory contains the bundled Oraxen assets for Smoke & Salt. When the
+Oraxen module is active (`/sas modules`), the plugin deploys these files into
+Oraxen with version tracking, backups, and managed texture updates.
 
-## Struktur
+## Structure
 
-```
+```text
 oraxen/
-├── asset-manifest.properties     # asset-version + sha256-Hashes (Deployer-State)
-├── items/                        # Oraxen-Item-YAMLs (nach plugins/Oraxen/items/)
-└── pack/
-    ├── models/                   # Custom-Modelle (nach plugins/Oraxen/pack/models/)
-    └── textures/                 # Custom-Texturen (nach plugins/Oraxen/pack/textures/)
+|-- asset-manifest.properties     # asset-version + sha256 hashes
+|-- items/                        # Oraxen item YAMLs
+`-- pack/
+    |-- models/                   # custom models
+    `-- textures/                 # custom textures
 ```
 
-Aktuell werden **bewusst keine Beispiel-Items mitgeliefert** – konkrete Zutaten,
-Gerichte und Seeds kommen später. Sobald ein Item eine `provider-id` (z. B.
-`sas_item_xyz`) trägt und ein passendes Oraxen-Item unter `items/` existiert,
-übernimmt Smoke & Salt automatisch dessen Modell/Textur.
+Bundled item textures live under `pack/textures/sas/`. Rice crop texture stages
+are bundled under `pack/textures/sas/crops/` and are referenced by the internal
+`sas_reis_crop_0` through `sas_reis_crop_3` display items.
 
-## Neues Custom-Item mit Textur anlegen
+## Adding a Custom Item Texture
 
-1. Textur als PNG unter `pack/textures/sas/...` ablegen.
-2. Ein Oraxen-Item unter `items/<datei>.yml` mit einer stabilen ID definieren
-   (z. B. `sas_item_xyz`) und darin die Textur referenzieren.
-3. `asset-version` in `asset-manifest.properties` erhöhen.
-4. In der Plugin-`config.yml` beim jeweiligen Item/Seed die `provider-id` auf die
-   Oraxen-ID setzen.
-5. Nach dem Deploy einmalig `/oraxen reload` ausführen und das Pack an die Spieler
-   senden (`/oraxen pack send @a`).
+1. Add a PNG texture under `pack/textures/sas/...`.
+2. Define an Oraxen item in `items/<file>.yml` with a stable ID.
+3. Increase `asset-version` in `asset-manifest.properties`.
+4. Reference the Oraxen ID from a Smoke & Salt item via `provider-id`.
+5. Run `/oraxen reload` and send/rebuild the pack as usual.
 
-Der Deployer legt vor jedem Überschreiben ein Backup unter
-`plugins/Smoke & Salt/AssetBackups/` an. Eigene Server-Texturen bleiben erhalten,
-solange sie nicht mehr dem zuletzt verwalteten Default entsprechen.
+The deployer backs up managed files before overwriting them. Server-owned assets
+are preserved when they no longer match the previously managed default.

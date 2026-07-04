@@ -19,7 +19,7 @@ public enum CookingStation {
     /** Frying/roasting in a lava cauldron (only certain items). */
     CAULDRON_LAVA("Lava Cauldron", "Frying/roasting in lava"),
 
-    /** Cutting with axe (main hand) and ingredient (off hand). */
+    /** Cutting with an axe in one hand and an ingredient in the other. */
     CUTTING("Cutting Board", "Cutting with the axe");
 
     private final String displayName;

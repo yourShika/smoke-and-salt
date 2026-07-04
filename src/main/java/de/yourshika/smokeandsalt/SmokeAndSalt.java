@@ -4,6 +4,7 @@ import de.yourshika.smokeandsalt.chain.ChainManager;
 import de.yourshika.smokeandsalt.command.SmokeAndSaltCommand;
 import de.yourshika.smokeandsalt.config.MessageManager;
 import de.yourshika.smokeandsalt.config.PluginConfig;
+import de.yourshika.smokeandsalt.content.ContentFileLoader;
 import de.yourshika.smokeandsalt.cooking.CookingManager;
 import de.yourshika.smokeandsalt.cooking.CookingRegistry;
 import de.yourshika.smokeandsalt.item.ItemKeys;
@@ -11,6 +12,7 @@ import de.yourshika.smokeandsalt.item.ItemRegistry;
 import de.yourshika.smokeandsalt.listener.BoilingAmbientTask;
 import de.yourshika.smokeandsalt.listener.CauldronListener;
 import de.yourshika.smokeandsalt.listener.ChainListener;
+import de.yourshika.smokeandsalt.listener.CustomItemSafetyListener;
 import de.yourshika.smokeandsalt.listener.CuttingListener;
 import de.yourshika.smokeandsalt.listener.GuiListener;
 import de.yourshika.smokeandsalt.listener.SeedListener;
@@ -61,6 +63,7 @@ public final class SmokeAndSalt extends JavaPlugin {
         migrateConfig();
         saveResourceIfMissing("messages_de.yml");
         saveResourceIfMissing("messages_en.yml");
+        ContentFileLoader.saveDefaults(this);
 
         this.pluginConfig = new PluginConfig(this);
         this.pluginConfig.load();
@@ -91,6 +94,7 @@ public final class SmokeAndSalt extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(new GuiListener(), this);
         Bukkit.getPluginManager().registerEvents(new CuttingListener(this), this);
         Bukkit.getPluginManager().registerEvents(new CauldronListener(this), this);
+        Bukkit.getPluginManager().registerEvents(new CustomItemSafetyListener(this), this);
         Bukkit.getPluginManager().registerEvents(new SeedListener(this, seeds), this);
         Bukkit.getPluginManager().registerEvents(new ChainListener(this, chains), this);
         Bukkit.getPluginManager().registerEvents(crafting, this);
@@ -145,7 +149,9 @@ public final class SmokeAndSalt extends JavaPlugin {
         cookingRegistry.loadFromConfig();
         cauldron.clearRecipes();
         crafting.unregisterAll();
+        crafting.disableVanillaBreadRecipe();
         stationRecipes.unregisterAll();
+        ContentFileLoader.load(this);
         de.yourshika.smokeandsalt.content.DefaultContent.register(this);
         // Smoker-/Lagerfeuer-Rezepte als Vanilla-Rezepte registrieren (nach DefaultContent).
         stationRecipes.registerAll();

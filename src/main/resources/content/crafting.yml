@@ -1,0 +1,93 @@
+# Shapeless crafting-table recipes. Smoke & Salt validates custom ingredients by
+# their internal item IDs, so custom foods are not accepted in unrelated recipes.
+
+crafting-recipes:
+  burger:
+    ingredients:
+      - item: kaiserbroetchen
+        display: Kaiser Roll
+      - material: COOKED_BEEF
+        display: Meat
+    result:
+      item: burger
+      amount: 1
+
+  cheeseburger:
+    ingredients:
+      - item: kaiserbroetchen
+        display: Kaiser Roll
+      - item: kaese
+        display: Cheese
+      - material: COOKED_BEEF
+        display: Meat
+    result:
+      item: cheeseburger
+      amount: 1
+
+  sourcream:
+    ingredients:
+      - material: MILK_BUCKET
+        display: Milk
+      - material: SWEET_BERRIES
+        display: Sweet Berries
+      - material: BOWL
+        display: Bowl
+    result:
+      item: sourcream
+      amount: 1
+
+  schaschlik_karotte:
+    ingredients:
+      - material: STICK
+        display: Stick
+      - material: COOKED_BEEF
+        display: Meat
+      - material: CARROT
+        display: Carrot
+    result:
+      item: schaschlik
+      amount: 1
+
+  schaschlik_kartoffel:
+    ingredients:
+      - material: STICK
+        display: Stick
+      - material: COOKED_BEEF
+        display: Meat
+      - material: POTATO
+        display: Potato
+    result:
+      item: schaschlik
+      amount: 1
+
+  ofenkartoffel_sourcream:
+    ingredients:
+      - material: BAKED_POTATO
+        display: Baked Potato
+      - item: sourcream
+        display: Sour Cream
+    result:
+      item: ofenkartoffel_sourcream
+      amount: 1
+
+  spaghetti:
+    ingredients:
+      - item: nudeln
+        display: Noodles
+      - item: sauce
+        display: Sauce
+      - material: BOWL
+        display: Bowl
+    result:
+      item: spaghetti
+      amount: 1
+
+  kandierter_apfel:
+    ingredients:
+      - material: APPLE
+        display: Apple
+      - material: SUGAR
+        display: Sugar
+    result:
+      item: kandierter_apfel
+      amount: 1

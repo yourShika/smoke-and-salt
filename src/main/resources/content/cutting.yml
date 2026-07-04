@@ -1,0 +1,19 @@
+# Cutting recipes. Station defaults to CUTTING in this file.
+# Hold an axe in either hand and the ingredient in the other hand, then right-click.
+#
+# You may define new result items in this same file:
+# items:
+#   chopped_example:
+#     material: PAPER
+#     display-name: "<yellow>Chopped Example"
+#     provider-id: sas_chopped_example
+#     food:
+#       nutrition: 2
+#       saturation: 1.2
+
+recipes:
+  cutting_chicken_nuggets:
+    input-material: COOKED_CHICKEN
+    result-item: chicken_nuggets
+    result-amount: 3
+    duration-ticks: 60

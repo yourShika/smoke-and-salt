@@ -1,0 +1,17 @@
+# Simple smoker recipes. Station defaults to SMOKER in this file.
+
+recipes:
+  smoker_spiegelei:
+    input-material: EGG
+    result-item: spiegelei
+    duration-ticks: 140
+
+  smoker_rotebeete_chips:
+    input-material: BEETROOT
+    result-item: rotebeete_chips
+    duration-ticks: 140
+
+  smoker_geroestete_karotte:
+    input-material: CARROT
+    result-item: geroestete_karotte
+    duration-ticks: 140

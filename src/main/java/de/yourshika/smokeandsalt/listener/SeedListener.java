@@ -51,18 +51,47 @@ public final class SeedListener implements Listener {
         if (clicked == null || clicked.getType() != Material.FARMLAND) return;
 
         Player player = event.getPlayer();
-        if (!player.hasPermission("smokeandsalt.seed.plant")) return;
         if (!plugin.pluginConfig().isWorldAllowed(clicked.getWorld().getName())) return;
 
         ItemStack hand = player.getInventory().getItemInMainHand();
+        Block above = clicked.getRelative(0, 1, 0);
+        var crops = plugin.crops();
+
+        if (crops.enabled()) {
+            // Bestehender Custom-Crop: ernten (reif) oder duengen (Bonemeal).
+            if (crops.contains(above)) {
+                event.setCancelled(true);
+                if (hand.getType() == Material.BONE_MEAL) {
+                    if (crops.bonemeal(above) && player.getGameMode() != GameMode.CREATIVE) {
+                        hand.setAmount(hand.getAmount() - 1);
+                    }
+                } else {
+                    crops.interact(player, above);
+                }
+                return;
+            }
+            // Neu pflanzen (ohne Weizenblock -> keine doppelte Textur).
+            String seedId = seeds.idOf(hand);
+            if (seedId == null) return;
+            SeedDefinition def = seeds.definition(seedId);
+            if (def == null || !def.plantable()) return;
+            if (!player.hasPermission("smokeandsalt.seed.plant")) return;
+            if (!above.getType().isAir()) return;
+            event.setCancelled(true);
+            if (crops.plant(above, def.id()) && player.getGameMode() != GameMode.CREATIVE) {
+                hand.setAmount(hand.getAmount() - 1);
+                plugin.effects().sizzle(above.getLocation(), false);
+            }
+            return;
+        }
+
+        // --- Fallback: Vanilla-Weizen-Crop (seeds.custom-crops = false) ---
         String seedId = seeds.idOf(hand);
         if (seedId == null) return;
         SeedDefinition def = seeds.definition(seedId);
         if (def == null || !def.plantable()) return;
-
-        Block above = clicked.getRelative(0, 1, 0);
+        if (!player.hasPermission("smokeandsalt.seed.plant")) return;
         if (!above.getType().isAir()) return;
-
         event.setCancelled(true);
         try {
             above.setType(def.cropMaterial(), false);
@@ -88,8 +117,18 @@ public final class SeedListener implements Listener {
         if (!plugin.pluginConfig().seedsEnabled()) return;
         Block block = event.getBlock();
 
-        // Ernte eines Custom-Crops.
-        if (seeds.cropStore().contains(block)) {
+        // Custom-Crop-System: Ackerland abgebaut -> Crop entfernen, Samen zurueck.
+        if (plugin.crops().enabled()) {
+            if (block.getType() == Material.FARMLAND) {
+                Block above = block.getRelative(0, 1, 0);
+                if (plugin.crops().contains(above)) {
+                    plugin.crops().removeAndDropSeed(above);
+                }
+            }
+        }
+
+        // Ernte eines Vanilla-Weizen-Crops (nur ohne Custom-Crop-System).
+        if (!plugin.crops().enabled() && seeds.cropStore().contains(block)) {
             String seedId = seeds.cropStore().remove(block);
             SeedDefinition def = seeds.definition(seedId);
             if (def != null) {

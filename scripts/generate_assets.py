@@ -13,7 +13,7 @@ OX = os.path.join(ROOT, "src", "main", "resources", "oraxen")
 TEX_DIR = os.path.join(OX, "pack", "textures", "sas")
 ITEMS_DIR = os.path.join(OX, "items")
 MANIFEST = os.path.join(OX, "asset-manifest.properties")
-ASSET_VERSION = "7"
+ASSET_VERSION = "8"
 
 # ---------------------------------------------------------------------------
 #  Zeichen-Primitive auf einer 16x16 RGBA-Leinwand
@@ -545,6 +545,52 @@ for _pid, _pname, _pdraw, _scol in PLANTS:
     ITEMS[_pid] = ("<white>" + _pname, "PAPER", _cmd)
     ITEMS[_pid + "_seeds"] = ("<white>" + _pname + " Seeds", "WHEAT_SEEDS", _cmd + 1)
     _cmd += 2
+
+# ---------------------------------------------------------------------------
+#  Custom-Crop-Texturen (eine je Pflanze, wird beim Wachsen skaliert)
+# ---------------------------------------------------------------------------
+
+def crop_sprite(img, fruit):
+    stem = C(86, 150, 66)
+    stem_d = C(58, 118, 48)
+    for x0, top in [(6, 4), (8, 3), (10, 5)]:
+        line(img, x0, 14, x0, top, stem)
+        line(img, x0, 14, x0 - 1, top + 2, stem_d)
+        put(img, x0, top, C(120, 182, 92))
+    for p in [(5, 12), (11, 12), (7, 13), (9, 13)]:
+        put(img, *p, stem)
+    for (x, y) in [(7, 5), (9, 6), (8, 4)]:
+        put(img, x, y, fruit); put(img, x, y + 1, _mul(fruit, 0.78))
+
+# produce-id -> Frucht-Farbe (Crop-Item: sas_<produce>_crop)
+CROPS = [
+    ("reis", C(226, 204, 120)),
+    ("tomato", C(200, 60, 50)),
+    ("onion", C(206, 184, 150)),
+    ("lettuce", C(120, 186, 96)),
+    ("corn", C(232, 196, 70)),
+    ("cucumber", C(90, 158, 72)),
+    ("garlic", C(232, 226, 216)),
+    ("chili", C(198, 44, 38)),
+    ("strawberry", C(206, 48, 44)),
+    ("blueberry", C(90, 110, 190)),
+    ("soybean", C(120, 168, 72)),
+    ("cotton", C(240, 240, 236)),
+    ("cabbage", C(104, 168, 80)),
+    ("bell_pepper", C(198, 48, 42)),
+    ("pineapple", C(224, 180, 64)),
+    ("grapes", C(140, 90, 170)),
+    ("coffee_beans", C(140, 94, 60)),
+    ("zucchini", C(64, 124, 52)),
+    ("eggplant", C(120, 70, 150)),
+]
+
+_crop_cmd = 3070
+for _cid, _fcol in CROPS:
+    EXTRA_TEXTURES["crops/" + _cid + "_crop"] = (lambda col: (lambda im: crop_sprite(im, col)))(_fcol)
+    ITEMS[_cid + "_crop"] = ("<green>" + _cid.replace("_", " ").title() + " Crop", "PAPER",
+                             _crop_cmd, "sas/crops/" + _cid + "_crop.png")
+    _crop_cmd += 1
 
 OUTLINE = C(60, 44, 32, 255)
 

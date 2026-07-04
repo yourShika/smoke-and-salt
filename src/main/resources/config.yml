@@ -60,9 +60,18 @@ leaf-drops:
 # --------------------------------------------------------------------------
 seeds:
   enabled: true
-  # Schwebendes Custom-Crop-Modell ueber gepflanzten Seeds anzeigen (nur mit
-  # Oraxen). Standardmaessig AUS, da man sonst Weizen UND das Modell sieht
-  # (doppelte Textur). Bei true erscheint zusaetzlich die Custom-Crop-Optik.
+  # Plugin-getriebene Custom-Crops: gepflanzt wird auf Ackerland OHNE Weizenblock;
+  # die Pflanze ist ein eigenes Display mit Custom-Textur pro Pflanze, das das
+  # Plugin selbst wachsen laesst (keine doppelte Textur). Bei false: Vanilla-Weizen.
+  custom-crops: true
+  # Ticks pro Wachstumsstufe des Custom-Crop-Systems (Tick-Task laeuft alle 2s).
+  # 6 => ca. 12s pro Stufe, ~84s bis reif.
+  growth-ticks-per-stage: 6
+  # Optische Feinjustierung der Custom-Crop-Anzeige.
+  crop-scale: 0.9
+  crop-y-offset: 0.15
+  # (Legacy) schwebendes Modell ueber Vanilla-Weizen-Crops - nur relevant, wenn
+  # custom-crops = false.
   crop-display: false
   # Definitionen der Custom-Seeds. Standardmaessig leer.
   # Schema pro Eintrag:

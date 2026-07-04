@@ -8,8 +8,12 @@ GUIs, and optional Oraxen textures.
 ![Minecraft](https://img.shields.io/badge/Minecraft-26.1.2-62b47a?style=flat-square&logo=minecraft&logoColor=white)
 ![Platform](https://img.shields.io/badge/Platform-Paper%2FSpigot-f7a41d?style=flat-square)
 ![Java](https://img.shields.io/badge/Java-25-ED8B00?style=flat-square&logo=openjdk&logoColor=white)
-![Version](https://img.shields.io/badge/Version-0.4.0-blue?style=flat-square)
+![Version](https://img.shields.io/badge/Version-0.5.0-blue?style=flat-square)
 ![License](https://img.shields.io/badge/License-MIT-blue?style=flat-square)
+
+## What's new in 0.5.0
+
+- **Custom crop system**: seeds are planted on farmland with **no wheat block** — each plant grows as its **own textured crop** (a plugin-driven display), so there is no more double texture and no impact on vanilla wheat farming. Growth is plugin-driven (light-gated, bone-mealable); right-click the crop to harvest when ripe (it regrows), break the farmland to remove it. All 19 plants (rice + 18) have their own crop texture. Configurable and toggleable under `seeds.custom-crops` (fall back to plain wheat with `false`).
 
 ## What's new in 0.4.0
 
@@ -204,8 +208,8 @@ Pushing a tag named `v*` triggers the GitHub Actions release workflow. The actio
 builds the plugin and publishes the jar as a GitHub Release asset.
 
 ```bash
-git tag v0.4.0
-git push origin v0.4.0
+git tag v0.5.0
+git push origin v0.5.0
 ```
 
 ## License

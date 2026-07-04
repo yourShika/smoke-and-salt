@@ -1,0 +1,7 @@
+# Lava cauldron recipes. Station defaults to CAULDRON_LAVA in this file.
+
+recipes:
+  lava_pommes:
+    input-material: POTATO
+    result-item: pommes
+    duration-ticks: 140

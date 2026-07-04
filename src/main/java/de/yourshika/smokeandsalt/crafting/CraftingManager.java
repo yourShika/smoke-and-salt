@@ -56,6 +56,12 @@ public final class CraftingManager implements Listener {
         return recipes.size();
     }
 
+    public boolean contains(String id) {
+        if (id == null) return false;
+        String key = id.toLowerCase(java.util.Locale.ROOT);
+        return recipes.containsKey(key) || recipes.containsKey("sas_craft_" + key);
+    }
+
     /** Registriert ein Rezept (fuegt es der Werkbank hinzu). */
     public void register(CraftingRecipe recipe) {
         ItemStack result = recipe.result().build(plugin);
@@ -111,9 +117,14 @@ public final class CraftingManager implements Listener {
     public void onPrepare(PrepareItemCraftEvent event) {
         Recipe recipe = event.getRecipe();
         CraftingRecipe ours = lookup(recipe);
-        if (ours == null) return;
-
         List<ItemStack> matrix = Arrays.asList(event.getInventory().getMatrix());
+        if (ours == null) {
+            if (containsSmokeAndSaltItem(matrix)) {
+                event.getInventory().setResult(null);
+            }
+            return;
+        }
+
         if (RecipeMatch.exact(plugin, matrix, ours.ingredients())) {
             event.getInventory().setResult(ours.result().build(plugin));
         } else {
@@ -169,6 +180,16 @@ public final class CraftingManager implements Listener {
             }
         }
         return out;
+    }
+
+    private boolean containsSmokeAndSaltItem(List<ItemStack> matrix) {
+        for (ItemStack item : matrix) {
+            if (item == null || item.getType().isAir()) continue;
+            if (plugin.items().idOf(item) != null || plugin.seeds().idOf(item) != null) {
+                return true;
+            }
+        }
+        return false;
     }
 
     private CraftingRecipe lookup(Recipe recipe) {

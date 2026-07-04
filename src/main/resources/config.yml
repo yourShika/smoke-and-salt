@@ -9,9 +9,11 @@
 config-version: 2
 
 # HINWEIS: Smoke & Salt bringt Standard-Items, -Seeds und -Rezepte bereits
-# eingebaut mit (siehe /sas recipes). Die Abschnitte items/seeds/recipes unten
-# sind fuer EIGENE Ergaenzungen. Ein Eintrag mit gleicher ID ueberschreibt den
-# eingebauten Standard.
+# eingebaut mit (siehe /sas recipes). Fuer uebersichtliche Erweiterungen werden
+# beim ersten Start zusaetzlich Dateien unter plugins/SmokeAndSalt/content/
+# angelegt: items.yml, seeds.yml, smoker.yml, campfire.yml,
+# water_cauldron.yml, lava_cauldron.yml, cutting.yml und crafting.yml.
+# Ein Eintrag in dieser config.yml mit gleicher ID hat Vorrang.
 
 # Sprache der Nachrichten (messages_<lang>.yml). Mitgeliefert: en, de.
 language: en
@@ -32,7 +34,7 @@ cooking:
     campfire: true        # Garen ueber dem Lagerfeuer
     cauldron-water: true  # Kochen in kochendem Wasser (Kessel ueber Waermequelle)
     cauldron-lava: true   # Braten/Frittieren im Lavakessel
-    cutting: true         # Schneiden mit der Axt (Haupthand) + Zutat (Zweithand)
+    cutting: true         # Schneiden mit Axt in einer Hand + Zutat in der anderen
 
 # --------------------------------------------------------------------------
 #  Custom Seeds

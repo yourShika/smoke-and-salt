@@ -38,7 +38,7 @@ public final class DefaultContent {
     private static void registerItems(SmokeAndSalt plugin) {
         // Intermediates / base
         item(plugin, "teig", Material.PAPER, "<#e8d8a8>Dough", "Ingredient");
-        item(plugin, "sourcream", Material.SNOWBALL, "<#fff8e7>Sour Cream", "Ingredient",
+        item(plugin, "sourcream", Material.PAPER, "<#fff8e7>Sour Cream", "Ingredient",
                 FoodProfile.of(2, 1.2f));
         // Smoker results
         item(plugin, "spiegelei", Material.PAPER, "<#fff3c0>Fried Egg", "Dish",
@@ -127,7 +127,7 @@ public final class DefaultContent {
 
         // Schneiden
         cutting(reg, "cutting_chicken_nuggets", b -> b.inputMaterial(Material.COOKED_CHICKEN)
-                .resultItem("chicken_nuggets").resultAmount(3).duration(20));
+                .resultItem("chicken_nuggets").resultAmount(3).duration(60));
     }
 
     private interface Cfg {
@@ -158,22 +158,22 @@ public final class DefaultContent {
 
     private static void registerCauldronRecipes(SmokeAndSalt plugin) {
         var c = plugin.cauldron();
-        c.register(new CauldronRecipe("cauldron_teig",
+        if (!c.contains("cauldron_teig")) c.register(new CauldronRecipe("cauldron_teig",
                 List.of(Ingredient.material(Material.WHEAT, "Wheat"),
                         Ingredient.material(Material.WHEAT, "Wheat"),
                         Ingredient.material(Material.WHEAT, "Wheat")),
                 ResultSpec.item("teig", 1), 120, 1));
-        c.register(new CauldronRecipe("cauldron_nudeln",
+        if (!c.contains("cauldron_nudeln")) c.register(new CauldronRecipe("cauldron_nudeln",
                 List.of(Ingredient.item("teig", "Dough")),
                 ResultSpec.item("nudeln", 1), 200));
-        c.register(new CauldronRecipe("cauldron_kaese",
+        if (!c.contains("cauldron_kaese")) c.register(new CauldronRecipe("cauldron_kaese",
                 List.of(Ingredient.material(Material.MILK_BUCKET, "Milk")),
                 ResultSpec.item("kaese", 1), 200));
-        c.register(new CauldronRecipe("cauldron_sauce",
+        if (!c.contains("cauldron_sauce")) c.register(new CauldronRecipe("cauldron_sauce",
                 List.of(Ingredient.material(Material.BEETROOT, "Beetroot"),
                         Ingredient.material(Material.CARROT, "Carrot")),
                 ResultSpec.item("sauce", 1), 220));
-        c.register(new CauldronRecipe("cauldron_misosuppe",
+        if (!c.contains("cauldron_misosuppe")) c.register(new CauldronRecipe("cauldron_misosuppe",
                 List.of(Ingredient.item("nudeln", "Noodles"),
                         Ingredient.material(Material.CARROT, "Carrot"),
                         Ingredient.material(Material.KELP, "Kelp"),
@@ -186,47 +186,47 @@ public final class DefaultContent {
     private static void registerCraftingRecipes(SmokeAndSalt plugin) {
         var cm = plugin.crafting();
 
-        cm.register(new CraftingRecipe("burger",
+        if (!cm.contains("burger")) cm.register(new CraftingRecipe("burger",
                 List.of(Ingredient.item("kaiserbroetchen", "Kaiser Roll"),
                         Ingredient.material(Material.COOKED_BEEF, "Meat")),
                 ResultSpec.item("burger", 1)));
 
-        cm.register(new CraftingRecipe("cheeseburger",
+        if (!cm.contains("cheeseburger")) cm.register(new CraftingRecipe("cheeseburger",
                 List.of(Ingredient.item("kaiserbroetchen", "Kaiser Roll"),
                         Ingredient.item("kaese", "Cheese"),
                         Ingredient.material(Material.COOKED_BEEF, "Meat")),
                 ResultSpec.item("cheeseburger", 1)));
 
-        cm.register(new CraftingRecipe("sourcream",
+        if (!cm.contains("sourcream")) cm.register(new CraftingRecipe("sourcream",
                 List.of(Ingredient.material(Material.MILK_BUCKET, "Milk"),
                         Ingredient.material(Material.SWEET_BERRIES, "Sweet Berries"),
                         Ingredient.material(Material.BOWL, "Bowl")),
                 ResultSpec.item("sourcream", 1)));
 
-        cm.register(new CraftingRecipe("schaschlik_karotte",
+        if (!cm.contains("schaschlik_karotte")) cm.register(new CraftingRecipe("schaschlik_karotte",
                 List.of(Ingredient.material(Material.STICK, "Stick"),
                         Ingredient.material(Material.COOKED_BEEF, "Meat"),
                         Ingredient.material(Material.CARROT, "Carrot")),
                 ResultSpec.item("schaschlik", 1)));
 
-        cm.register(new CraftingRecipe("schaschlik_kartoffel",
+        if (!cm.contains("schaschlik_kartoffel")) cm.register(new CraftingRecipe("schaschlik_kartoffel",
                 List.of(Ingredient.material(Material.STICK, "Stick"),
                         Ingredient.material(Material.COOKED_BEEF, "Meat"),
                         Ingredient.material(Material.POTATO, "Potato")),
                 ResultSpec.item("schaschlik", 1)));
 
-        cm.register(new CraftingRecipe("ofenkartoffel_sourcream",
+        if (!cm.contains("ofenkartoffel_sourcream")) cm.register(new CraftingRecipe("ofenkartoffel_sourcream",
                 List.of(Ingredient.material(Material.BAKED_POTATO, "Baked Potato"),
                         Ingredient.item("sourcream", "Sour Cream")),
                 ResultSpec.item("ofenkartoffel_sourcream", 1)));
 
-        cm.register(new CraftingRecipe("spaghetti",
+        if (!cm.contains("spaghetti")) cm.register(new CraftingRecipe("spaghetti",
                 List.of(Ingredient.item("nudeln", "Noodles"),
                         Ingredient.item("sauce", "Sauce"),
                         Ingredient.material(Material.BOWL, "Bowl")),
                 ResultSpec.item("spaghetti", 1)));
 
-        cm.register(new CraftingRecipe("kandierter_apfel",
+        if (!cm.contains("kandierter_apfel")) cm.register(new CraftingRecipe("kandierter_apfel",
                 List.of(Ingredient.material(Material.APPLE, "Apple"),
                         Ingredient.material(Material.SUGAR, "Sugar")),
                 ResultSpec.item("kandierter_apfel", 1)));

@@ -48,8 +48,8 @@ public final class HelpMenu {
                 "A careful frying/roasting station.",
                 "Only certain items work."));
         holder.set(23, station(Material.IRON_AXE, "Cutting",
-                "Axe in the main hand, ingredient in the",
-                "off hand - right-click to cut."));
+                "Axe in one hand, ingredient in the",
+                "other hand - right-click to cut."));
         holder.set(24, station(Material.WHEAT_SEEDS, "Custom Seeds",
                 "Plantable on farmland.",
                 "Drops from grass, seagrass, composter."));
@@ -59,11 +59,11 @@ public final class HelpMenu {
 
         // --- Command buttons ---
         holder.set(37, Icons.of(Material.BOOK, "<yellow><bold>Recipes</bold>",
-                "<gray>Browse all cooking recipes.", " ", "<dark_gray>» /sas recipes"),
+                "<gray>Browse all cooking recipes.", " ", "<dark_gray>-> /sas recipes"),
                 (p, e) -> RecipesMenu.open(plugin, p));
 
         holder.set(38, Icons.of(Material.NAME_TAG, "<aqua><bold>Version</bold>",
-                "<gray>Plugin version and info.", " ", "<dark_gray>» /sas version"),
+                "<gray>Plugin version and info.", " ", "<dark_gray>-> /sas version"),
                 (p, e) -> {
                     p.closeInventory();
                     p.performCommand("sas version");
@@ -72,22 +72,22 @@ public final class HelpMenu {
         if (player.hasPermission("smokeandsalt.admin.modules")) {
             holder.set(39, Icons.of(Material.COMPARATOR, "<light_purple><bold>Modules</bold>",
                     "<gray>Toggle external hooks (Oraxen,", "<gray>PlaceholderAPI) live.", " ",
-                    "<dark_gray>» /sas modules"),
+                    "<dark_gray>-> /sas modules"),
                     (p, e) -> ModulesMenu.open(plugin, p));
         }
         if (player.hasPermission("smokeandsalt.admin.give")) {
             holder.set(40, Icons.of(Material.CHEST, "<gold><bold>Give</bold>",
-                    "<gray>Give out custom items.", " ", "<dark_gray>» /sas give"),
+                    "<gray>Give out custom items.", " ", "<dark_gray>-> /sas give"),
                     (p, e) -> GiveMenu.open(plugin, p));
         }
         if (player.hasPermission("smokeandsalt.admin.assets")) {
             holder.set(41, Icons.of(Material.ITEM_FRAME, "<green><bold>Assets</bold>",
-                    "<gray>Oraxen assets: status & redeploy.", " ", "<dark_gray>» /sas assets"),
+                    "<gray>Oraxen assets: status & redeploy.", " ", "<dark_gray>-> /sas assets"),
                     (p, e) -> AssetsMenu.open(plugin, p));
         }
         if (player.hasPermission("smokeandsalt.admin.update")) {
             holder.set(42, Icons.of(Material.LIME_DYE, "<green><bold>Update</bold>",
-                    "<gray>Download the latest GitHub release.", " ", "<dark_gray>» /sas update"),
+                    "<gray>Download the latest GitHub release.", " ", "<dark_gray>-> /sas update"),
                     (p, e) -> {
                         p.closeInventory();
                         p.performCommand("sas update");
@@ -96,7 +96,7 @@ public final class HelpMenu {
         if (player.hasPermission("smokeandsalt.admin.reload")) {
             holder.set(43, Icons.of(Material.BLAZE_POWDER, "<red><bold>Reload</bold>",
                     "<gray>Reload config, messages, items,", "<gray>recipes and modules.", " ",
-                    "<dark_gray>» /sas reload"),
+                    "<dark_gray>-> /sas reload"),
                     (p, e) -> {
                         p.closeInventory();
                         p.performCommand("sas reload");

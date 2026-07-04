@@ -58,6 +58,11 @@ public final class CauldronManager {
         return recipes.size();
     }
 
+    public boolean contains(String id) {
+        if (id == null) return false;
+        return recipes.stream().anyMatch(recipe -> recipe.id().equalsIgnoreCase(id));
+    }
+
     public void start() {
         if (task == null) {
             task = plugin.getServer().getScheduler().runTaskTimer(plugin, this::tick, TICK_INTERVAL, TICK_INTERVAL);

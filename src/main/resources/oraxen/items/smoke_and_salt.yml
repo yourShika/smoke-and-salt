@@ -201,11 +201,91 @@ sas_reis_samen:
 
 sas_sourcream:
   displayname: "<#fff8e7>Sour Cream"
-  material: SNOWBALL
+  material: PAPER
   Pack:
     generate_model: true
     parent_model: "item/generated"
     textures:
       - sas/sourcream.png
     custom_model_data: 3021
+
+sas_reis_crop_0:
+  displayname: "<#9ccc65>Rice Crop 0"
+  material: PAPER
+  Pack:
+    generate_model: true
+    parent_model: "item/generated"
+    textures:
+      - sas/crops/reis_stage0.png
+    custom_model_data: 3022
+
+sas_reis_crop_1:
+  displayname: "<#9ccc65>Rice Crop 1"
+  material: PAPER
+  Pack:
+    generate_model: true
+    parent_model: "item/generated"
+    textures:
+      - sas/crops/reis_stage1.png
+    custom_model_data: 3023
+
+sas_reis_crop_2:
+  displayname: "<#a6cc6f>Rice Crop 2"
+  material: PAPER
+  Pack:
+    generate_model: true
+    parent_model: "item/generated"
+    textures:
+      - sas/crops/reis_stage2.png
+    custom_model_data: 3024
+
+sas_reis_crop_3:
+  displayname: "<#b7c873>Rice Crop 3"
+  material: PAPER
+  Pack:
+    generate_model: true
+    parent_model: "item/generated"
+    textures:
+      - sas/crops/reis_stage3.png
+    custom_model_data: 3025
+
+sas_reis_crop_4:
+  displayname: "<#c5b86d>Rice Crop 4"
+  material: PAPER
+  Pack:
+    generate_model: true
+    parent_model: "item/generated"
+    textures:
+      - sas/crops/reis_stage4.png
+    custom_model_data: 3026
+
+sas_reis_crop_5:
+  displayname: "<#d3bd72>Rice Crop 5"
+  material: PAPER
+  Pack:
+    generate_model: true
+    parent_model: "item/generated"
+    textures:
+      - sas/crops/reis_stage5.png
+    custom_model_data: 3027
+
+sas_reis_crop_6:
+  displayname: "<#e0c877>Rice Crop 6"
+  material: PAPER
+  Pack:
+    generate_model: true
+    parent_model: "item/generated"
+    textures:
+      - sas/crops/reis_stage6.png
+    custom_model_data: 3028
+
+sas_reis_crop_7:
+  displayname: "<#e6cf82>Rice Crop 7"
+  material: PAPER
+  Pack:
+    generate_model: true
+    parent_model: "item/generated"
+    textures:
+      - sas/crops/reis_stage7.png
+    custom_model_data: 3029
 

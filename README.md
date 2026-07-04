@@ -11,7 +11,7 @@ GUIs, and optional Oraxen textures.
 ![Version](https://img.shields.io/badge/Version-0.3.0-blue?style=flat-square)
 ![License](https://img.shields.io/badge/License-MIT-blue?style=flat-square)
 
-## What's new in 0.3.0
+## What's new in 0.3.x
 
 - All bundled dishes now use real food data for hunger and saturation.
 - Fried Egg is no longer throwable and is now a proper edible custom item.
@@ -25,6 +25,11 @@ GUIs, and optional Oraxen textures.
 - `/sas recipes` is split into categories and now includes seed acquisition/farming info.
 - Shashlik appears as one recipe entry with variant navigation.
 - Oraxen textures were refreshed with improved 16x16 vanilla-style sprites.
+- Lava cauldron ingredients are protected from burning while the recipe starts.
+- Cutting now works with the axe and ingredient in either hand and uses recipe duration.
+- Custom items are blocked from vanilla side effects and unrelated crafting recipes.
+- Default content is split into editable `content/*.yml` files, including `cutting.yml`.
+- Rice crops use bundled Oraxen display-stage textures when planted on farmland.
 
 ## Stations
 
@@ -34,9 +39,9 @@ GUIs, and optional Oraxen textures.
 | Campfire | Place ingredients on a lit campfire for sweet or baked campfire food. |
 | Water Cauldron | A water cauldron above a heat source boils, accepts ingredients, and can consume water levels. |
 | Lava Cauldron | Used for frying/roasting recipes such as fries. |
-| Cutting | Hold an axe in the main hand and the ingredient in the off hand, then right-click. |
+| Cutting | Hold an axe in either hand and the ingredient in the other hand, then right-click. |
 | Chains | Right-click chains to hang or retrieve food items. |
-| Custom Seeds | Rice seeds drop from seagrass and can be planted on farmland. |
+| Custom Seeds | Rice seeds drop from seagrass, can be planted on farmland, and show custom crop stages when Oraxen is active. |
 
 Water cauldrons boil only when a heat source is directly beneath them. Supported
 heat sources include campfires, fire, lava, and magma blocks.
@@ -78,7 +83,7 @@ heat sources include campfires, fire, lava, and magma blocks.
 
 | Input | Result |
 | --- | --- |
-| Cooked Chicken | Chicken Nuggets |
+| Cooked Chicken | Chicken Nuggets, after a short cutting action |
 
 ### Crafting
 
@@ -96,7 +101,9 @@ heat sources include campfires, fire, lava, and magma blocks.
 ### Seeds
 
 Rice Seeds drop from seagrass, can be planted on farmland, and grow into Rice.
-The recipe browser shows this path under the Seeds category.
+When Oraxen is active, planted Rice gets a small custom crop-stage display using
+the bundled `sas/crops/reis_stage*.png` textures. The recipe browser shows this
+path under the Seeds category.
 
 ## Commands
 
@@ -146,6 +153,13 @@ content through `config.yml`:
 
 Custom item food values use `nutrition` for half-hunger icons and `saturation`
 for the actual saturation value.
+
+For easier editing, Smoke & Salt also creates these files on first run:
+`content/items.yml`, `content/seeds.yml`, `content/smoker.yml`,
+`content/campfire.yml`, `content/water_cauldron.yml`,
+`content/lava_cauldron.yml`, `content/cutting.yml`, and
+`content/crafting.yml`. Station files can define local `items` plus their
+recipes, so a new cut food can live entirely in `content/cutting.yml`.
 
 ## Requirements
 

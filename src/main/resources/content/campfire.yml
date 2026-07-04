@@ -1,0 +1,12 @@
+# Simple campfire recipes. Station defaults to CAMPFIRE in this file.
+
+recipes:
+  campfire_marshmallow:
+    input-material: SUGAR
+    result-item: marshmallow
+    duration-ticks: 120
+
+  campfire_kaiserbroetchen:
+    input-item: teig
+    result-item: kaiserbroetchen
+    duration-ticks: 160

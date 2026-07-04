@@ -16,6 +16,8 @@ import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -46,10 +48,20 @@ public final class ItemRegistry {
     public void loadFromConfig() {
         definitions.clear();
         ConfigurationSection root = plugin.getConfig().getConfigurationSection("items");
-        if (root == null) return;
+        int loaded = loadFromSection(root, false, "config.yml");
+        if (loaded > 0) {
+            plugin.getLogger().info("Custom-Items geladen: " + definitions.size());
+        }
+    }
+
+    /** Liest Item-Definitionen aus einer beliebigen YAML-Section. */
+    public int loadFromSection(ConfigurationSection root, boolean skipExisting, String source) {
+        if (root == null) return 0;
+        int loaded = 0;
         for (String id : root.getKeys(false)) {
             ConfigurationSection sec = root.getConfigurationSection(id);
             if (sec == null) continue;
+            if (skipExisting && contains(id)) continue;
             try {
                 Material material = Material.matchMaterial(
                         sec.getString("material", "PAPER").toUpperCase(Locale.ROOT));
@@ -66,13 +78,13 @@ public final class ItemRegistry {
                         sec.getBoolean("glow", false),
                         parseFood(sec));
                 register(def);
+                loaded++;
             } catch (Exception ex) {
-                plugin.getLogger().warning("Item '" + id + "' konnte nicht geladen werden: " + ex.getMessage());
+                plugin.getLogger().warning(source + " Item '" + id
+                        + "' konnte nicht geladen werden: " + ex.getMessage());
             }
         }
-        if (!definitions.isEmpty()) {
-            plugin.getLogger().info("Custom-Items geladen: " + definitions.size());
-        }
+        return loaded;
     }
 
     private FoodProfile parseFood(ConfigurationSection itemSection) {
@@ -81,7 +93,83 @@ public final class ItemRegistry {
         int nutrition = food.getInt("nutrition", 0);
         float saturation = (float) food.getDouble("saturation", 0.0);
         boolean always = food.getBoolean("can-always-eat", false);
-        return nutrition > 0 ? new FoodProfile(nutrition, saturation, always, List.of()) : null;
+        return nutrition > 0 ? new FoodProfile(nutrition, saturation, always, parseEffects(food)) : null;
+    }
+
+    private List<PotionEffect> parseEffects(ConfigurationSection food) {
+        List<PotionEffect> effects = new ArrayList<>();
+        for (Map<?, ?> raw : food.getMapList("effects")) {
+            PotionEffect effect = parseEffect(null, raw);
+            if (effect != null) effects.add(effect);
+        }
+        ConfigurationSection section = food.getConfigurationSection("effects");
+        if (section != null) {
+            for (String key : section.getKeys(false)) {
+                ConfigurationSection effectSection = section.getConfigurationSection(key);
+                if (effectSection == null) continue;
+                PotionEffect effect = parseEffect(key, effectSection);
+                if (effect != null) effects.add(effect);
+            }
+        }
+        return effects;
+    }
+
+    private PotionEffect parseEffect(String fallbackType, ConfigurationSection section) {
+        String typeName = section.getString("type", fallbackType);
+        PotionEffectType type = potionType(typeName);
+        if (type == null) return null;
+        int duration = section.getInt("duration-ticks", section.getInt("duration", 100));
+        int amplifier = section.getInt("amplifier", 0);
+        boolean ambient = section.getBoolean("ambient", true);
+        boolean particles = section.getBoolean("particles", true);
+        boolean icon = section.getBoolean("icon", true);
+        return new PotionEffect(type, Math.max(1, duration), Math.max(0, amplifier),
+                ambient, particles, icon);
+    }
+
+    private PotionEffect parseEffect(String fallbackType, Map<?, ?> raw) {
+        String typeName = string(raw, "type", fallbackType);
+        PotionEffectType type = potionType(typeName);
+        if (type == null) return null;
+        int duration = integer(raw, "duration-ticks", integer(raw, "duration", 100));
+        int amplifier = integer(raw, "amplifier", 0);
+        boolean ambient = bool(raw, "ambient", true);
+        boolean particles = bool(raw, "particles", true);
+        boolean icon = bool(raw, "icon", true);
+        return new PotionEffect(type, Math.max(1, duration), Math.max(0, amplifier),
+                ambient, particles, icon);
+    }
+
+    private PotionEffectType potionType(String name) {
+        if (name == null || name.isBlank()) return null;
+        PotionEffectType type = PotionEffectType.getByName(name.toUpperCase(Locale.ROOT));
+        if (type == null) {
+            plugin.getLogger().warning("Unbekannter Food-Effekt: " + name);
+        }
+        return type;
+    }
+
+    private String string(Map<?, ?> raw, String key, String fallback) {
+        Object value = raw.get(key);
+        return value == null ? fallback : String.valueOf(value);
+    }
+
+    private int integer(Map<?, ?> raw, String key, int fallback) {
+        Object value = raw.get(key);
+        if (value instanceof Number number) return number.intValue();
+        if (value != null) {
+            try {
+                return Integer.parseInt(String.valueOf(value));
+            } catch (NumberFormatException ignored) {
+            }
+        }
+        return fallback;
+    }
+
+    private boolean bool(Map<?, ?> raw, String key, boolean fallback) {
+        Object value = raw.get(key);
+        if (value instanceof Boolean b) return b;
+        return value == null ? fallback : Boolean.parseBoolean(String.valueOf(value));
     }
 
     /** Registriert oder ueberschreibt eine Item-Definition. */

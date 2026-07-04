@@ -43,20 +43,29 @@ public final class SeedManager {
         definitions.clear();
         cropStore.load();
         ConfigurationSection root = plugin.getConfig().getConfigurationSection("seeds.definitions");
-        if (root != null) {
-            for (String id : root.getKeys(false)) {
-                ConfigurationSection sec = root.getConfigurationSection(id);
-                if (sec == null) continue;
-                try {
-                    register(parse(id.toLowerCase(Locale.ROOT), sec));
-                } catch (Exception ex) {
-                    plugin.getLogger().warning("Seed '" + id + "' konnte nicht geladen werden: " + ex.getMessage());
-                }
-            }
-        }
+        loadFromSection(root, false, "config.yml");
         if (!definitions.isEmpty()) {
             plugin.getLogger().info("Custom-Seeds geladen: " + definitions.size());
         }
+    }
+
+    /** Liest Seed-Definitionen aus einer beliebigen YAML-Section. */
+    public int loadFromSection(ConfigurationSection root, boolean skipExisting, String source) {
+        if (root == null) return 0;
+        int loaded = 0;
+        for (String id : root.getKeys(false)) {
+            ConfigurationSection sec = root.getConfigurationSection(id);
+            if (sec == null) continue;
+            if (skipExisting && definition(id) != null) continue;
+            try {
+                register(parse(id.toLowerCase(Locale.ROOT), sec));
+                loaded++;
+            } catch (Exception ex) {
+                plugin.getLogger().warning(source + " Seed '" + id
+                        + "' konnte nicht geladen werden: " + ex.getMessage());
+            }
+        }
+        return loaded;
     }
 
     private SeedDefinition parse(String id, ConfigurationSection sec) {

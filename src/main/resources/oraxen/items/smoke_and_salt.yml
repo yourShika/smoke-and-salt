@@ -649,3 +649,193 @@ sas_eggplant_seeds:
       - sas/eggplant_seeds.png
     custom_model_data: 3065
 
+sas_reis_crop:
+  displayname: "<green>Reis Crop"
+  material: PAPER
+  Pack:
+    generate_model: true
+    parent_model: "item/generated"
+    textures:
+      - sas/crops/reis_crop.png
+    custom_model_data: 3070
+
+sas_tomato_crop:
+  displayname: "<green>Tomato Crop"
+  material: PAPER
+  Pack:
+    generate_model: true
+    parent_model: "item/generated"
+    textures:
+      - sas/crops/tomato_crop.png
+    custom_model_data: 3071
+
+sas_onion_crop:
+  displayname: "<green>Onion Crop"
+  material: PAPER
+  Pack:
+    generate_model: true
+    parent_model: "item/generated"
+    textures:
+      - sas/crops/onion_crop.png
+    custom_model_data: 3072
+
+sas_lettuce_crop:
+  displayname: "<green>Lettuce Crop"
+  material: PAPER
+  Pack:
+    generate_model: true
+    parent_model: "item/generated"
+    textures:
+      - sas/crops/lettuce_crop.png
+    custom_model_data: 3073
+
+sas_corn_crop:
+  displayname: "<green>Corn Crop"
+  material: PAPER
+  Pack:
+    generate_model: true
+    parent_model: "item/generated"
+    textures:
+      - sas/crops/corn_crop.png
+    custom_model_data: 3074
+
+sas_cucumber_crop:
+  displayname: "<green>Cucumber Crop"
+  material: PAPER
+  Pack:
+    generate_model: true
+    parent_model: "item/generated"
+    textures:
+      - sas/crops/cucumber_crop.png
+    custom_model_data: 3075
+
+sas_garlic_crop:
+  displayname: "<green>Garlic Crop"
+  material: PAPER
+  Pack:
+    generate_model: true
+    parent_model: "item/generated"
+    textures:
+      - sas/crops/garlic_crop.png
+    custom_model_data: 3076
+
+sas_chili_crop:
+  displayname: "<green>Chili Crop"
+  material: PAPER
+  Pack:
+    generate_model: true
+    parent_model: "item/generated"
+    textures:
+      - sas/crops/chili_crop.png
+    custom_model_data: 3077
+
+sas_strawberry_crop:
+  displayname: "<green>Strawberry Crop"
+  material: PAPER
+  Pack:
+    generate_model: true
+    parent_model: "item/generated"
+    textures:
+      - sas/crops/strawberry_crop.png
+    custom_model_data: 3078
+
+sas_blueberry_crop:
+  displayname: "<green>Blueberry Crop"
+  material: PAPER
+  Pack:
+    generate_model: true
+    parent_model: "item/generated"
+    textures:
+      - sas/crops/blueberry_crop.png
+    custom_model_data: 3079
+
+sas_soybean_crop:
+  displayname: "<green>Soybean Crop"
+  material: PAPER
+  Pack:
+    generate_model: true
+    parent_model: "item/generated"
+    textures:
+      - sas/crops/soybean_crop.png
+    custom_model_data: 3080
+
+sas_cotton_crop:
+  displayname: "<green>Cotton Crop"
+  material: PAPER
+  Pack:
+    generate_model: true
+    parent_model: "item/generated"
+    textures:
+      - sas/crops/cotton_crop.png
+    custom_model_data: 3081
+
+sas_cabbage_crop:
+  displayname: "<green>Cabbage Crop"
+  material: PAPER
+  Pack:
+    generate_model: true
+    parent_model: "item/generated"
+    textures:
+      - sas/crops/cabbage_crop.png
+    custom_model_data: 3082
+
+sas_bell_pepper_crop:
+  displayname: "<green>Bell Pepper Crop"
+  material: PAPER
+  Pack:
+    generate_model: true
+    parent_model: "item/generated"
+    textures:
+      - sas/crops/bell_pepper_crop.png
+    custom_model_data: 3083
+
+sas_pineapple_crop:
+  displayname: "<green>Pineapple Crop"
+  material: PAPER
+  Pack:
+    generate_model: true
+    parent_model: "item/generated"
+    textures:
+      - sas/crops/pineapple_crop.png
+    custom_model_data: 3084
+
+sas_grapes_crop:
+  displayname: "<green>Grapes Crop"
+  material: PAPER
+  Pack:
+    generate_model: true
+    parent_model: "item/generated"
+    textures:
+      - sas/crops/grapes_crop.png
+    custom_model_data: 3085
+
+sas_coffee_beans_crop:
+  displayname: "<green>Coffee Beans Crop"
+  material: PAPER
+  Pack:
+    generate_model: true
+    parent_model: "item/generated"
+    textures:
+      - sas/crops/coffee_beans_crop.png
+    custom_model_data: 3086
+
+sas_zucchini_crop:
+  displayname: "<green>Zucchini Crop"
+  material: PAPER
+  Pack:
+    generate_model: true
+    parent_model: "item/generated"
+    textures:
+      - sas/crops/zucchini_crop.png
+    custom_model_data: 3087
+
+sas_eggplant_crop:
+  displayname: "<green>Eggplant Crop"
+  material: PAPER
+  Pack:
+    generate_model: true
+    parent_model: "item/generated"
+    textures:
+      - sas/crops/eggplant_crop.png
+    custom_model_data: 3088
+

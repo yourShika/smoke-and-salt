@@ -47,6 +47,7 @@ public final class SmokeAndSalt extends JavaPlugin {
     private ItemKeys keys;
     private ItemRegistry items;
     private SeedManager seeds;
+    private de.yourshika.smokeandsalt.seed.CropManager crops;
     private ModuleManager moduleManager;
     private CookingRegistry cookingRegistry;
     private CookingManager cooking;
@@ -75,6 +76,7 @@ public final class SmokeAndSalt extends JavaPlugin {
         this.effects = new Effects(this);
         this.items = new ItemRegistry(this, keys);
         this.seeds = new SeedManager(this, keys);
+        this.crops = new de.yourshika.smokeandsalt.seed.CropManager(this);
         this.chains = new ChainManager(this, keys);
         this.cookingRegistry = new CookingRegistry(this, items);
         this.cooking = new CookingManager(this, cookingRegistry, effects, keys);
@@ -111,6 +113,7 @@ public final class SmokeAndSalt extends JavaPlugin {
         // Koch-Tick + Ambient-Kochen.
         cooking.start();
         cauldron.start();
+        crops.start();
         new BoilingAmbientTask(this).runTaskTimer(this, 40L, 10L);
 
         getLogger().info("Smoke & Salt v" + getPluginMeta().getVersion()
@@ -120,6 +123,7 @@ public final class SmokeAndSalt extends JavaPlugin {
     @Override
     public void onDisable() {
         if (cooking != null) cooking.stop();
+        if (crops != null) crops.stop();
         if (cauldron != null) cauldron.stop();
         if (crafting != null) crafting.unregisterAll();
         if (stationRecipes != null) stationRecipes.unregisterAll();
@@ -264,6 +268,7 @@ public final class SmokeAndSalt extends JavaPlugin {
     public ItemKeys keys() { return keys; }
     public ItemRegistry items() { return items; }
     public SeedManager seeds() { return seeds; }
+    public de.yourshika.smokeandsalt.seed.CropManager crops() { return crops; }
     public ModuleManager moduleManager() { return moduleManager; }
     public CookingManager cooking() { return cooking; }
     public de.yourshika.smokeandsalt.cooking.CauldronManager cauldron() { return cauldron; }

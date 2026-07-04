@@ -64,8 +64,8 @@ public final class MessageManager {
             }
         }
 
-        // Laufzeit-Fallback auf das gebuendelte Deutsch fuer Fehlendes.
-        InputStream def = plugin.getResource("messages_de.yml");
+        // Laufzeit-Fallback auf das gebuendelte Englisch fuer Fehlendes.
+        InputStream def = plugin.getResource("messages_en.yml");
         if (def != null) {
             messages.setDefaults(YamlConfiguration.loadConfiguration(
                     new InputStreamReader(def, StandardCharsets.UTF_8)));

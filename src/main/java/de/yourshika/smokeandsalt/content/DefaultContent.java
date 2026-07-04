@@ -34,35 +34,35 @@ public final class DefaultContent {
     // --- Custom-Items -------------------------------------------------------
 
     private static void registerItems(SmokeAndSalt plugin) {
-        // Zwischenprodukte / Basis
-        item(plugin, "teig", Material.PAPER, "<#e8d8a8>Teig", "Zutat");
-        // Smoker-Ergebnisse
-        item(plugin, "spiegelei", Material.EGG, "<#fff3c0>Spiegelei", "Gericht");
-        item(plugin, "rotebeete_chips", Material.BEETROOT, "<#c0392b>Rote-Bete-Chips", "Snack");
-        item(plugin, "geroestete_karotte", Material.CARROT, "<#e67e22>Geröstete Karotte", "Gericht");
-        item(plugin, "pommes", Material.POTATO, "<#f1c40f>Pommes", "Snack");
-        // Lagerfeuer-Ergebnisse
+        // Intermediates / base
+        item(plugin, "teig", Material.PAPER, "<#e8d8a8>Dough", "Ingredient");
+        // Smoker results
+        item(plugin, "spiegelei", Material.EGG, "<#fff3c0>Fried Egg", "Dish");
+        item(plugin, "rotebeete_chips", Material.BEETROOT, "<#c0392b>Beetroot Chips", "Snack");
+        item(plugin, "geroestete_karotte", Material.CARROT, "<#e67e22>Roasted Carrot", "Dish");
+        item(plugin, "pommes", Material.POTATO, "<#f1c40f>Fries", "Snack");
+        // Campfire results
         item(plugin, "marshmallow", Material.PAPER, "<#ffeef2>Marshmallow", "Snack");
-        item(plugin, "stockbrot", Material.BREAD, "<#d9a441>Stockbrot", "Gericht");
-        // Kessel-Ergebnisse
-        item(plugin, "nudeln", Material.PAPER, "<#f0e2b0>Nudeln", "Zutat");
-        item(plugin, "kaese", Material.HONEYCOMB, "<#f2c94c>Käse", "Zutat");
-        item(plugin, "sauce", Material.BRICK, "<#c0392b>Sauce", "Zutat");
-        // Crafting-Ergebnisse
-        item(plugin, "burger", Material.BREAD, "<#e2a76f>Burger", "Gericht");
-        item(plugin, "cheeseburger", Material.BREAD, "<#f2c94c>Cheeseburger", "Gericht");
+        item(plugin, "stockbrot", Material.BREAD, "<#d9a441>Stick Bread", "Dish");
+        // Cauldron results
+        item(plugin, "nudeln", Material.PAPER, "<#f0e2b0>Noodles", "Ingredient");
+        item(plugin, "kaese", Material.HONEYCOMB, "<#f2c94c>Cheese", "Ingredient");
+        item(plugin, "sauce", Material.BRICK, "<#c0392b>Sauce", "Ingredient");
+        // Crafting results
+        item(plugin, "burger", Material.BREAD, "<#e2a76f>Burger", "Dish");
+        item(plugin, "cheeseburger", Material.BREAD, "<#f2c94c>Cheeseburger", "Dish");
         item(plugin, "chicken_nuggets", Material.COOKED_CHICKEN, "<#e6b566>Chicken Nuggets", "Snack");
-        item(plugin, "schaschlik", Material.COOKED_BEEF, "<#b5651d>Schaschlik", "Gericht");
-        item(plugin, "ofenkartoffel_sourcream", Material.BAKED_POTATO, "<#e9d8a6>Ofenkartoffel mit Sauerrahm", "Gericht");
-        item(plugin, "spaghetti", Material.PAPER, "<#f0e2b0>Spaghetti", "Gericht");
-        item(plugin, "misosuppe", Material.MUSHROOM_STEW, "<#c98a3a>Misosuppe", "Suppe");
-        item(plugin, "kandierter_apfel", Material.APPLE, "<#e74c3c>Kandierter Apfel", "Snack");
-        // Custom-Seed-Ernte
-        item(plugin, "reis", Material.PAPER, "<#f7f3e3>Reis", "Zutat");
+        item(plugin, "schaschlik", Material.COOKED_BEEF, "<#b5651d>Shashlik", "Dish");
+        item(plugin, "ofenkartoffel_sourcream", Material.BAKED_POTATO, "<#e9d8a6>Baked Potato with Sour Cream", "Dish");
+        item(plugin, "spaghetti", Material.PAPER, "<#f0e2b0>Spaghetti", "Dish");
+        item(plugin, "misosuppe", Material.MUSHROOM_STEW, "<#c98a3a>Miso Soup", "Soup");
+        item(plugin, "kandierter_apfel", Material.APPLE, "<#e74c3c>Candy Apple", "Snack");
+        // Custom seed harvest
+        item(plugin, "reis", Material.PAPER, "<#f7f3e3>Rice", "Ingredient");
     }
 
     private static void item(SmokeAndSalt plugin, String id, Material base, String name, String kind) {
-        if (plugin.items().contains(id)) return; // config hat Vorrang
+        if (plugin.items().contains(id)) return; // config takes priority
         plugin.items().register(new ItemDefinition(
                 id, base, name,
                 List.of("<dark_gray>Smoke & Salt · " + kind),
@@ -74,11 +74,11 @@ public final class DefaultContent {
     private static void registerSeeds(SmokeAndSalt plugin) {
         if (plugin.seeds().definition("reis_samen") == null) {
             plugin.seeds().register(new SeedDefinition(
-                    "reis_samen", Material.WHEAT_SEEDS, "<#e6dfbf>Reis-Samen", "sas_reis_samen",
-                    Material.WHEAT,          // waechst wie Weizen
-                    "reis", null, 1,          // Ernte: 1 Reis
-                    1, 2,                     // + 1..2 Samen zurueck
-                    0.0, 0.35, 0.0));         // Drop nur aus Seegras (35%)
+                    "reis_samen", Material.WHEAT_SEEDS, "<#e6dfbf>Rice Seeds", "sas_reis_samen",
+                    Material.WHEAT,          // grows like wheat
+                    "reis", null, 1,          // harvest: 1 rice
+                    1, 2,                     // + 1..2 seeds back
+                    0.0, 0.35, 0.0));         // drop only from seagrass (35%)
         }
     }
 
@@ -118,14 +118,14 @@ public final class DefaultContent {
     private static void registerCauldronRecipes(SmokeAndSalt plugin) {
         var c = plugin.cauldron();
         c.register(new CauldronRecipe("cauldron_nudeln",
-                List.of(Ingredient.item("teig", "Teig")),
+                List.of(Ingredient.item("teig", "Dough")),
                 ResultSpec.item("nudeln", 1), 200));
         c.register(new CauldronRecipe("cauldron_kaese",
-                List.of(Ingredient.material(Material.MILK_BUCKET, "Milch")),
+                List.of(Ingredient.material(Material.MILK_BUCKET, "Milk")),
                 ResultSpec.item("kaese", 1), 200));
         c.register(new CauldronRecipe("cauldron_sauce",
-                List.of(Ingredient.material(Material.BEETROOT, "Rote Bete"),
-                        Ingredient.material(Material.CARROT, "Karotte")),
+                List.of(Ingredient.material(Material.BEETROOT, "Beetroot"),
+                        Ingredient.material(Material.CARROT, "Carrot")),
                 ResultSpec.item("sauce", 1), 220));
     }
 
@@ -135,60 +135,60 @@ public final class DefaultContent {
         var cm = plugin.crafting();
 
         cm.register(new CraftingRecipe("burger",
-                List.of(Ingredient.material(Material.BREAD, "Brot"),
-                        Ingredient.material(Material.COOKED_BEEF, "Fleisch")),
+                List.of(Ingredient.material(Material.BREAD, "Bread"),
+                        Ingredient.material(Material.COOKED_BEEF, "Meat")),
                 ResultSpec.item("burger", 1)));
 
         cm.register(new CraftingRecipe("cheeseburger",
-                List.of(Ingredient.material(Material.BREAD, "Brot"),
-                        Ingredient.item("kaese", "Käse"),
-                        Ingredient.material(Material.COOKED_BEEF, "Fleisch")),
+                List.of(Ingredient.material(Material.BREAD, "Bread"),
+                        Ingredient.item("kaese", "Cheese"),
+                        Ingredient.material(Material.COOKED_BEEF, "Meat")),
                 ResultSpec.item("cheeseburger", 1)));
 
         cm.register(new CraftingRecipe("chicken_nuggets",
-                List.of(Ingredient.material(Material.COOKED_CHICKEN, "Gebratenes Hähnchen"),
-                        Ingredient.tag(Tag.ITEMS_SWORDS, Material.IRON_SWORD, "Schwert")),
+                List.of(Ingredient.material(Material.COOKED_CHICKEN, "Cooked Chicken"),
+                        Ingredient.tag(Tag.ITEMS_SWORDS, Material.IRON_SWORD, "Sword")),
                 ResultSpec.item("chicken_nuggets", 4)));
 
         cm.register(new CraftingRecipe("teig",
-                List.of(Ingredient.material(Material.WHEAT, "Weizen"),
-                        Ingredient.material(Material.WATER_BUCKET, "Wasser")),
+                List.of(Ingredient.material(Material.WHEAT, "Wheat"),
+                        Ingredient.material(Material.WATER_BUCKET, "Water")),
                 ResultSpec.item("teig", 1)));
 
         cm.register(new CraftingRecipe("schaschlik_karotte",
-                List.of(Ingredient.material(Material.STICK, "Stock"),
-                        Ingredient.material(Material.COOKED_BEEF, "Fleisch"),
-                        Ingredient.material(Material.CARROT, "Karotte")),
+                List.of(Ingredient.material(Material.STICK, "Stick"),
+                        Ingredient.material(Material.COOKED_BEEF, "Meat"),
+                        Ingredient.material(Material.CARROT, "Carrot")),
                 ResultSpec.item("schaschlik", 1)));
 
         cm.register(new CraftingRecipe("schaschlik_kartoffel",
-                List.of(Ingredient.material(Material.STICK, "Stock"),
-                        Ingredient.material(Material.COOKED_BEEF, "Fleisch"),
-                        Ingredient.material(Material.POTATO, "Kartoffel")),
+                List.of(Ingredient.material(Material.STICK, "Stick"),
+                        Ingredient.material(Material.COOKED_BEEF, "Meat"),
+                        Ingredient.material(Material.POTATO, "Potato")),
                 ResultSpec.item("schaschlik", 1)));
 
         cm.register(new CraftingRecipe("ofenkartoffel_sourcream",
-                List.of(Ingredient.material(Material.BAKED_POTATO, "Ofenkartoffel"),
-                        Ingredient.material(Material.MILK_BUCKET, "Milch")),
+                List.of(Ingredient.material(Material.BAKED_POTATO, "Baked Potato"),
+                        Ingredient.material(Material.MILK_BUCKET, "Milk")),
                 ResultSpec.item("ofenkartoffel_sourcream", 1)));
 
         cm.register(new CraftingRecipe("spaghetti",
-                List.of(Ingredient.item("nudeln", "Nudeln"),
+                List.of(Ingredient.item("nudeln", "Noodles"),
                         Ingredient.item("sauce", "Sauce"),
-                        Ingredient.material(Material.BOWL, "Schüssel")),
+                        Ingredient.material(Material.BOWL, "Bowl")),
                 ResultSpec.item("spaghetti", 1)));
 
         cm.register(new CraftingRecipe("misosuppe",
-                List.of(Ingredient.item("nudeln", "Nudeln"),
-                        Ingredient.material(Material.CARROT, "Karotte"),
-                        Ingredient.material(Material.KELP, "Seetang"),
-                        Ingredient.material(Material.COD, "Fisch"),
-                        Ingredient.material(Material.BOWL, "Schüssel")),
+                List.of(Ingredient.item("nudeln", "Noodles"),
+                        Ingredient.material(Material.CARROT, "Carrot"),
+                        Ingredient.material(Material.KELP, "Kelp"),
+                        Ingredient.material(Material.COD, "Fish"),
+                        Ingredient.material(Material.BOWL, "Bowl")),
                 ResultSpec.item("misosuppe", 1)));
 
         cm.register(new CraftingRecipe("kandierter_apfel",
-                List.of(Ingredient.material(Material.APPLE, "Apfel"),
-                        Ingredient.material(Material.SUGAR, "Zucker")),
+                List.of(Ingredient.material(Material.APPLE, "Apple"),
+                        Ingredient.material(Material.SUGAR, "Sugar")),
                 ResultSpec.item("kandierter_apfel", 1)));
     }
 }

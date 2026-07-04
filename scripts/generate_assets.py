@@ -13,7 +13,7 @@ OX = os.path.join(ROOT, "src", "main", "resources", "oraxen")
 TEX_DIR = os.path.join(OX, "pack", "textures", "sas")
 ITEMS_DIR = os.path.join(OX, "items")
 MANIFEST = os.path.join(OX, "asset-manifest.properties")
-ASSET_VERSION = "2"
+ASSET_VERSION = "3"
 
 # ---------------------------------------------------------------------------
 #  Zeichen-Primitive auf einer 16x16 RGBA-Leinwand
@@ -54,6 +54,33 @@ A = 255
 def C(r, g, b, a=A):
     return (r, g, b, a)
 
+def _mul(c, f):
+    return (max(0, min(255, int(c[0] * f))),
+            max(0, min(255, int(c[1] * f))),
+            max(0, min(255, int(c[2] * f))), c[3])
+
+def apply_shading(img):
+    """Beveled depth: light the top-left facing edges, darken the bottom-right.
+    Gives the flat pixel-art a subtle volume without redrawing each sprite."""
+    src = img.copy()
+    def opaque(x, y):
+        return 0 <= x < 16 and 0 <= y < 16 and src.getpixel((x, y))[3] != 0
+    for y in range(16):
+        for x in range(16):
+            p = src.getpixel((x, y))
+            if p[3] == 0:
+                continue
+            top_open = not opaque(x, y - 1)
+            left_open = not opaque(x - 1, y)
+            bot_open = not opaque(x, y + 1)
+            right_open = not opaque(x + 1, y)
+            if top_open or left_open:
+                img.putpixel((x, y), _mul(p, 1.16))     # highlight rim
+            elif bot_open or right_open:
+                img.putpixel((x, y), _mul(p, 0.80))      # shadow rim
+            elif (x + y) % 5 == 0:
+                img.putpixel((x, y), _mul(p, 1.05))      # gentle interior speckle
+
 # ---------------------------------------------------------------------------
 #  Einzelne Item-Texturen
 # ---------------------------------------------------------------------------
@@ -67,8 +94,12 @@ def t_spiegelei(i):
     disc(i, 8, 9, 3, C(246, 190, 60)); disc(i, 8, 9, 2, C(255, 214, 92))
 
 def t_rotebeete_chips(i):
-    for (x, y) in [(5, 6), (9, 5), (6, 10), (10, 9), (8, 8)]:
-        disc(i, x, y, 2, C(158, 40, 66)); put(i, x, y, C(120, 24, 46))
+    # kleiner Stapel runder Chips
+    for (x, y, r) in [(6, 10, 3), (10, 10, 3), (8, 7, 3), (8, 11, 2)]:
+        disc(i, x, y, r, C(170, 45, 72))
+    for (x, y) in [(6, 10), (10, 10), (8, 7)]:
+        put(i, x, y, C(120, 26, 48))
+        put(i, x - 1, y - 1, C(198, 70, 96))
 
 def t_geroestete_karotte(i):
     for dy in range(3, 14):
@@ -93,13 +124,13 @@ def t_stockbrot(i):
     put(i, 9, 5, C(226, 182, 120))
 
 def t_nudeln(i):
-    for y in range(4, 13):
-        for x in range(4, 13):
-            if (x + y) % 2 == 0:
-                put(i, x, y, C(240, 225, 162))
-            else:
-                put(i, x, y, C(214, 194, 126))
-    disc(i, 8, 8, 5, None)
+    # runder Nudel-Haufen mit Straehnen
+    disc(i, 8, 9, 5, C(238, 224, 158))
+    disc(i, 7, 7, 3, C(246, 232, 172))
+    for y in (6, 8, 10, 12):
+        for x in range(3, 14):
+            if (x + y // 2) % 2 == 0 and (x - 8) ** 2 + (y - 9) ** 2 <= 26:
+                put(i, x, y, C(210, 188, 116))
 
 def t_kaese(i):
     # gelber Keil mit Loechern
@@ -176,14 +207,18 @@ def t_kandierter_apfel(i):
         put(i, x, 13, C(120, 22, 22))
 
 def t_reis(i):
-    for (x, y) in [(6, 6), (8, 7), (7, 9), (9, 9), (6, 10), (10, 8), (8, 11)]:
-        put(i, x, y, C(246, 246, 238)); put(i, x, y + 1, C(224, 224, 214))
-    disc(i, 8, 9, 5, None)
+    # kleiner Haufen weisser Reiskoerner
+    disc(i, 8, 9, 5, C(245, 245, 236))
+    disc(i, 7, 7, 3, C(250, 250, 244))
+    for (x, y) in [(6, 8), (9, 8), (7, 10), (10, 10), (8, 9), (6, 11), (9, 11)]:
+        put(i, x, y, C(223, 223, 212))
 
 def t_reis_samen(i):
-    for (x, y) in [(6, 7), (9, 6), (7, 10), (10, 9), (8, 8)]:
-        put(i, x, y, C(214, 198, 120)); put(i, x, y + 1, C(180, 164, 96))
-    put(i, 5, 9, C(120, 150, 70)); put(i, 11, 7, C(120, 150, 70))
+    # Buendel heller Reissamen mit gruenem Halm
+    for (x, y) in [(6, 6), (9, 6), (7, 9), (10, 9), (8, 8), (5, 8), (11, 7)]:
+        put(i, x, y, C(222, 206, 132)); put(i, x, y + 1, C(190, 172, 100))
+    put(i, 4, 11, C(110, 150, 66)); put(i, 12, 10, C(110, 150, 66))
+    put(i, 8, 12, C(110, 150, 66))
 
 DRAW = {
     "teig": t_teig, "spiegelei": t_spiegelei, "rotebeete_chips": t_rotebeete_chips,
@@ -196,28 +231,28 @@ DRAW = {
     "kandierter_apfel": t_kandierter_apfel, "reis": t_reis, "reis_samen": t_reis_samen,
 }
 
-# id -> (Anzeigename, Basis-Material, CustomModelData)
+# id -> (display name, base material, CustomModelData)
 ITEMS = {
-    "teig": ("<#e8d8a8>Teig", "PAPER", 3001),
-    "spiegelei": ("<#fff3c0>Spiegelei", "EGG", 3002),
-    "rotebeete_chips": ("<#c0392b>Rote-Bete-Chips", "BEETROOT", 3003),
-    "geroestete_karotte": ("<#e67e22>Geroestete Karotte", "CARROT", 3004),
-    "pommes": ("<#f1c40f>Pommes", "POTATO", 3005),
+    "teig": ("<#e8d8a8>Dough", "PAPER", 3001),
+    "spiegelei": ("<#fff3c0>Fried Egg", "EGG", 3002),
+    "rotebeete_chips": ("<#c0392b>Beetroot Chips", "BEETROOT", 3003),
+    "geroestete_karotte": ("<#e67e22>Roasted Carrot", "CARROT", 3004),
+    "pommes": ("<#f1c40f>Fries", "POTATO", 3005),
     "marshmallow": ("<#ffeef2>Marshmallow", "PAPER", 3006),
-    "stockbrot": ("<#d9a441>Stockbrot", "BREAD", 3007),
-    "nudeln": ("<#f0e2b0>Nudeln", "PAPER", 3008),
-    "kaese": ("<#f2c94c>Kaese", "HONEYCOMB", 3009),
+    "stockbrot": ("<#d9a441>Stick Bread", "BREAD", 3007),
+    "nudeln": ("<#f0e2b0>Noodles", "PAPER", 3008),
+    "kaese": ("<#f2c94c>Cheese", "HONEYCOMB", 3009),
     "sauce": ("<#c0392b>Sauce", "BRICK", 3010),
     "burger": ("<#e2a76f>Burger", "BREAD", 3011),
     "cheeseburger": ("<#f2c94c>Cheeseburger", "BREAD", 3012),
     "chicken_nuggets": ("<#e6b566>Chicken Nuggets", "COOKED_CHICKEN", 3013),
-    "schaschlik": ("<#b5651d>Schaschlik", "COOKED_BEEF", 3014),
-    "ofenkartoffel_sourcream": ("<#e9d8a6>Ofenkartoffel mit Sauerrahm", "BAKED_POTATO", 3015),
+    "schaschlik": ("<#b5651d>Shashlik", "COOKED_BEEF", 3014),
+    "ofenkartoffel_sourcream": ("<#e9d8a6>Baked Potato with Sour Cream", "BAKED_POTATO", 3015),
     "spaghetti": ("<#f0e2b0>Spaghetti", "PAPER", 3016),
-    "misosuppe": ("<#c98a3a>Misosuppe", "MUSHROOM_STEW", 3017),
-    "kandierter_apfel": ("<#e74c3c>Kandierter Apfel", "APPLE", 3018),
-    "reis": ("<#f7f3e3>Reis", "PAPER", 3019),
-    "reis_samen": ("<#e6dfbf>Reis-Samen", "WHEAT_SEEDS", 3020),
+    "misosuppe": ("<#c98a3a>Miso Soup", "MUSHROOM_STEW", 3017),
+    "kandierter_apfel": ("<#e74c3c>Candy Apple", "APPLE", 3018),
+    "reis": ("<#f7f3e3>Rice", "PAPER", 3019),
+    "reis_samen": ("<#e6dfbf>Rice Seeds", "WHEAT_SEEDS", 3020),
 }
 
 OUTLINE = C(60, 44, 32, 255)
@@ -230,6 +265,7 @@ def generate():
     for item_id, fn in DRAW.items():
         img = canvas()
         fn(img)
+        apply_shading(img)
         outline(img, OUTLINE)
         img.save(os.path.join(TEX_DIR, item_id + ".png"))
 

@@ -27,7 +27,7 @@ public final class GiveMenu {
     public static void open(SmokeAndSalt plugin, Player player) {
         MenuHolder holder = new MenuHolder("give");
         Inventory inv = Bukkit.createInventory(holder, 54,
-                Text.line("<gradient:#f2c87a:#c65b3a><bold>Items ausgeben</bold></gradient>"));
+                Text.line("<gradient:#f2c87a:#c65b3a><bold>Give Items</bold></gradient>"));
         holder.setInventory(inv);
 
         for (int i = 45; i < 54; i++) holder.set(i, Icons.accent());
@@ -37,7 +37,7 @@ public final class GiveMenu {
             if (slot >= 45) break;
             ItemStack icon = plugin.items().create(def.id(), 1);
             if (icon == null) continue;
-            appendLore(icon, def.id(), "Custom-Item");
+            appendLore(icon, def.id(), "Custom item");
             String id = def.id();
             holder.set(slot++, icon, (p, e) -> giveItem(plugin, p, id, e.isShiftClick() ? 16 : 1, false));
         }
@@ -45,18 +45,18 @@ public final class GiveMenu {
             if (slot >= 45) break;
             ItemStack icon = plugin.seeds().create(def.id(), 1);
             if (icon == null) continue;
-            appendLore(icon, def.id(), "Custom-Seed");
+            appendLore(icon, def.id(), "Custom seed");
             String id = def.id();
             holder.set(slot++, icon, (p, e) -> giveItem(plugin, p, id, e.isShiftClick() ? 16 : 1, true));
         }
 
         if (slot == 0) {
-            holder.set(22, Icons.of(Material.STRUCTURE_VOID, "<gray>Keine Items registriert",
-                    "<dark_gray>Definiere Items in der config.yml",
-                    "<dark_gray>unter 'items:' bzw. 'seeds:'."));
+            holder.set(22, Icons.of(Material.STRUCTURE_VOID, "<gray>No items registered",
+                    "<dark_gray>Define items in config.yml",
+                    "<dark_gray>under 'items:' or 'seeds:'."));
         }
 
-        holder.set(49, Icons.of(Material.BARRIER, "<red>Schliessen"), (p, e) -> p.closeInventory());
+        holder.set(49, Icons.of(Material.BARRIER, "<red>Close"), (p, e) -> p.closeInventory());
         player.openInventory(inv);
     }
 
@@ -77,7 +77,7 @@ public final class GiveMenu {
                 ? new ArrayList<>(meta.lore()) : new ArrayList<>();
         lore.add(Text.line(" "));
         lore.add(Text.line("<dark_gray>" + type + " · " + id));
-        lore.add(Text.line("<yellow>Klick: 1 · Shift-Klick: 16"));
+        lore.add(Text.line("<yellow>Click: 1 · Shift-click: 16"));
         meta.lore(lore);
         icon.setItemMeta(meta);
     }

@@ -122,6 +122,26 @@ public final class CauldronManager {
         return true;
     }
 
+    /**
+     * Bricht einen laufenden Sammel-/Koch-Vorgang an diesem Kessel ab und gibt
+     * die enthaltenen Zutaten an den Spieler zurueck. Gibt {@code true}, wenn es
+     * etwas abzubrechen gab.
+     */
+    public boolean cancel(Block cauldron, org.bukkit.entity.Player player) {
+        Pot pot = pots.remove(key(cauldron));
+        if (pot == null) return false;
+        for (Item entity : pot.entities) {
+            if (!entity.isValid()) continue;
+            ItemStack stack = entity.getItemStack();
+            entity.remove();
+            Map<Integer, ItemStack> leftover = player.getInventory().addItem(stack);
+            leftover.values().forEach(s -> player.getWorld().dropItemNaturally(player.getLocation(), s));
+        }
+        pot.entities.clear();
+        plugin.effects().sizzle(cauldron.getLocation(), false);
+        return true;
+    }
+
     private void tick() {
         if (pots.isEmpty()) return;
         Iterator<Map.Entry<String, Pot>> it = pots.entrySet().iterator();
@@ -200,10 +220,11 @@ public final class CauldronManager {
         entity.getPersistentDataContainer().remove(plugin.keys().cookingFloat);
     }
 
-    /** Ordnet die schwebenden Zutaten kreisfoermig an der Wasseroberflaeche an. */
+    /** Ordnet die schwebenden Zutaten kreisfoermig knapp unter der Wasseroberflaeche an. */
     private void arrange(Pot pot) {
         int count = pot.entities.size();
-        Location center = pot.block.getLocation().add(0.5, 0.85, 0.5);
+        // Etwas tiefer, damit die Zutaten sichtbar IM Wasser liegen.
+        Location center = pot.block.getLocation().add(0.5, 0.55, 0.5);
         if (count == 1) {
             teleport(pot.entities.get(0), center);
             return;

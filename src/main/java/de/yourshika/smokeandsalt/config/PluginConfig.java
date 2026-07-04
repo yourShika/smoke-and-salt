@@ -36,7 +36,7 @@ public final class PluginConfig {
 
     public void load() {
         FileConfiguration c = plugin.getConfig();
-        language = c.getString("language", "de");
+        language = c.getString("language", "en");
         debug = c.getBoolean("debug", false);
         cookingEnabled = c.getBoolean("cooking.enabled", true);
         particlesEnabled = c.getBoolean("cooking.particles", true);

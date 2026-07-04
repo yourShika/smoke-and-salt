@@ -21,15 +21,15 @@ public final class ModulesMenu {
     public static void open(SmokeAndSalt plugin, Player player) {
         MenuHolder holder = new MenuHolder("modules");
         Inventory inv = Bukkit.createInventory(holder, 27,
-                Text.line("<gradient:#a68bff:#5be8d4><bold>Externe Module</bold></gradient>"));
+                Text.line("<gradient:#a68bff:#5be8d4><bold>External Modules</bold></gradient>"));
         holder.setInventory(inv);
 
         for (int i = 0; i < 27; i++) holder.set(i, Icons.accent());
 
-        holder.set(4, Icons.of(Material.COMPARATOR, "<gold><bold>Externe Hooks</bold>",
-                "<gray>Hooks aktivieren sich automatisch,",
-                "<gray>sobald das Plugin installiert ist.",
-                "<gray>Einzeln per Klick ab-/anschalten."));
+        holder.set(4, Icons.of(Material.COMPARATOR, "<gold><bold>External Hooks</bold>",
+                "<gray>Hooks enable automatically once",
+                "<gray>the required plugin is installed.",
+                "<gray>Toggle each one with a click."));
 
         int slot = 10;
         for (Module module : plugin.moduleManager().modules()) {
@@ -45,7 +45,7 @@ public final class ModulesMenu {
             slot++;
         }
 
-        holder.set(22, Icons.of(Material.BARRIER, "<red>Schliessen"), (p, e) -> p.closeInventory());
+        holder.set(22, Icons.of(Material.BARRIER, "<red>Close"), (p, e) -> p.closeInventory());
 
         player.openInventory(inv);
     }
@@ -65,16 +65,16 @@ public final class ModulesMenu {
         return Icons.of(material, "<white><bold>" + module.displayName() + "</bold>",
                 "<gray>" + module.description(),
                 " ",
-                "<gray>Benoetigt: <white>" + module.requiredPlugin(),
-                "<gray>Installiert: " + yesNo(module.isPluginPresent()),
-                "<gray>In Config aktiviert: " + yesNo(module.isEnabledInConfig()),
+                "<gray>Requires: <white>" + module.requiredPlugin(),
+                "<gray>Installed: " + yesNo(module.isPluginPresent()),
+                "<gray>Enabled in config: " + yesNo(module.isEnabledInConfig()),
                 " ",
-                "<gray>Status: " + (module.isActive() ? "<green><bold>AKTIV" : "<red><bold>INAKTIV"),
+                "<gray>Status: " + (module.isActive() ? "<green><bold>ACTIVE" : "<red><bold>INACTIVE"),
                 " ",
-                "<yellow>Klicken zum Umschalten");
+                "<yellow>Click to toggle");
     }
 
     private static String yesNo(boolean value) {
-        return value ? "<green>ja" : "<red>nein";
+        return value ? "<green>yes" : "<red>no";
     }
 }

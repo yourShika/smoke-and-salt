@@ -17,12 +17,10 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 /**
- * GUI fuer {@code /sas recipes}: zeigt alle registrierten Rezepte (Smoker,
- * Lagerfeuer, Kessel, Werkbank) als Ergebnis-Icons mit Zutaten in der Lore.
- * Bei mehr als einer Seite laesst sich blaettern.
+ * GUI for {@code /sas recipes}: a grid of result icons. Clicking an icon opens a
+ * detail view ({@link RecipeDetailMenu}) that lays out the whole process nicely.
  */
 public final class RecipesMenu {
 
@@ -36,105 +34,94 @@ public final class RecipesMenu {
     }
 
     public static void open(SmokeAndSalt plugin, Player player, int page) {
-        List<ItemStack> icons = collect(plugin);
-        int pages = Math.max(1, (int) Math.ceil(icons.size() / (double) PAGE_SIZE));
+        List<RecipeView> views = collect(plugin);
+        int pages = Math.max(1, (int) Math.ceil(views.size() / (double) PAGE_SIZE));
         page = Math.max(0, Math.min(page, pages - 1));
 
         MenuHolder holder = new MenuHolder("recipes");
         Inventory inv = Bukkit.createInventory(holder, 54,
-                Text.line("<gradient:#e2a76f:#c65b3a><bold>Rezepte</bold></gradient> <dark_gray>(" + (page + 1) + "/" + pages + ")"));
+                Text.line("<gradient:#e2a76f:#c65b3a><bold>Recipes</bold></gradient> <dark_gray>(" + (page + 1) + "/" + pages + ")"));
         holder.setInventory(inv);
         for (int i = 45; i < 54; i++) holder.set(i, Icons.accent());
 
         int start = page * PAGE_SIZE;
-        for (int i = 0; i < PAGE_SIZE && start + i < icons.size(); i++) {
-            holder.set(i, icons.get(start + i));
+        final int current = page;
+        for (int i = 0; i < PAGE_SIZE && start + i < views.size(); i++) {
+            RecipeView view = views.get(start + i);
+            holder.set(i, resultIcon(view), (p, e) -> RecipeDetailMenu.open(plugin, p, view, current));
         }
 
-        final int current = page;
         if (page > 0) {
-            holder.set(45, Icons.of(Material.ARROW, "<yellow>Zurueck"),
+            holder.set(45, Icons.of(Material.ARROW, "<yellow>Back"),
                     (p, e) -> open(plugin, p, current - 1));
         }
-        holder.set(49, Icons.of(Material.BOOK, "<gold><bold>Rezepte</bold>",
-                "<gray>Gesamt: <white>" + icons.size(),
-                "<gray>Smoker/Lagerfeuer: <white>" + plugin.cooking().registry().size(),
-                "<gray>Kessel: <white>" + plugin.cauldron().size(),
-                "<gray>Werkbank: <white>" + plugin.crafting().size()));
+        holder.set(49, Icons.of(Material.BOOK, "<gold><bold>Recipes</bold>",
+                "<gray>Total: <white>" + views.size(),
+                "<gray>Smoker/Campfire: <white>" + plugin.cooking().registry().size(),
+                "<gray>Cauldron: <white>" + plugin.cauldron().size(),
+                "<gray>Crafting: <white>" + plugin.crafting().size(),
+                " ",
+                "<dark_gray>Click a recipe for details."));
         if (page < pages - 1) {
-            holder.set(53, Icons.of(Material.ARROW, "<yellow>Weiter"),
+            holder.set(53, Icons.of(Material.ARROW, "<yellow>Next"),
                     (p, e) -> open(plugin, p, current + 1));
         }
 
         player.openInventory(inv);
     }
 
-    private static List<ItemStack> collect(SmokeAndSalt plugin) {
-        List<ItemStack> out = new ArrayList<>();
-        for (CookingRecipe r : plugin.cooking().registry().all()) {
-            if (r.station() == CookingStation.CAULDRON_LAVA) continue;
-            ItemStack icon = plugin.cooking().registry().buildResult(r);
-            out.add(decorate(icon, r.station().displayName(), List.of(inputName(plugin, r)), resultName(plugin, icon, r.resultAmount())));
-        }
-        for (CauldronRecipe r : plugin.cauldron().recipes()) {
-            ItemStack icon = r.result().build(plugin);
-            out.add(decorate(icon, "Wasserkessel", ingredientNames(r.ingredients()),
-                    resultName(plugin, icon, r.result().amount())));
-        }
-        for (CraftingRecipe r : plugin.crafting().recipes()) {
-            ItemStack icon = r.result().build(plugin);
-            out.add(decorate(icon, "Werkbank", ingredientNames(r.ingredients()),
-                    resultName(plugin, icon, r.result().amount())));
-        }
-        return out;
-    }
-
-    private static ItemStack decorate(ItemStack icon, String station, List<String> inputs, String result) {
-        if (icon == null) icon = new ItemStack(Material.PAPER);
+    /** Result icon with a short hint in the lore. */
+    private static ItemStack resultIcon(RecipeView view) {
+        ItemStack icon = view.result() != null ? view.result().clone() : new ItemStack(Material.PAPER);
         ItemMeta meta = icon.getItemMeta();
-        if (meta == null) return icon;
-        List<Component> lore = new ArrayList<>();
-        lore.add(Text.line("<dark_gray>" + station));
-        lore.add(Text.line(" "));
-        lore.add(Text.line("<gray>Zutaten:"));
-        for (String in : inputs) lore.add(Text.line("<gray> • <white>" + in));
-        lore.add(Text.line("<gray>Ergebnis: <white>" + result));
-        meta.lore(lore);
-        icon.setItemMeta(meta);
+        if (meta != null) {
+            List<Component> lore = meta.hasLore() ? new ArrayList<>(meta.lore()) : new ArrayList<>();
+            lore.add(Text.line(" "));
+            lore.add(Text.line("<dark_gray>" + view.station()));
+            lore.add(Text.line("<yellow>Click to view the recipe"));
+            meta.lore(lore);
+            icon.setItemMeta(meta);
+        }
         return icon;
     }
 
-    private static List<String> ingredientNames(List<Ingredient> ingredients) {
-        List<String> out = new ArrayList<>();
-        for (Ingredient ingredient : ingredients) out.add(ingredient.display());
+    /** Builds a unified list of recipe views from all sources. */
+    static List<RecipeView> collect(SmokeAndSalt plugin) {
+        List<RecipeView> out = new ArrayList<>();
+        for (CookingRecipe r : plugin.cooking().registry().all()) {
+            Material icon = switch (r.station()) {
+                case SMOKER -> Material.SMOKER;
+                case CAMPFIRE -> Material.CAMPFIRE;
+                case CAULDRON_WATER, CAULDRON_LAVA -> Material.CAULDRON;
+                case CUTTING -> Material.IRON_AXE;
+            };
+            if (r.station() == CookingStation.CAULDRON_LAVA) continue;
+            out.add(new RecipeView(r.station().displayName(), icon,
+                    List.of(stationInput(plugin, r)),
+                    plugin.cooking().registry().buildResult(r), r.durationTicks()));
+        }
+        for (CauldronRecipe r : plugin.cauldron().recipes()) {
+            out.add(new RecipeView("Water Cauldron", Material.CAULDRON,
+                    icons(plugin, r.ingredients()), r.result().build(plugin), r.duration()));
+        }
+        for (CraftingRecipe r : plugin.crafting().recipes()) {
+            out.add(new RecipeView("Crafting Table", Material.CRAFTING_TABLE,
+                    icons(plugin, r.ingredients()), r.result().build(plugin), 0));
+        }
         return out;
     }
 
-    private static String inputName(SmokeAndSalt plugin, CookingRecipe r) {
+    private static ItemStack stationInput(SmokeAndSalt plugin, CookingRecipe r) {
         if (r.inputIsCustom()) {
-            var def = plugin.items().definition(r.inputItemId());
-            return def != null ? stripName(def.displayName()) : r.inputItemId();
+            ItemStack item = plugin.items().create(r.inputItemId(), 1);
+            return item != null ? item : new ItemStack(Material.PAPER);
         }
-        return pretty(r.inputMaterial());
+        return new ItemStack(r.inputMaterial());
     }
 
-    private static String resultName(SmokeAndSalt plugin, ItemStack icon, int amount) {
-        String base;
-        if (icon != null && icon.hasItemMeta() && icon.getItemMeta().hasDisplayName()) {
-            base = net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer.plainText()
-                    .serialize(icon.getItemMeta().displayName());
-        } else {
-            base = icon != null ? pretty(icon.getType()) : "?";
-        }
-        return base + (amount > 1 ? " x" + amount : "");
-    }
-
-    private static String stripName(String mini) {
-        return mini.replaceAll("<[^>]+>", "");
-    }
-
-    private static String pretty(Material material) {
-        String s = material.name().toLowerCase(Locale.ROOT).replace('_', ' ');
-        return Character.toUpperCase(s.charAt(0)) + s.substring(1);
+    private static List<ItemStack> icons(SmokeAndSalt plugin, List<Ingredient> ingredients) {
+        List<ItemStack> out = new ArrayList<>();
+        for (Ingredient ingredient : ingredients) out.add(ingredient.icon(plugin));
+        return out;
     }
 }

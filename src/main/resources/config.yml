@@ -60,6 +60,10 @@ leaf-drops:
 # --------------------------------------------------------------------------
 seeds:
   enabled: true
+  # Schwebendes Custom-Crop-Modell ueber gepflanzten Seeds anzeigen (nur mit
+  # Oraxen). Standardmaessig AUS, da man sonst Weizen UND das Modell sieht
+  # (doppelte Textur). Bei true erscheint zusaetzlich die Custom-Crop-Optik.
+  crop-display: false
   # Definitionen der Custom-Seeds. Standardmaessig leer.
   # Schema pro Eintrag:
   #   <seed_id>:

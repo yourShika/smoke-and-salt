@@ -23,6 +23,8 @@ public final class CookingRecipe {
     private final String resultItemId;      // Custom-Item-ID oder null
     private final Material resultMaterial;  // Vanilla-Material oder null
     private final int resultAmount;
+    private final int resultAmountMin;
+    private final int resultAmountMax;
     private final int durationTicks;
 
     private CookingRecipe(Builder b) {
@@ -33,6 +35,11 @@ public final class CookingRecipe {
         this.resultItemId = b.resultItemId;
         this.resultMaterial = b.resultMaterial;
         this.resultAmount = Math.max(1, b.resultAmount);
+        // Zufaellige Ausbeute: fehlt min/max, wird die feste Menge genutzt.
+        int min = b.resultAmountMin > 0 ? b.resultAmountMin : this.resultAmount;
+        int max = b.resultAmountMax > 0 ? b.resultAmountMax : this.resultAmount;
+        this.resultAmountMin = Math.max(1, Math.min(min, max));
+        this.resultAmountMax = Math.max(this.resultAmountMin, max);
         this.durationTicks = Math.max(1, b.durationTicks);
     }
 
@@ -43,6 +50,13 @@ public final class CookingRecipe {
     public String resultItemId() { return resultItemId; }
     public Material resultMaterial() { return resultMaterial; }
     public int resultAmount() { return resultAmount; }
+    public int resultAmountMin() { return resultAmountMin; }
+    public int resultAmountMax() { return resultAmountMax; }
+    /** Zieht eine zufaellige Ausbeute im Bereich [min, max]. */
+    public int rollResultAmount() {
+        if (resultAmountMax <= resultAmountMin) return resultAmountMin;
+        return resultAmountMin + (int) (Math.random() * (resultAmountMax - resultAmountMin + 1));
+    }
     public int durationTicks() { return durationTicks; }
 
     public boolean inputIsCustom() { return inputItemId != null; }
@@ -61,6 +75,8 @@ public final class CookingRecipe {
         private String resultItemId;
         private Material resultMaterial;
         private int resultAmount = 1;
+        private int resultAmountMin = 0;
+        private int resultAmountMax = 0;
         private int durationTicks = 100;
 
         private Builder(String id, CookingStation station) {
@@ -90,6 +106,12 @@ public final class CookingRecipe {
 
         public Builder resultAmount(int amount) {
             this.resultAmount = amount;
+            return this;
+        }
+
+        public Builder resultAmountRange(int min, int max) {
+            this.resultAmountMin = min;
+            this.resultAmountMax = max;
             return this;
         }
 

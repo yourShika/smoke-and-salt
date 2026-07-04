@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * GUI for {@code /sas recipes}. The first screen shows categories; clicking a
@@ -28,14 +29,14 @@ import java.util.Map;
 public final class RecipesMenu {
 
     private static final int PAGE_SIZE = 45;
-    private static final int[] CATEGORY_SLOTS = {10, 11, 12, 13, 14, 15, 16};
+    private static final int[] CATEGORY_SLOTS = {10, 11, 12, 13, 14, 15, 16, 19, 20, 21, 22, 23, 24, 25};
 
     private RecipesMenu() {
     }
 
     public static void open(SmokeAndSalt plugin, Player player) {
         List<RecipeView> views = collect(plugin);
-        Map<RecipeCategory, Integer> counts = counts(views);
+        Map<RecipeCategory, Integer> counts = counts(plugin, views);
 
         MenuHolder holder = new MenuHolder("recipes_categories");
         Inventory inv = Bukkit.createInventory(holder, 54,
@@ -62,8 +63,9 @@ public final class RecipesMenu {
     }
 
     public static void open(SmokeAndSalt plugin, Player player, RecipeCategory category, int page) {
+        Set<String> intermediates = intermediateIds(plugin);
         List<RecipeView> views = collect(plugin).stream()
-                .filter(view -> view.category() == category)
+                .filter(view -> matchesCategory(plugin, view, category, intermediates))
                 .toList();
         int pages = Math.max(1, (int) Math.ceil(views.size() / (double) PAGE_SIZE));
         page = Math.max(0, Math.min(page, pages - 1));
@@ -167,12 +169,60 @@ public final class RecipesMenu {
         return out;
     }
 
-    private static Map<RecipeCategory, Integer> counts(List<RecipeView> views) {
+    private static Map<RecipeCategory, Integer> counts(SmokeAndSalt plugin, List<RecipeView> views) {
+        Set<String> intermediates = intermediateIds(plugin);
         Map<RecipeCategory, Integer> out = new EnumMap<>(RecipeCategory.class);
         for (RecipeView view : views) {
-            out.merge(view.category(), 1, Integer::sum);
+            for (RecipeCategory category : RecipeCategory.values()) {
+                if (matchesCategory(plugin, view, category, intermediates)) {
+                    out.merge(category, 1, Integer::sum);
+                }
+            }
         }
         return out;
+    }
+
+    /** Passt eine Rezept-Ansicht in die Kategorie? Beruecksichtigt Gericht/Zwischenprodukt. */
+    private static boolean matchesCategory(SmokeAndSalt plugin, RecipeView view,
+                                           RecipeCategory category, Set<String> intermediates) {
+        return switch (category) {
+            case DISHES -> view.category() != RecipeCategory.SEEDS
+                    && !isIntermediate(plugin, view, intermediates)
+                    && hasFood(plugin, view);
+            case INGREDIENTS -> isIntermediate(plugin, view, intermediates);
+            default -> view.category() == category;
+        };
+    }
+
+    /** IDs aller Custom-Items, die irgendwo als Zutat verwendet werden. */
+    private static Set<String> intermediateIds(SmokeAndSalt plugin) {
+        Set<String> ids = new java.util.HashSet<>();
+        for (CookingRecipe r : plugin.cooking().registry().all()) {
+            if (r.inputIsCustom()) ids.add(r.inputItemId().toLowerCase(java.util.Locale.ROOT));
+        }
+        for (CauldronRecipe r : plugin.cauldron().recipes()) collectCustom(ids, r.ingredients());
+        for (CraftingRecipe r : plugin.crafting().recipes()) collectCustom(ids, r.ingredients());
+        return ids;
+    }
+
+    private static void collectCustom(Set<String> ids, List<Ingredient> ingredients) {
+        for (Ingredient ingredient : ingredients) {
+            if (ingredient instanceof Ingredient.CustomItemIngredient custom) {
+                ids.add(custom.id().toLowerCase(java.util.Locale.ROOT));
+            }
+        }
+    }
+
+    private static boolean isIntermediate(SmokeAndSalt plugin, RecipeView view, Set<String> intermediates) {
+        String id = plugin.items().idOf(view.result());
+        return id != null && intermediates.contains(id.toLowerCase(java.util.Locale.ROOT));
+    }
+
+    private static boolean hasFood(SmokeAndSalt plugin, RecipeView view) {
+        String id = plugin.items().idOf(view.result());
+        if (id == null) return false;
+        var def = plugin.items().definition(id);
+        return def != null && def.food() != null && def.food().nutrition() > 0;
     }
 
     private static RecipeCategory stationCategory(CookingStation station) {

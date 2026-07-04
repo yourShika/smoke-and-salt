@@ -1,6 +1,8 @@
 # Smoke & Salt item definitions.
 # These defaults are copied to plugins/SmokeAndSalt/content/items.yml on first run.
 #
+# food.nutrition = half-hunger icons restored, food.saturation = saturation value.
+# Optional food.effects apply when the item is eaten.
 # Add new textured foods here or inside a station file:
 # items:
 #   my_food:
@@ -23,6 +25,13 @@ items:
     display-name: "<#e8d8a8>Dough"
     lore: ["<dark_gray>Smoke & Salt - Ingredient"]
     provider-id: sas_teig
+    food:
+      nutrition: 1
+      saturation: 0.4
+      effects:
+        - type: HUNGER
+          duration-ticks: 100
+          amplifier: 0
 
   sourcream:
     material: PAPER
@@ -39,8 +48,8 @@ items:
     lore: ["<dark_gray>Smoke & Salt - Dish"]
     provider-id: sas_spiegelei
     food:
-      nutrition: 3
-      saturation: 3.0
+      nutrition: 4
+      saturation: 4.8
 
   rotebeete_chips:
     material: BEETROOT
@@ -49,7 +58,7 @@ items:
     provider-id: sas_rotebeete_chips
     food:
       nutrition: 3
-      saturation: 3.6
+      saturation: 2.4
 
   geroestete_karotte:
     material: CARROT
@@ -59,6 +68,10 @@ items:
     food:
       nutrition: 4
       saturation: 4.8
+      effects:
+        - type: NIGHT_VISION
+          duration-ticks: 100
+          amplifier: 0
 
   pommes:
     material: POTATO
@@ -75,11 +88,11 @@ items:
     lore: ["<dark_gray>Smoke & Salt - Snack"]
     provider-id: sas_marshmallow
     food:
-      nutrition: 2
-      saturation: 0.8
+      nutrition: 3
+      saturation: 1.8
       effects:
         - type: SPEED
-          duration-ticks: 120
+          duration-ticks: 80
           amplifier: 0
 
   kaiserbroetchen:
@@ -96,6 +109,9 @@ items:
     display-name: "<#f0e2b0>Noodles"
     lore: ["<dark_gray>Smoke & Salt - Ingredient"]
     provider-id: sas_nudeln
+    food:
+      nutrition: 4
+      saturation: 4.8
 
   kaese:
     material: HONEYCOMB
@@ -103,14 +119,17 @@ items:
     lore: ["<dark_gray>Smoke & Salt - Ingredient"]
     provider-id: sas_kaese
     food:
-      nutrition: 2
-      saturation: 2.4
+      nutrition: 3
+      saturation: 3.6
 
   sauce:
     material: BRICK
     display-name: "<#c0392b>Sauce"
     lore: ["<dark_gray>Smoke & Salt - Ingredient"]
     provider-id: sas_sauce
+    food:
+      nutrition: 2
+      saturation: 1.6
 
   burger:
     material: BREAD
@@ -118,11 +137,11 @@ items:
     lore: ["<dark_gray>Smoke & Salt - Dish"]
     provider-id: sas_burger
     food:
-      nutrition: 8
-      saturation: 12.8
+      nutrition: 9
+      saturation: 11.5
       effects:
-        - type: ABSORPTION
-          duration-ticks: 160
+        - type: STRENGTH
+          duration-ticks: 100
           amplifier: 0
 
   cheeseburger:
@@ -132,10 +151,10 @@ items:
     provider-id: sas_cheeseburger
     food:
       nutrition: 10
-      saturation: 14.4
+      saturation: 13.0
       effects:
-        - type: ABSORPTION
-          duration-ticks: 200
+        - type: STRENGTH
+          duration-ticks: 120
           amplifier: 0
 
   chicken_nuggets:
@@ -144,8 +163,8 @@ items:
     lore: ["<dark_gray>Smoke & Salt - Snack"]
     provider-id: sas_chicken_nuggets
     food:
-      nutrition: 2
-      saturation: 1.2
+      nutrition: 6
+      saturation: 7.2
 
   schaschlik:
     material: COOKED_BEEF
@@ -153,8 +172,12 @@ items:
     lore: ["<dark_gray>Smoke & Salt - Dish"]
     provider-id: sas_schaschlik
     food:
-      nutrition: 7
+      nutrition: 8
       saturation: 10.0
+      effects:
+        - type: STRENGTH
+          duration-ticks: 100
+          amplifier: 0
 
   ofenkartoffel_sourcream:
     material: BAKED_POTATO
@@ -162,8 +185,12 @@ items:
     lore: ["<dark_gray>Smoke & Salt - Dish"]
     provider-id: sas_ofenkartoffel_sourcream
     food:
-      nutrition: 6
-      saturation: 7.2
+      nutrition: 8
+      saturation: 10.0
+      effects:
+        - type: RESISTANCE
+          duration-ticks: 80
+          amplifier: 0
 
   spaghetti:
     material: PAPER
@@ -171,8 +198,8 @@ items:
     lore: ["<dark_gray>Smoke & Salt - Dish"]
     provider-id: sas_spaghetti
     food:
-      nutrition: 6
-      saturation: 7.2
+      nutrition: 8
+      saturation: 9.6
 
   misosuppe:
     material: MUSHROOM_STEW
@@ -180,8 +207,12 @@ items:
     lore: ["<dark_gray>Smoke & Salt - Soup"]
     provider-id: sas_misosuppe
     food:
-      nutrition: 6
-      saturation: 7.2
+      nutrition: 7
+      saturation: 8.4
+      effects:
+        - type: REGENERATION
+          duration-ticks: 80
+          amplifier: 0
 
   kandierter_apfel:
     material: APPLE
@@ -190,7 +221,11 @@ items:
     provider-id: sas_kandierter_apfel
     food:
       nutrition: 5
-      saturation: 6.0
+      saturation: 4.0
+      effects:
+        - type: SPEED
+          duration-ticks: 120
+          amplifier: 0
 
   reis:
     material: PAPER

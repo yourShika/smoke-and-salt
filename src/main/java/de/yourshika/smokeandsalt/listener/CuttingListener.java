@@ -101,15 +101,16 @@ public final class CuttingListener implements Listener {
         Optional<CookingRecipe> current = plugin.cooking().registry().find(CookingStation.CUTTING, ingredient);
         if (current.isEmpty() || !current.get().id().equals(recipe.id())) return;
 
-        // Eine Zutat verbrauchen und Ergebnis ausgeben.
+        // Eine Zutat verbrauchen und Ergebnis in zufaelliger Menge ausgeben.
         ingredient.setAmount(ingredient.getAmount() - 1);
         ItemStack result = plugin.cooking().registry().buildResult(recipe);
         if (result != null) {
+            result.setAmount(recipe.rollResultAmount());
             var leftover = player.getInventory().addItem(result);
             leftover.values().forEach(stack ->
                     player.getWorld().dropItemNaturally(player.getLocation(), stack));
         }
-        // Leichte Werkzeug-Abnutzung fuer die Axt.
+        // Zufaellige Werkzeug-Abnutzung (Standard 1-5, konfigurierbar).
         damageAxe(player, axe);
         plugin.effects().cut(player.getEyeLocation().add(player.getLocation().getDirection().multiply(0.6)));
     }
@@ -145,7 +146,10 @@ public final class CuttingListener implements Listener {
         if (!(axe.getItemMeta() instanceof org.bukkit.inventory.meta.Damageable dmg)) return;
         int max = axe.getType().getMaxDurability();
         if (max <= 0) return;
-        dmg.setDamage(Math.min(max - 1, dmg.getDamage() + 1));
+        int lo = Math.max(1, plugin.getConfig().getInt("cooking.cutting.durability-min", 1));
+        int hi = Math.max(lo, plugin.getConfig().getInt("cooking.cutting.durability-max", 5));
+        int amount = lo + (int) (Math.random() * (hi - lo + 1));
+        dmg.setDamage(Math.min(max - 1, dmg.getDamage() + amount));
         axe.setItemMeta(dmg);
     }
 

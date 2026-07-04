@@ -1,6 +1,6 @@
 # Auto-generiert von scripts/generate_assets.py - Smoke & Salt Custom-Items.
 sas_teig:
-  displayname: "<#e8d8a8>Teig"
+  displayname: "<#e8d8a8>Dough"
   material: PAPER
   Pack:
     generate_model: true
@@ -10,7 +10,7 @@ sas_teig:
     custom_model_data: 3001
 
 sas_spiegelei:
-  displayname: "<#fff3c0>Spiegelei"
+  displayname: "<#fff3c0>Fried Egg"
   material: EGG
   Pack:
     generate_model: true
@@ -20,7 +20,7 @@ sas_spiegelei:
     custom_model_data: 3002
 
 sas_rotebeete_chips:
-  displayname: "<#c0392b>Rote-Bete-Chips"
+  displayname: "<#c0392b>Beetroot Chips"
   material: BEETROOT
   Pack:
     generate_model: true
@@ -30,7 +30,7 @@ sas_rotebeete_chips:
     custom_model_data: 3003
 
 sas_geroestete_karotte:
-  displayname: "<#e67e22>Geroestete Karotte"
+  displayname: "<#e67e22>Roasted Carrot"
   material: CARROT
   Pack:
     generate_model: true
@@ -40,7 +40,7 @@ sas_geroestete_karotte:
     custom_model_data: 3004
 
 sas_pommes:
-  displayname: "<#f1c40f>Pommes"
+  displayname: "<#f1c40f>Fries"
   material: POTATO
   Pack:
     generate_model: true
@@ -60,7 +60,7 @@ sas_marshmallow:
     custom_model_data: 3006
 
 sas_stockbrot:
-  displayname: "<#d9a441>Stockbrot"
+  displayname: "<#d9a441>Stick Bread"
   material: BREAD
   Pack:
     generate_model: true
@@ -70,7 +70,7 @@ sas_stockbrot:
     custom_model_data: 3007
 
 sas_nudeln:
-  displayname: "<#f0e2b0>Nudeln"
+  displayname: "<#f0e2b0>Noodles"
   material: PAPER
   Pack:
     generate_model: true
@@ -80,7 +80,7 @@ sas_nudeln:
     custom_model_data: 3008
 
 sas_kaese:
-  displayname: "<#f2c94c>Kaese"
+  displayname: "<#f2c94c>Cheese"
   material: HONEYCOMB
   Pack:
     generate_model: true
@@ -130,7 +130,7 @@ sas_chicken_nuggets:
     custom_model_data: 3013
 
 sas_schaschlik:
-  displayname: "<#b5651d>Schaschlik"
+  displayname: "<#b5651d>Shashlik"
   material: COOKED_BEEF
   Pack:
     generate_model: true
@@ -140,7 +140,7 @@ sas_schaschlik:
     custom_model_data: 3014
 
 sas_ofenkartoffel_sourcream:
-  displayname: "<#e9d8a6>Ofenkartoffel mit Sauerrahm"
+  displayname: "<#e9d8a6>Baked Potato with Sour Cream"
   material: BAKED_POTATO
   Pack:
     generate_model: true
@@ -160,7 +160,7 @@ sas_spaghetti:
     custom_model_data: 3016
 
 sas_misosuppe:
-  displayname: "<#c98a3a>Misosuppe"
+  displayname: "<#c98a3a>Miso Soup"
   material: MUSHROOM_STEW
   Pack:
     generate_model: true
@@ -170,7 +170,7 @@ sas_misosuppe:
     custom_model_data: 3017
 
 sas_kandierter_apfel:
-  displayname: "<#e74c3c>Kandierter Apfel"
+  displayname: "<#e74c3c>Candy Apple"
   material: APPLE
   Pack:
     generate_model: true
@@ -180,7 +180,7 @@ sas_kandierter_apfel:
     custom_model_data: 3018
 
 sas_reis:
-  displayname: "<#f7f3e3>Reis"
+  displayname: "<#f7f3e3>Rice"
   material: PAPER
   Pack:
     generate_model: true
@@ -190,7 +190,7 @@ sas_reis:
     custom_model_data: 3019
 
 sas_reis_samen:
-  displayname: "<#e6dfbf>Reis-Samen"
+  displayname: "<#e6dfbf>Rice Seeds"
   material: WHEAT_SEEDS
   Pack:
     generate_model: true

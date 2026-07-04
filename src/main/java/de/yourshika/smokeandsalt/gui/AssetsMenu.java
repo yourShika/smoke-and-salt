@@ -20,7 +20,7 @@ public final class AssetsMenu {
     public static void open(SmokeAndSalt plugin, Player player) {
         MenuHolder holder = new MenuHolder("assets");
         Inventory inv = Bukkit.createInventory(holder, 27,
-                Text.line("<gradient:#5be88a:#5be8d4><bold>Oraxen-Assets</bold></gradient>"));
+                Text.line("<gradient:#5be88a:#5be8d4><bold>Oraxen Assets</bold></gradient>"));
         holder.setInventory(inv);
 
         for (int i = 0; i < 27; i++) holder.set(i, Icons.accent());
@@ -29,20 +29,20 @@ public final class AssetsMenu {
 
         holder.set(11, Icons.of(status.oraxenPresent() ? Material.LIME_DYE : Material.RED_DYE,
                 "<white><bold>Oraxen</bold>",
-                "<gray>Installiert: " + (status.oraxenPresent() ? "<green>ja" : "<red>nein"),
-                "<gray>Modul aktiv: " + (plugin.moduleManager().isActive("oraxen") ? "<green>ja" : "<red>nein")));
+                "<gray>Installed: " + (status.oraxenPresent() ? "<green>yes" : "<red>no"),
+                "<gray>Module active: " + (plugin.moduleManager().isActive("oraxen") ? "<green>yes" : "<red>no")));
 
-        holder.set(13, Icons.of(Material.ITEM_FRAME, "<gold><bold>Asset-Status</bold>",
-                "<gray>Gebuendelte Version: <white>" + status.bundledVersion(),
-                "<gray>Ausgerollte Version: <white>" + status.deployedVersion(),
-                "<gray>Verwaltete Dateien: <white>" + status.managed() + "/" + status.total(),
-                "<gray>Fehlend in Oraxen: <white>" + status.missing()));
+        holder.set(13, Icons.of(Material.ITEM_FRAME, "<gold><bold>Asset status</bold>",
+                "<gray>Bundled version: <white>" + status.bundledVersion(),
+                "<gray>Deployed version: <white>" + status.deployedVersion(),
+                "<gray>Managed files: <white>" + status.managed() + "/" + status.total(),
+                "<gray>Missing in Oraxen: <white>" + status.missing()));
 
         holder.set(15, Icons.of(Material.ANVIL, "<yellow><bold>Redeploy</bold>",
-                "<gray>Stellt die mitgelieferten Assets erneut",
-                "<gray>in Oraxen bereit (mit Backup).", " ",
-                "<yellow>Klicken zum Ausfuehren",
-                "<dark_gray>Danach '/oraxen reload' ausfuehren."),
+                "<gray>Re-deploy the bundled assets",
+                "<gray>into Oraxen (with backup).", " ",
+                "<yellow>Click to run",
+                "<dark_gray>Then run '/oraxen reload'."),
                 (p, e) -> {
                     p.closeInventory();
                     p.performCommand("sas assets redeploy");

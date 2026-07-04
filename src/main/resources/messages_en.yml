@@ -66,6 +66,9 @@ cooking:
   busy: "<red>A process is already running at this station."
   started: "<green><station>: process started."
 
+cauldron:
+  cancelled: "<yellow>Cauldron process cancelled - ingredients returned."
+
 chain:
   hung: "<green>Hung on the chain."
   removed: "<green>Removed from the chain."

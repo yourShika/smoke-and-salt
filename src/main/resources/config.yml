@@ -6,15 +6,15 @@
 # ==========================================================================
 
 # Interne Struktur-Version. NICHT von Hand aendern.
-config-version: 1
+config-version: 2
 
 # HINWEIS: Smoke & Salt bringt Standard-Items, -Seeds und -Rezepte bereits
 # eingebaut mit (siehe /sas recipes). Die Abschnitte items/seeds/recipes unten
 # sind fuer EIGENE Ergaenzungen. Ein Eintrag mit gleicher ID ueberschreibt den
 # eingebauten Standard.
 
-# Sprache der Nachrichten (messages_<lang>.yml). Mitgeliefert: de, en.
-language: de
+# Sprache der Nachrichten (messages_<lang>.yml). Mitgeliefert: en, de.
+language: en
 
 # Zusaetzliche Log-Ausgaben fuer die Fehlersuche.
 debug: false

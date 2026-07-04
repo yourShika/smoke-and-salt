@@ -9,13 +9,11 @@ import de.yourshika.smokeandsalt.cooking.CookingRegistry;
 import de.yourshika.smokeandsalt.item.ItemKeys;
 import de.yourshika.smokeandsalt.item.ItemRegistry;
 import de.yourshika.smokeandsalt.listener.BoilingAmbientTask;
-import de.yourshika.smokeandsalt.listener.CampfireListener;
 import de.yourshika.smokeandsalt.listener.CauldronListener;
 import de.yourshika.smokeandsalt.listener.ChainListener;
 import de.yourshika.smokeandsalt.listener.CuttingListener;
 import de.yourshika.smokeandsalt.listener.GuiListener;
 import de.yourshika.smokeandsalt.listener.SeedListener;
-import de.yourshika.smokeandsalt.listener.SmokerListener;
 import de.yourshika.smokeandsalt.module.ModuleManager;
 import de.yourshika.smokeandsalt.seed.SeedManager;
 import de.yourshika.smokeandsalt.update.GitHubUpdater;
@@ -40,7 +38,7 @@ import java.io.File;
 public final class SmokeAndSalt extends JavaPlugin {
 
     /** Aktuelle Struktur-Version der config.yml. */
-    private static final int CONFIG_VERSION = 1;
+    private static final int CONFIG_VERSION = 2;
 
     private PluginConfig pluginConfig;
     private MessageManager messages;
@@ -50,6 +48,7 @@ public final class SmokeAndSalt extends JavaPlugin {
     private ModuleManager moduleManager;
     private CookingRegistry cookingRegistry;
     private CookingManager cooking;
+    private de.yourshika.smokeandsalt.cooking.StationRecipeManager stationRecipes;
     private de.yourshika.smokeandsalt.cooking.CauldronManager cauldron;
     private de.yourshika.smokeandsalt.crafting.CraftingManager crafting;
     private ChainManager chains;
@@ -76,6 +75,7 @@ public final class SmokeAndSalt extends JavaPlugin {
         this.chains = new ChainManager(this, keys);
         this.cookingRegistry = new CookingRegistry(this, items);
         this.cooking = new CookingManager(this, cookingRegistry, effects, keys);
+        this.stationRecipes = new de.yourshika.smokeandsalt.cooking.StationRecipeManager(this);
         this.cauldron = new de.yourshika.smokeandsalt.cooking.CauldronManager(this);
         this.crafting = new de.yourshika.smokeandsalt.crafting.CraftingManager(this);
         this.updater = new GitHubUpdater(this);
@@ -89,8 +89,6 @@ public final class SmokeAndSalt extends JavaPlugin {
 
         // Listener registrieren.
         Bukkit.getPluginManager().registerEvents(new GuiListener(), this);
-        Bukkit.getPluginManager().registerEvents(new SmokerListener(this), this);
-        Bukkit.getPluginManager().registerEvents(new CampfireListener(this), this);
         Bukkit.getPluginManager().registerEvents(new CuttingListener(this), this);
         Bukkit.getPluginManager().registerEvents(new CauldronListener(this), this);
         Bukkit.getPluginManager().registerEvents(new SeedListener(this, seeds), this);
@@ -119,6 +117,7 @@ public final class SmokeAndSalt extends JavaPlugin {
         if (cooking != null) cooking.stop();
         if (cauldron != null) cauldron.stop();
         if (crafting != null) crafting.unregisterAll();
+        if (stationRecipes != null) stationRecipes.unregisterAll();
         if (chains != null) chains.releaseAll();
         if (seeds != null) seeds.cropStore().save();
         if (moduleManager != null) moduleManager.shutdown();
@@ -146,7 +145,10 @@ public final class SmokeAndSalt extends JavaPlugin {
         cookingRegistry.loadFromConfig();
         cauldron.clearRecipes();
         crafting.unregisterAll();
+        stationRecipes.unregisterAll();
         de.yourshika.smokeandsalt.content.DefaultContent.register(this);
+        // Smoker-/Lagerfeuer-Rezepte als Vanilla-Rezepte registrieren (nach DefaultContent).
+        stationRecipes.registerAll();
     }
 
     /**

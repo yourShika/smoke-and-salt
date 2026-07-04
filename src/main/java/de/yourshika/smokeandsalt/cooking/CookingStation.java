@@ -7,20 +7,20 @@ package de.yourshika.smokeandsalt.cooking;
  */
 public enum CookingStation {
 
-    /** Raeuchern im Smoker-Block (Custom-Items, Rauch-Partikel). */
-    SMOKER("Smoker", "Raeuchern im Smoker"),
+    /** Smoking in the smoker block (custom items, smoke particles). */
+    SMOKER("Smoker", "Smoking in the smoker"),
 
-    /** Garen ueber dem Lagerfeuer. */
-    CAMPFIRE("Lagerfeuer", "Garen ueber dem Lagerfeuer"),
+    /** Cooking on the campfire. */
+    CAMPFIRE("Campfire", "Cooking on the campfire"),
 
-    /** Kochen/Waschen/Bruehen/Suppe in kochendem Wasser (Kessel ueber Waermequelle). */
-    CAULDRON_WATER("Wasserkessel", "Kochen in kochendem Wasser"),
+    /** Cooking/washing/brewing/soup in boiling water (cauldron over heat). */
+    CAULDRON_WATER("Water Cauldron", "Cooking in boiling water"),
 
-    /** Braten/Frittieren in einem Lavakessel (nur bestimmte Items). */
-    CAULDRON_LAVA("Lavakessel", "Braten/Frittieren in Lava"),
+    /** Frying/roasting in a lava cauldron (only certain items). */
+    CAULDRON_LAVA("Lava Cauldron", "Frying/roasting in lava"),
 
-    /** Schneiden mit Axt (Haupthand) und Zutat (Zweithand). */
-    CUTTING("Schneidebrett", "Schneiden mit der Axt");
+    /** Cutting with axe (main hand) and ingredient (off hand). */
+    CUTTING("Cutting Board", "Cutting with the axe");
 
     private final String displayName;
     private final String description;

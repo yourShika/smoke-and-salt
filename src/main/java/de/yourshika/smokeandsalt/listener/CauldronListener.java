@@ -9,9 +9,12 @@ import org.bukkit.block.Block;
 import org.bukkit.entity.Item;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.EntityPickupItemEvent;
 import org.bukkit.event.inventory.InventoryPickupItemEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.Optional;
@@ -74,6 +77,19 @@ public final class CauldronListener implements Listener {
                 plugin.effects().sizzle(cauldron.getLocation(), true);
                 plugin.effects().fry(cauldron.getLocation(), 8);
             }
+        }
+    }
+
+    /** Rechtsklick auf einen Wasserkessel bricht einen laufenden Vorgang ab. */
+    @EventHandler
+    public void onCancel(PlayerInteractEvent event) {
+        if (event.getAction() != Action.RIGHT_CLICK_BLOCK) return;
+        if (event.getHand() != EquipmentSlot.HAND) return;
+        Block block = event.getClickedBlock();
+        if (block == null || block.getType() != Material.WATER_CAULDRON) return;
+        if (plugin.cauldron().cancel(block, event.getPlayer())) {
+            event.setCancelled(true);
+            plugin.messages().send(event.getPlayer(), "cauldron.cancelled");
         }
     }
 

@@ -14,170 +14,165 @@
 
 ---
 
-## ✨ Was ist Smoke & Salt?
+## ✨ What is Smoke & Salt?
 
-**Smoke & Salt** bringt ein tiefes, immersives Koch-System auf deinen Server –
-ohne den Vanilla-Charme zu brechen. Kein aufgeblähtes GUI-Gewusel, keine
-Magie-Maschinen. Nur ein Kessel, ein Feuer und die richtigen Zutaten.
+**Smoke & Salt** brings a deep, immersive cooking system to your server — without
+breaking the vanilla feel. No bloated machines. Just a smoker, a campfire, a
+cauldron and the right ingredients.
 
-Diese Version liefert die **Koch-Funktionen** (Mechaniken, Partikel, Timing,
-Stationen) **inklusive eines vollständigen Start-Sets an Zutaten, Gerichten und
-Rezepten** – jedes Custom-Item mit eigener 16×16-Vanilla-Textur (via Oraxen).
-Weitere Inhalte lassen sich jederzeit über die `config.yml` ergänzen – ganz ohne
-Code.
+It ships with a **complete starter set of ingredients, dishes and recipes** — each
+custom item with its own hand-drawn 16×16 vanilla-style texture (via Oraxen). More
+content can be added any time through `config.yml`, no code required.
 
 ---
 
-## 🔥 Funktionen
+## 🔥 Stations
 
-| Station | Interaktion | Effekt |
-|---------|-------------|--------|
-| 🪵 **Smoker** | Rechtsklick auf einen Smoker mit Zutat | Zeitliches Räuchern mit Rauch-Partikeln |
-| 🔥 **Lagerfeuer** | Rechtsklick auf ein brennendes Lagerfeuer | Garen mit Rauch-Partikeln |
-| 🫧 **Wasserkessel** | Item in kochendes Wasser werfen | Item schwebt & kocht (Kochen, Waschen, Brühen, Suppe) |
-| 🌋 **Lavakessel** | Item hineinwerfen | Vorsichtige Frittier-/Bratstation – nur bestimmte Items |
-| 🪓 **Schneiden** | Axt (Haupthand) + Zutat (Zweithand), Rechtsklick | Schnitt-Effekt + Partikel |
-| ⛓️ **Ketten** | Rechtsklick auf eine Kette | Aufhängung für Kessel-Behang / Räucherware |
-| 🌱 **Custom Seeds** | Anpflanzen auf Ackerland | Wächst zur Ernte; Drops von Gras & Komposter |
-| 🪜 **Sequentielles Kochen** | mehrstufige Rezepte | Ergebnis einer Stufe ist Zutat der nächsten |
+| Station | How it works |
+|---------|--------------|
+| 🪵 **Smoker** | Put an ingredient into a **fuelled smoker** — it smokes exactly like vanilla and pops out the result. |
+| 🔥 **Campfire** | **Place** an ingredient on a **lit campfire** and wait until it's done — just like cooking meat. |
+| 🫧 **Water Cauldron** | A cauldron over a **heat source** boils. Throw items in — they sink slightly into the water and cook. Multiple ingredients accumulate until a recipe matches. **Right-click the cauldron to cancel** and get your items back. |
+| 🌋 **Lava Cauldron** | A careful frying/roasting station — only specific items work. |
+| 🪓 **Cutting** | Axe in the main hand, ingredient in the off hand, right-click to cut (particles + sound). |
+| ⛓️ **Chains** | A hanger for cauldron ware or smoked goods — right-click to hang/retrieve. |
+| 🌱 **Custom Seeds** | Plantable on farmland; drops from grass, seagrass and composters. |
 
-**Kochendes Wasser** entsteht nur, wenn direkt unter einem Wasserkessel eine
-Wärmequelle liegt (Lagerfeuer, Feuer, Lava oder Magmablock) – der Kessel blubbert
-dann sichtbar.
-
-Alle Custom-Items, Seeds und Ergebnisse tragen eine eigene **16×16-Textur**
-(über das **Oraxen-Modul**).
-
-### 🍳 Mitgelieferte Rezepte
-
-| Station | Zutat(en) | Ergebnis |
-|---------|-----------|----------|
-| Smoker | Ei | Spiegelei |
-| Smoker | Rote Bete | Rote-Bete-Chips |
-| Smoker | Karotte | Geröstete Karotte |
-| Smoker | Kartoffel | Pommes |
-| Smoker | Teig | Brot |
-| Lagerfeuer | Zucker | Marshmallow |
-| Lagerfeuer | Teig | Stockbrot |
-| Kessel | Teig *(+ Wasser)* | Nudeln |
-| Kessel | Milch | Käse |
-| Kessel | Rote Bete + Karotte *(+ Wasser)* | Sauce |
-| Werkbank | Weizen + Wasser | Teig |
-| Werkbank | Brot + Fleisch | Burger |
-| Werkbank | Brot + Käse + Fleisch | Cheeseburger |
-| Werkbank | Gebratenes Hähnchen + Schwert | Chicken Nuggets |
-| Werkbank | Stock + Fleisch + Karotte/Kartoffel | Schaschlik |
-| Werkbank | Ofenkartoffel + Milch | Ofenkartoffel mit Sauerrahm |
-| Werkbank | Nudeln + Sauce + Schüssel | Spaghetti |
-| Werkbank | Nudeln + Karotte + Seetang + Fisch + Schüssel | Misosuppe |
-| Werkbank | Apfel + Zucker | Kandierter Apfel |
-| Seed | Seegras abbauen | Reis-Samen → auf Ackerland pflanzen → **Reis** |
-
-Alle Rezepte sind auch im Spiel unter **`/sas recipes`** einsehbar. Bei
-Werkzeug-/Eimer-Rezepten (Schwert, Milch, Wasser) bleibt das Werkzeug erhalten
-bzw. der Eimer kommt leer zurück.
+Smoker & campfire recipes are registered as **real vanilla recipes**, so they feel
+completely native (and show up in the recipe book). A water cauldron only boils
+when a **heat source** (campfire, fire, lava or magma block) sits directly beneath
+it — then it visibly bubbles.
 
 ---
 
-## 🎮 Befehle
+## 🍳 Bundled recipes
 
-| Befehl | Beschreibung | Permission |
-|--------|--------------|------------|
-| `/sas` · `/sas help` | Schön gestaltete Übersichts-GUI | `smokeandsalt.command.help` |
-| `/sas recipes` | Rezept-Übersicht (GUI) | `smokeandsalt.command.recipes` |
-| `/sas version` | Version, Server, aktive Hooks | `smokeandsalt.command.version` |
-| `/sas give [Spieler] <id> [Menge]` | Custom-Item/Seed ausgeben (GUI ohne Args) | `smokeandsalt.admin.give` |
-| `/sas modules` | Externe Module live verwalten (GUI) | `smokeandsalt.admin.modules` |
-| `/sas assets [status\|redeploy]` | Oraxen-Assets prüfen/erneut ausrollen | `smokeandsalt.admin.assets` |
-| `/sas update` | Neueste Release von GitHub laden | `smokeandsalt.admin.update` |
-| `/sas reload` | Config, Nachrichten, Items, Rezepte, Module neu laden | `smokeandsalt.admin.reload` |
+| Station | Ingredient(s) | Result |
+|---------|---------------|--------|
+| Smoker | Egg | Fried Egg |
+| Smoker | Beetroot | Beetroot Chips |
+| Smoker | Carrot | Roasted Carrot |
+| Smoker | Potato | Fries |
+| Smoker | Dough | Bread |
+| Campfire | Sugar | Marshmallow |
+| Campfire | Dough | Stick Bread |
+| Cauldron | Dough *(+ water)* | Noodles |
+| Cauldron | Milk | Cheese |
+| Cauldron | Beetroot + Carrot *(+ water)* | Sauce |
+| Crafting | Wheat + Water | Dough |
+| Crafting | Bread + Meat | Burger |
+| Crafting | Bread + Cheese + Meat | Cheeseburger |
+| Crafting | Cooked Chicken + Sword | Chicken Nuggets |
+| Crafting | Stick + Meat + Carrot/Potato | Shashlik |
+| Crafting | Baked Potato + Milk | Baked Potato with Sour Cream |
+| Crafting | Noodles + Sauce + Bowl | Spaghetti |
+| Crafting | Noodles + Carrot + Kelp + Fish + Bowl | Miso Soup |
+| Crafting | Apple + Sugar | Candy Apple |
+| Seed | Break seagrass | Rice Seeds → plant on farmland → **Rice** |
 
-Aliase: `/smokeandsalt`, `/smokesalt`. Fast alles ist auch **per GUI** bedienbar.
+Browse everything in-game with **`/sas recipes`** — click any result to see the
+full process laid out in a GUI. Tool/bucket recipes keep the sword and return an
+empty bucket.
+
+---
+
+## 🎮 Commands
+
+| Command | Description | Permission |
+|---------|-------------|------------|
+| `/sas` · `/sas help` | Overview GUI | `smokeandsalt.command.help` |
+| `/sas recipes` | Recipe browser (GUI) | `smokeandsalt.command.recipes` |
+| `/sas version` | Version, server, active hooks | `smokeandsalt.command.version` |
+| `/sas give [player] <id> [amount]` | Give a custom item/seed (GUI without args) | `smokeandsalt.admin.give` |
+| `/sas modules` | Manage external modules live (GUI) | `smokeandsalt.admin.modules` |
+| `/sas assets [status\|redeploy]` | Oraxen assets: check / redeploy | `smokeandsalt.admin.assets` |
+| `/sas update` | Download the latest GitHub release | `smokeandsalt.admin.update` |
+| `/sas reload` | Reload config, messages, items, recipes, modules | `smokeandsalt.admin.reload` |
+
+Aliases: `/smokeandsalt`, `/smokesalt`. Almost everything is reachable via **GUI**.
 
 ### Permissions
 
-- `smokeandsalt.*` – alles (Standard: OP)
-- `smokeandsalt.use` – Koch-Funktionen benutzen (Standard: an)
-- `smokeandsalt.seed.plant` – Custom-Seeds anpflanzen (Standard: an)
-- `smokeandsalt.command.*` – öffentliche Unterbefehle (Standard: an)
-- `smokeandsalt.admin.*` – Admin-Funktionen (Standard: OP)
+- `smokeandsalt.*` – everything (default: OP)
+- `smokeandsalt.use` – use the cooking functions (default: on)
+- `smokeandsalt.seed.plant` – plant custom seeds (default: on)
+- `smokeandsalt.command.*` – public subcommands (default: on)
+- `smokeandsalt.admin.*` – admin functions (default: OP)
 
 ---
 
-## 🧩 Module (Hooks)
+## 🧩 Modules (hooks)
 
-Über `/sas modules` (oder die `config.yml` unter `hooks.modules`) lassen sich
-externe Hooks **live** ab-/anschalten. Sie aktivieren sich automatisch, sobald
-das jeweilige Plugin installiert ist – fehlt es, bleibt das Modul still inaktiv
-und das Plugin läuft vollständig eigenständig weiter.
+Toggle external hooks **live** via `/sas modules` (or `config.yml` under
+`hooks.modules`). They enable automatically once the required plugin is installed —
+if it's missing, the module stays silently inactive and the plugin runs fully
+standalone.
 
-| Modul | Zweck | Erforderlich |
-|-------|-------|--------------|
-| **Oraxen** | Custom-Modelle/Texturen für alle Items, Seeds und Ergebnisse | optional (nötig für Custom-Texturen) |
-| **PlaceholderAPI** | Platzhalter `%sas_version%`, `%sas_items%`, `%sas_recipes%`, `%sas_active_cooks%` | optional |
+| Module | Purpose | Required |
+|--------|---------|----------|
+| **Oraxen** | Custom models/textures for every item, seed and result | optional (needed for custom textures) |
+| **PlaceholderAPI** | Placeholders `%sas_version%`, `%sas_items%`, `%sas_recipes%`, `%sas_active_cooks%` | optional |
 
-### Oraxen-Assets
+### Oraxen assets
 
-Ist das Oraxen-Modul aktiv, stellt der Asset-Deployer die mitgelieferten
-Item-YAMLs und Texturen **versioniert und mit Backup** in Oraxen bereit. Status
-und Redeploy laufen über `/sas assets`. Details siehe
+When the Oraxen module is active, the asset deployer places the bundled item YAMLs
+and 16×16 textures into Oraxen — **versioned and with backups**. Status and redeploy
+run via `/sas assets`. Details in
 [`src/main/resources/oraxen/README.md`](src/main/resources/oraxen/README.md).
 
 ---
 
-## ⚙️ Konfiguration
+## ⚙️ Configuration
 
-Alle Inhalte werden über die `config.yml` definiert (standardmäßig **leer**):
+All content is defined via `config.yml`. The bundled starter content is built in;
+config entries with the same id override it. You can add your own:
 
-- `items:` – Custom-Items (Zutaten, Werkzeuge, Ergebnisse)
-- `seeds.definitions:` – Custom-Seeds inkl. Wachstum & Drop-Chancen
-- `recipes:` – Koch-Rezepte pro Station (inkl. sequentieller Ketten)
+- `items:` – custom items (ingredients, tools, results)
+- `seeds.definitions:` – custom seeds incl. growth & drop chances
+- `recipes:` – cooking recipes per station
 
-Jeder Abschnitt enthält ein dokumentiertes Schema als Kommentar. Zusätzlich:
-globale Schalter pro Station, Partikel/Sounds, Welten-Whitelist/Blacklist und die
-Sprache (`de` / `en`).
+Global toggles per station, particles/sounds, world whitelist/blacklist and the
+language (`en` / `de`) are configurable too. Default language is **English**.
 
 ---
 
-## 📋 Voraussetzungen
+## 📋 Requirements
 
-- Paper oder Spigot `26.1.2`
+- Paper or Spigot `26.1.2`
 - Java `25+`
 - *(optional)* Oraxen · PlaceholderAPI
 
 ---
 
-## 🛠️ Bauen
+## 🛠️ Building
 
 ```bash
 mvn clean package
 ```
 
-Das fertige Plugin liegt danach unter `target/Smoke-and-Salt-<version>.jar`.
-GitHub Actions bauen jeden Push (`build.yml`) und veröffentlichen bei einem
-`v*`-Tag automatisch ein Release (`release.yml`) – von dem `/sas update` die
-neueste JAR zieht.
+The finished plugin lands in `target/Smoke-and-Salt-<version>.jar`. GitHub Actions
+build every push (`build.yml`) and publish a release on a `v*` tag
+(`release.yml`) — which `/sas update` pulls from. Textures, Oraxen items and the
+manifest are (re)generated by `scripts/generate_assets.py`.
 
 ---
 
 ## 🗺️ Roadmap
 
-- [x] Koch-Engine (Stationen, Partikel, Timing, sequentiell)
-- [x] Smoker · Lagerfeuer · Wasserkessel · Lavakessel · Schneiden
-- [x] Custom Seeds (Anpflanzen, Gras-/Komposter-Drops)
-- [x] Ketten als Aufhängung
-- [x] Modul-System (Oraxen, PlaceholderAPI) + Oraxen-Asset-Deployer
-- [x] GUIs, Befehle, Permissions, Self-Updater
-- [x] Konkrete Rezepte, Zutaten & Gerichte (Start-Set)
-- [x] Mitgelieferte 16×16-Oraxen-Texturen
-- [ ] Nahrungswerte & Effekte pro Gericht
-- [ ] Eigene Crop-Block-Texturen (Reis)
+- [x] Cooking engine (stations, particles, timing, sequential)
+- [x] Vanilla smoker & campfire recipes
+- [x] Multi-ingredient cauldron with cancel + crafting system
+- [x] Starter set of items, dishes & recipes with 16×16 textures
+- [x] Custom seeds (rice from seagrass)
+- [x] GUIs, commands, permissions, self-updater
+- [ ] Food values & effects per dish
+- [ ] Custom crop-block model for rice (needs Oraxen custom blocks)
 
 ---
 
-## 📄 Lizenz
+## 📄 License
 
-MIT — siehe [`LICENSE`](LICENSE).
+MIT — see [`LICENSE`](LICENSE).
 
 ---
 

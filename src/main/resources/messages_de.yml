@@ -66,6 +66,9 @@ cooking:
   busy: "<red>An dieser Station laeuft bereits ein Vorgang."
   started: "<green><station>: Vorgang gestartet."
 
+cauldron:
+  cancelled: "<yellow>Kessel-Vorgang abgebrochen - Zutaten zurueckgegeben."
+
 chain:
   hung: "<green>An der Kette aufgehaengt."
   removed: "<green>Von der Kette abgenommen."

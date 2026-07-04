@@ -75,7 +75,10 @@ public final class SeedManager {
                 sec.getString("result-item", null),
                 resultMat,
                 sec.getInt("result-amount", 1),
+                sec.getInt("seed-return-min", 0),
+                sec.getInt("seed-return-max", 0),
                 sec.getDouble("grass-chance", 0.0),
+                sec.getDouble("seagrass-chance", 0.0),
                 sec.getDouble("composter-chance", 0.0));
     }
 

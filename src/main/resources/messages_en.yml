@@ -19,7 +19,10 @@ help:
   line-assets: "<yellow>/sas assets [status|redeploy]</yellow> <dark_gray>-</dark_gray> <gray>Oraxen assets"
 
 recipes:
-  count: "<gray>Registered cooking recipes: <white><count></white>"
+  count: "<gray>Recipes total: <white><count></white> <dark_gray>(stations: <station>, cauldron: <cauldron>, crafting: <crafting>)</dark_gray>"
+
+crafting:
+  single-only: "<red>This recipe can only be crafted one at a time (no shift-click)."
 
 version:
   header: "<gradient:#e2a76f:#c65b3a><bold>Smoke & Salt</bold></gradient>"

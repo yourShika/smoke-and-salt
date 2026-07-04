@@ -8,6 +8,11 @@
 # Interne Struktur-Version. NICHT von Hand aendern.
 config-version: 1
 
+# HINWEIS: Smoke & Salt bringt Standard-Items, -Seeds und -Rezepte bereits
+# eingebaut mit (siehe /sas recipes). Die Abschnitte items/seeds/recipes unten
+# sind fuer EIGENE Ergaenzungen. Ein Eintrag mit gleicher ID ueberschreibt den
+# eingebauten Standard.
+
 # Sprache der Nachrichten (messages_<lang>.yml). Mitgeliefert: de, en.
 language: de
 
@@ -44,7 +49,10 @@ seeds:
   #     result-item: <item_id>       # Custom-Item als Ernte (siehe items:)
   #     result-material: WHEAT       # alternativ: Vanilla-Material als Ernte
   #     result-amount: 1
-  #     grass-chance: 0.0            # Drop-Chance beim Abbauen von Gras (0..1)
+  #     seed-return-min: 0           # min. Samen, die bei der Ernte zurueckkommen
+  #     seed-return-max: 0           # max. Samen, die bei der Ernte zurueckkommen
+  #     grass-chance: 0.0            # Drop-Chance beim Abbauen von Land-Gras (0..1)
+  #     seagrass-chance: 0.0         # Drop-Chance beim Abbauen von Seegras (0..1)
   #     composter-chance: 0.0        # Drop-Chance an einem vollen Komposter (0..1)
   definitions: {}
 

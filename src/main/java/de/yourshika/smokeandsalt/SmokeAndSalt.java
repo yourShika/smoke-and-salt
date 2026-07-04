@@ -50,6 +50,8 @@ public final class SmokeAndSalt extends JavaPlugin {
     private ModuleManager moduleManager;
     private CookingRegistry cookingRegistry;
     private CookingManager cooking;
+    private de.yourshika.smokeandsalt.cooking.CauldronManager cauldron;
+    private de.yourshika.smokeandsalt.crafting.CraftingManager crafting;
     private ChainManager chains;
     private Effects effects;
     private GitHubUpdater updater;
@@ -74,16 +76,16 @@ public final class SmokeAndSalt extends JavaPlugin {
         this.chains = new ChainManager(this, keys);
         this.cookingRegistry = new CookingRegistry(this, items);
         this.cooking = new CookingManager(this, cookingRegistry, effects, keys);
+        this.cauldron = new de.yourshika.smokeandsalt.cooking.CauldronManager(this);
+        this.crafting = new de.yourshika.smokeandsalt.crafting.CraftingManager(this);
         this.updater = new GitHubUpdater(this);
 
         // Modul-System zuerst - Item-Erstellung nutzt den aktiven Item-Provider.
         this.moduleManager = new ModuleManager(this);
         moduleManager.reload();
 
-        // Registries aus der Config laden (standardmaessig leer).
-        items.loadFromConfig();
-        seeds.loadFromConfig();
-        cookingRegistry.loadFromConfig();
+        // Registries laden (Config + mitgelieferter Standard-Inhalt).
+        loadContent();
 
         // Listener registrieren.
         Bukkit.getPluginManager().registerEvents(new GuiListener(), this);
@@ -93,6 +95,7 @@ public final class SmokeAndSalt extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(new CauldronListener(this), this);
         Bukkit.getPluginManager().registerEvents(new SeedListener(this, seeds), this);
         Bukkit.getPluginManager().registerEvents(new ChainListener(this, chains), this);
+        Bukkit.getPluginManager().registerEvents(crafting, this);
 
         // Befehl.
         SmokeAndSaltCommand command = new SmokeAndSaltCommand(this);
@@ -104,6 +107,7 @@ public final class SmokeAndSalt extends JavaPlugin {
 
         // Koch-Tick + Ambient-Kochen.
         cooking.start();
+        cauldron.start();
         new BoilingAmbientTask(this).runTaskTimer(this, 40L, 10L);
 
         getLogger().info("Smoke & Salt v" + getPluginMeta().getVersion()
@@ -113,6 +117,8 @@ public final class SmokeAndSalt extends JavaPlugin {
     @Override
     public void onDisable() {
         if (cooking != null) cooking.stop();
+        if (cauldron != null) cauldron.stop();
+        if (crafting != null) crafting.unregisterAll();
         if (chains != null) chains.releaseAll();
         if (seeds != null) seeds.cropStore().save();
         if (moduleManager != null) moduleManager.shutdown();
@@ -125,10 +131,22 @@ public final class SmokeAndSalt extends JavaPlugin {
         pluginConfig.load();
         messages.load(pluginConfig.language());
         moduleManager.reload();
+        loadContent();
+        refreshOnlineItems();
+    }
+
+    /**
+     * Laedt Items, Seeds und Rezepte: zuerst aus der config.yml, dann der
+     * mitgelieferte Standard-Inhalt ({@link de.yourshika.smokeandsalt.content.DefaultContent}).
+     * Config-Eintraege mit gleicher ID haben Vorrang.
+     */
+    private void loadContent() {
         items.loadFromConfig();
         seeds.loadFromConfig();
         cookingRegistry.loadFromConfig();
-        refreshOnlineItems();
+        cauldron.clearRecipes();
+        crafting.unregisterAll();
+        de.yourshika.smokeandsalt.content.DefaultContent.register(this);
     }
 
     /**
@@ -239,6 +257,8 @@ public final class SmokeAndSalt extends JavaPlugin {
     public SeedManager seeds() { return seeds; }
     public ModuleManager moduleManager() { return moduleManager; }
     public CookingManager cooking() { return cooking; }
+    public de.yourshika.smokeandsalt.cooking.CauldronManager cauldron() { return cauldron; }
+    public de.yourshika.smokeandsalt.crafting.CraftingManager crafting() { return crafting; }
     public ChainManager chains() { return chains; }
     public Effects effects() { return effects; }
     public GitHubUpdater updater() { return updater; }

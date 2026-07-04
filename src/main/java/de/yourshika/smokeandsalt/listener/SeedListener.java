@@ -85,26 +85,49 @@ public final class SeedListener implements Listener {
             SeedDefinition def = seeds.definition(seedId);
             if (def != null) {
                 event.setDropItems(false);
+                var loc = block.getLocation().add(0.5, 0.3, 0.5);
                 boolean ripe = !(block.getBlockData() instanceof Ageable a) || a.getAge() >= a.getMaximumAge();
-                ItemStack drop = ripe ? harvestResult(def) : seeds.create(def.id(), 1);
-                if (drop != null) {
-                    block.getWorld().dropItemNaturally(block.getLocation().add(0.5, 0.3, 0.5), drop);
+                if (ripe) {
+                    ItemStack harvest = harvestResult(def);
+                    if (harvest != null) block.getWorld().dropItemNaturally(loc, harvest);
+                    // Ein paar Samen zurueckgeben (wie bei Weizen).
+                    int seedCount = seedReturn(def);
+                    if (seedCount > 0) {
+                        ItemStack back = seeds.create(def.id(), seedCount);
+                        if (back != null) block.getWorld().dropItemNaturally(loc, back);
+                    }
+                } else {
+                    ItemStack back = seeds.create(def.id(), 1);
+                    if (back != null) block.getWorld().dropItemNaturally(loc, back);
                 }
+                plugin.effects().finish(block.getLocation());
             }
             return;
         }
 
-        // Drops beim Abbauen von Gras.
-        if (isGrass(block.getType()) && !seeds.isEmpty()) {
-            for (SeedDefinition def : seeds.all()) {
-                if (def.grassChance() > 0 && Math.random() < def.grassChance()) {
-                    ItemStack drop = seeds.create(def.id(), 1);
-                    if (drop != null) {
-                        block.getWorld().dropItemNaturally(block.getLocation().add(0.5, 0.2, 0.5), drop);
+        // Drops beim Abbauen von Land-Gras bzw. Seegras.
+        if (!seeds.isEmpty()) {
+            boolean land = isGrass(block.getType());
+            boolean sea = isSeagrass(block.getType());
+            if (land || sea) {
+                for (SeedDefinition def : seeds.all()) {
+                    double chance = sea ? def.seagrassChance() : def.grassChance();
+                    if (chance > 0 && Math.random() < chance) {
+                        ItemStack drop = seeds.create(def.id(), 1);
+                        if (drop != null) {
+                            block.getWorld().dropItemNaturally(block.getLocation().add(0.5, 0.2, 0.5), drop);
+                        }
                     }
                 }
             }
         }
+    }
+
+    private int seedReturn(SeedDefinition def) {
+        if (def.seedReturnMax() <= 0) return 0;
+        int min = def.seedReturnMin();
+        int max = def.seedReturnMax();
+        return min + (int) Math.floor(Math.random() * (max - min + 1));
     }
 
     // --- Komposter-Drops ----------------------------------------------------
@@ -146,5 +169,9 @@ public final class SeedListener implements Listener {
                 || material == Material.TALL_GRASS
                 || material == Material.FERN
                 || material == Material.LARGE_FERN;
+    }
+
+    private boolean isSeagrass(Material material) {
+        return material == Material.SEAGRASS || material == Material.TALL_SEAGRASS;
     }
 }

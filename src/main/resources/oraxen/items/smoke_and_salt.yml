@@ -1,0 +1,201 @@
+# Auto-generiert von scripts/generate_assets.py - Smoke & Salt Custom-Items.
+sas_teig:
+  displayname: "<#e8d8a8>Teig"
+  material: PAPER
+  Pack:
+    generate_model: true
+    parent_model: "item/generated"
+    textures:
+      - sas/teig.png
+    custom_model_data: 3001
+
+sas_spiegelei:
+  displayname: "<#fff3c0>Spiegelei"
+  material: EGG
+  Pack:
+    generate_model: true
+    parent_model: "item/generated"
+    textures:
+      - sas/spiegelei.png
+    custom_model_data: 3002
+
+sas_rotebeete_chips:
+  displayname: "<#c0392b>Rote-Bete-Chips"
+  material: BEETROOT
+  Pack:
+    generate_model: true
+    parent_model: "item/generated"
+    textures:
+      - sas/rotebeete_chips.png
+    custom_model_data: 3003
+
+sas_geroestete_karotte:
+  displayname: "<#e67e22>Geroestete Karotte"
+  material: CARROT
+  Pack:
+    generate_model: true
+    parent_model: "item/generated"
+    textures:
+      - sas/geroestete_karotte.png
+    custom_model_data: 3004
+
+sas_pommes:
+  displayname: "<#f1c40f>Pommes"
+  material: POTATO
+  Pack:
+    generate_model: true
+    parent_model: "item/generated"
+    textures:
+      - sas/pommes.png
+    custom_model_data: 3005
+
+sas_marshmallow:
+  displayname: "<#ffeef2>Marshmallow"
+  material: PAPER
+  Pack:
+    generate_model: true
+    parent_model: "item/generated"
+    textures:
+      - sas/marshmallow.png
+    custom_model_data: 3006
+
+sas_stockbrot:
+  displayname: "<#d9a441>Stockbrot"
+  material: BREAD
+  Pack:
+    generate_model: true
+    parent_model: "item/generated"
+    textures:
+      - sas/stockbrot.png
+    custom_model_data: 3007
+
+sas_nudeln:
+  displayname: "<#f0e2b0>Nudeln"
+  material: PAPER
+  Pack:
+    generate_model: true
+    parent_model: "item/generated"
+    textures:
+      - sas/nudeln.png
+    custom_model_data: 3008
+
+sas_kaese:
+  displayname: "<#f2c94c>Kaese"
+  material: HONEYCOMB
+  Pack:
+    generate_model: true
+    parent_model: "item/generated"
+    textures:
+      - sas/kaese.png
+    custom_model_data: 3009
+
+sas_sauce:
+  displayname: "<#c0392b>Sauce"
+  material: BRICK
+  Pack:
+    generate_model: true
+    parent_model: "item/generated"
+    textures:
+      - sas/sauce.png
+    custom_model_data: 3010
+
+sas_burger:
+  displayname: "<#e2a76f>Burger"
+  material: BREAD
+  Pack:
+    generate_model: true
+    parent_model: "item/generated"
+    textures:
+      - sas/burger.png
+    custom_model_data: 3011
+
+sas_cheeseburger:
+  displayname: "<#f2c94c>Cheeseburger"
+  material: BREAD
+  Pack:
+    generate_model: true
+    parent_model: "item/generated"
+    textures:
+      - sas/cheeseburger.png
+    custom_model_data: 3012
+
+sas_chicken_nuggets:
+  displayname: "<#e6b566>Chicken Nuggets"
+  material: COOKED_CHICKEN
+  Pack:
+    generate_model: true
+    parent_model: "item/generated"
+    textures:
+      - sas/chicken_nuggets.png
+    custom_model_data: 3013
+
+sas_schaschlik:
+  displayname: "<#b5651d>Schaschlik"
+  material: COOKED_BEEF
+  Pack:
+    generate_model: true
+    parent_model: "item/generated"
+    textures:
+      - sas/schaschlik.png
+    custom_model_data: 3014
+
+sas_ofenkartoffel_sourcream:
+  displayname: "<#e9d8a6>Ofenkartoffel mit Sauerrahm"
+  material: BAKED_POTATO
+  Pack:
+    generate_model: true
+    parent_model: "item/generated"
+    textures:
+      - sas/ofenkartoffel_sourcream.png
+    custom_model_data: 3015
+
+sas_spaghetti:
+  displayname: "<#f0e2b0>Spaghetti"
+  material: PAPER
+  Pack:
+    generate_model: true
+    parent_model: "item/generated"
+    textures:
+      - sas/spaghetti.png
+    custom_model_data: 3016
+
+sas_misosuppe:
+  displayname: "<#c98a3a>Misosuppe"
+  material: MUSHROOM_STEW
+  Pack:
+    generate_model: true
+    parent_model: "item/generated"
+    textures:
+      - sas/misosuppe.png
+    custom_model_data: 3017
+
+sas_kandierter_apfel:
+  displayname: "<#e74c3c>Kandierter Apfel"
+  material: APPLE
+  Pack:
+    generate_model: true
+    parent_model: "item/generated"
+    textures:
+      - sas/kandierter_apfel.png
+    custom_model_data: 3018
+
+sas_reis:
+  displayname: "<#f7f3e3>Reis"
+  material: PAPER
+  Pack:
+    generate_model: true
+    parent_model: "item/generated"
+    textures:
+      - sas/reis.png
+    custom_model_data: 3019
+
+sas_reis_samen:
+  displayname: "<#e6dfbf>Reis-Samen"
+  material: WHEAT_SEEDS
+  Pack:
+    generate_model: true
+    parent_model: "item/generated"
+    textures:
+      - sas/reis_samen.png
+    custom_model_data: 3020
+

@@ -19,7 +19,10 @@ help:
   line-assets: "<yellow>/sas assets [status|redeploy]</yellow> <dark_gray>-</dark_gray> <gray>Oraxen-Assets"
 
 recipes:
-  count: "<gray>Registrierte Koch-Rezepte: <white><count></white>"
+  count: "<gray>Rezepte gesamt: <white><count></white> <dark_gray>(Stationen: <station>, Kessel: <cauldron>, Werkbank: <crafting>)</dark_gray>"
+
+crafting:
+  single-only: "<red>Dieses Rezept kann nur einzeln (ohne Shift) gecraftet werden."
 
 version:
   header: "<gradient:#e2a76f:#c65b3a><bold>Smoke & Salt</bold></gradient>"

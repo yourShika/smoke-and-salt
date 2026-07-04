@@ -88,6 +88,20 @@ public final class Effects {
         }
     }
 
+    /** Kleiner Effekt, wenn ein Gericht an der Werkbank fertiggestellt wird. */
+    public void craft(Location at) {
+        World w = at.getWorld();
+        if (w == null) return;
+        Location above = at.clone().add(0, 1.0, 0);
+        if (particles()) {
+            w.spawnParticle(Particle.HAPPY_VILLAGER, above, 6, 0.3, 0.3, 0.3, 0.0);
+            w.spawnParticle(Particle.CRIT, above, 6, 0.2, 0.2, 0.2, 0.1);
+        }
+        if (sounds()) {
+            w.playSound(at, Sound.BLOCK_NOTE_BLOCK_CHIME, 0.5f, 1.5f);
+        }
+    }
+
     /** Kurzer Zischlaut beim Einlegen in kochendes Wasser oder Lava. */
     public void sizzle(Location at, boolean lava) {
         World w = at.getWorld();

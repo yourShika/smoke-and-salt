@@ -21,8 +21,10 @@ ohne den Vanilla-Charme zu brechen. Kein aufgeblähtes GUI-Gewusel, keine
 Magie-Maschinen. Nur ein Kessel, ein Feuer und die richtigen Zutaten.
 
 Diese Version liefert die **Koch-Funktionen** (Mechaniken, Partikel, Timing,
-Stationen). Konkrete **Rezepte, Zutaten und Gerichte** kommen bewusst später und
-werden komplett über die `config.yml` definiert – ganz ohne Code.
+Stationen) **inklusive eines vollständigen Start-Sets an Zutaten, Gerichten und
+Rezepten** – jedes Custom-Item mit eigener 16×16-Vanilla-Textur (via Oraxen).
+Weitere Inhalte lassen sich jederzeit über die `config.yml` ergänzen – ganz ohne
+Code.
 
 ---
 
@@ -43,8 +45,37 @@ werden komplett über die `config.yml` definiert – ganz ohne Code.
 Wärmequelle liegt (Lagerfeuer, Feuer, Lava oder Magmablock) – der Kessel blubbert
 dann sichtbar.
 
-Alle Custom-Items, Seeds und Ergebnisse können über das **Oraxen-Modul**
-eigene Texturen erhalten.
+Alle Custom-Items, Seeds und Ergebnisse tragen eine eigene **16×16-Textur**
+(über das **Oraxen-Modul**).
+
+### 🍳 Mitgelieferte Rezepte
+
+| Station | Zutat(en) | Ergebnis |
+|---------|-----------|----------|
+| Smoker | Ei | Spiegelei |
+| Smoker | Rote Bete | Rote-Bete-Chips |
+| Smoker | Karotte | Geröstete Karotte |
+| Smoker | Kartoffel | Pommes |
+| Smoker | Teig | Brot |
+| Lagerfeuer | Zucker | Marshmallow |
+| Lagerfeuer | Teig | Stockbrot |
+| Kessel | Teig *(+ Wasser)* | Nudeln |
+| Kessel | Milch | Käse |
+| Kessel | Rote Bete + Karotte *(+ Wasser)* | Sauce |
+| Werkbank | Weizen + Wasser | Teig |
+| Werkbank | Brot + Fleisch | Burger |
+| Werkbank | Brot + Käse + Fleisch | Cheeseburger |
+| Werkbank | Gebratenes Hähnchen + Schwert | Chicken Nuggets |
+| Werkbank | Stock + Fleisch + Karotte/Kartoffel | Schaschlik |
+| Werkbank | Ofenkartoffel + Milch | Ofenkartoffel mit Sauerrahm |
+| Werkbank | Nudeln + Sauce + Schüssel | Spaghetti |
+| Werkbank | Nudeln + Karotte + Seetang + Fisch + Schüssel | Misosuppe |
+| Werkbank | Apfel + Zucker | Kandierter Apfel |
+| Seed | Seegras abbauen | Reis-Samen → auf Ackerland pflanzen → **Reis** |
+
+Alle Rezepte sind auch im Spiel unter **`/sas recipes`** einsehbar. Bei
+Werkzeug-/Eimer-Rezepten (Schwert, Milch, Wasser) bleibt das Werkzeug erhalten
+bzw. der Eimer kommt leer zurück.
 
 ---
 
@@ -137,8 +168,10 @@ neueste JAR zieht.
 - [x] Ketten als Aufhängung
 - [x] Modul-System (Oraxen, PlaceholderAPI) + Oraxen-Asset-Deployer
 - [x] GUIs, Befehle, Permissions, Self-Updater
-- [ ] Konkrete Rezepte, Zutaten & Gerichte
-- [ ] Mitgelieferte Oraxen-Texturen
+- [x] Konkrete Rezepte, Zutaten & Gerichte (Start-Set)
+- [x] Mitgelieferte 16×16-Oraxen-Texturen
+- [ ] Nahrungswerte & Effekte pro Gericht
+- [ ] Eigene Crop-Block-Texturen (Reis)
 
 ---
 

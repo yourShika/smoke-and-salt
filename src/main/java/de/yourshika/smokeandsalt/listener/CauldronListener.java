@@ -53,22 +53,18 @@ public final class CauldronListener implements Listener {
         Block cauldron = findCauldron(entity);
         if (cauldron == null) return;
         if (!plugin.pluginConfig().isWorldAllowed(cauldron.getWorld().getName())) return;
-        if (plugin.cooking().isBusy(cauldron)) return;
 
-        ItemStack stack = entity.getItemStack();
         Material type = cauldron.getType();
 
         if (type == Material.WATER_CAULDRON) {
             if (!plugin.pluginConfig().cauldronWaterEnabled()) return;
             if (!Heat.hasHeatSourceBelow(cauldron)) return; // kein kochendes Wasser
-            Optional<CookingRecipe> recipe = plugin.cooking().registry().find(CookingStation.CAULDRON_WATER, stack);
-            if (recipe.isEmpty()) return;
-            if (plugin.cooking().startFloatingCook(cauldron, CookingStation.CAULDRON_WATER, recipe.get(), entity)) {
-                plugin.effects().sizzle(cauldron.getLocation(), false);
-                plugin.effects().boil(cauldron.getLocation(), 8);
-            }
+            // Zutat in den kochenden Kessel aufnehmen (Sammel-/Kombinations-Logik).
+            plugin.cauldron().tryAdd(cauldron, entity);
         } else if (type == Material.LAVA_CAULDRON) {
             if (!plugin.pluginConfig().cauldronLavaEnabled()) return;
+            if (plugin.cooking().isBusy(cauldron)) return;
+            ItemStack stack = entity.getItemStack();
             Optional<CookingRecipe> recipe = plugin.cooking().registry().find(CookingStation.CAULDRON_LAVA, stack);
             if (recipe.isEmpty()) return;
             ItemStack input = stack.clone();

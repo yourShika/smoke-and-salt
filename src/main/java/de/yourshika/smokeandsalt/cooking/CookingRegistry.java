@@ -127,6 +127,10 @@ public final class CookingRegistry {
         return byId.size();
     }
 
+    public boolean contains(String id) {
+        return id != null && byId.containsKey(id.toLowerCase(java.util.Locale.ROOT));
+    }
+
     public boolean isEmpty() {
         return byId.isEmpty();
     }

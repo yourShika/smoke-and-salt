@@ -25,3 +25,167 @@ seeds:
         - sas/crops/reis_stage5.png
         - sas/crops/reis_stage6.png
         - sas/crops/reis_stage7.png
+
+    # --- New plant seeds (grow like wheat) ---
+    tomato_seeds:
+      material: WHEAT_SEEDS
+      display-name: "#e2564aTomato Seeds"
+      provider-id: sas_tomato_seeds
+      crop-material: WHEAT
+      result-item: tomato
+      result-amount: 1
+      seed-return-min: 1
+      seed-return-max: 2
+    onion_seeds:
+      material: WHEAT_SEEDS
+      display-name: "#e0c39aOnion Seeds"
+      provider-id: sas_onion_seeds
+      crop-material: WHEAT
+      result-item: onion
+      result-amount: 1
+      seed-return-min: 1
+      seed-return-max: 2
+    lettuce_seeds:
+      material: WHEAT_SEEDS
+      display-name: "#6fbe57Lettuce Seeds"
+      provider-id: sas_lettuce_seeds
+      crop-material: WHEAT
+      result-item: lettuce
+      result-amount: 1
+      seed-return-min: 1
+      seed-return-max: 2
+    corn_seeds:
+      material: WHEAT_SEEDS
+      display-name: "#e8c447Corn Seeds"
+      provider-id: sas_corn_seeds
+      crop-material: WHEAT
+      result-item: corn
+      result-amount: 1
+      seed-return-min: 1
+      seed-return-max: 2
+    cucumber_seeds:
+      material: WHEAT_SEEDS
+      display-name: "#5fa64aCucumber Seeds"
+      provider-id: sas_cucumber_seeds
+      crop-material: WHEAT
+      result-item: cucumber
+      result-amount: 1
+      seed-return-min: 1
+      seed-return-max: 2
+    garlic_seeds:
+      material: WHEAT_SEEDS
+      display-name: "#e6e0d6Garlic Seeds"
+      provider-id: sas_garlic_seeds
+      crop-material: WHEAT
+      result-item: garlic
+      result-amount: 1
+      seed-return-min: 1
+      seed-return-max: 2
+    chili_seeds:
+      material: WHEAT_SEEDS
+      display-name: "#c62c26Chili Seeds"
+      provider-id: sas_chili_seeds
+      crop-material: WHEAT
+      result-item: chili
+      result-amount: 1
+      seed-return-min: 1
+      seed-return-max: 2
+    strawberry_seeds:
+      material: WHEAT_SEEDS
+      display-name: "#ce3030Strawberry Seeds"
+      provider-id: sas_strawberry_seeds
+      crop-material: WHEAT
+      result-item: strawberry
+      result-amount: 1
+      seed-return-min: 1
+      seed-return-max: 2
+    blueberry_seeds:
+      material: WHEAT_SEEDS
+      display-name: "#5a6ec0Blueberry Seeds"
+      provider-id: sas_blueberry_seeds
+      crop-material: WHEAT
+      result-item: blueberry
+      result-amount: 1
+      seed-return-min: 1
+      seed-return-max: 2
+    soybean_seeds:
+      material: WHEAT_SEEDS
+      display-name: "#78a848Soybean Seeds"
+      provider-id: sas_soybean_seeds
+      crop-material: WHEAT
+      result-item: soybean
+      result-amount: 1
+      seed-return-min: 1
+      seed-return-max: 2
+    cotton_seeds:
+      material: WHEAT_SEEDS
+      display-name: "#f0f0ecCotton Seeds"
+      provider-id: sas_cotton_seeds
+      crop-material: WHEAT
+      result-item: cotton
+      result-amount: 1
+      seed-return-min: 1
+      seed-return-max: 2
+    cabbage_seeds:
+      material: WHEAT_SEEDS
+      display-name: "#68a850Cabbage Seeds"
+      provider-id: sas_cabbage_seeds
+      crop-material: WHEAT
+      result-item: cabbage
+      result-amount: 1
+      seed-return-min: 1
+      seed-return-max: 2
+    bell_pepper_seeds:
+      material: WHEAT_SEEDS
+      display-name: "#c6302aBell Pepper Seeds"
+      provider-id: sas_bell_pepper_seeds
+      crop-material: WHEAT
+      result-item: bell_pepper
+      result-amount: 1
+      seed-return-min: 1
+      seed-return-max: 2
+    pineapple_seeds:
+      material: WHEAT_SEEDS
+      display-name: "#e0b440Pineapple Seeds"
+      provider-id: sas_pineapple_seeds
+      crop-material: WHEAT
+      result-item: pineapple
+      result-amount: 1
+      seed-return-min: 1
+      seed-return-max: 2
+    grapes_seeds:
+      material: WHEAT_SEEDS
+      display-name: "#8c5aaaGrapes Seeds"
+      provider-id: sas_grapes_seeds
+      crop-material: WHEAT
+      result-item: grapes
+      result-amount: 1
+      seed-return-min: 1
+      seed-return-max: 2
+    coffee_beans_seeds:
+      material: WHEAT_SEEDS
+      display-name: "#8c5e3cCoffee Beans Seeds"
+      provider-id: sas_coffee_beans_seeds
+      crop-material: WHEAT
+      result-item: coffee_beans
+      result-amount: 1
+      seed-return-min: 1
+      seed-return-max: 2
+    zucchini_seeds:
+      material: WHEAT_SEEDS
+      display-name: "#407c34Zucchini Seeds"
+      provider-id: sas_zucchini_seeds
+      crop-material: WHEAT
+      result-item: zucchini
+      result-amount: 1
+      seed-return-min: 1
+      seed-return-max: 2
+    eggplant_seeds:
+      material: WHEAT_SEEDS
+      display-name: "#7846a0Eggplant Seeds"
+      provider-id: sas_eggplant_seeds
+      crop-material: WHEAT
+      result-item: eggplant
+      result-amount: 1
+      seed-return-min: 1
+      seed-return-max: 2

@@ -8,8 +8,15 @@ GUIs, and optional Oraxen textures.
 ![Minecraft](https://img.shields.io/badge/Minecraft-26.1.2-62b47a?style=flat-square&logo=minecraft&logoColor=white)
 ![Platform](https://img.shields.io/badge/Platform-Paper%2FSpigot-f7a41d?style=flat-square)
 ![Java](https://img.shields.io/badge/Java-25-ED8B00?style=flat-square&logo=openjdk&logoColor=white)
-![Version](https://img.shields.io/badge/Version-0.3.2-blue?style=flat-square)
+![Version](https://img.shields.io/badge/Version-0.4.0-blue?style=flat-square)
 ![License](https://img.shields.io/badge/License-MIT-blue?style=flat-square)
+
+## What's new in 0.4.0
+
+- **18 new plants** to grow: Tomato, Onion, Lettuce, Corn, Cucumber, Garlic, Chili, Strawberry, Blueberry, Soybean, Cotton, Cabbage, Bell Pepper, Pineapple, Grapes, Coffee Beans, Zucchini, Eggplant — each with its own 16x16 texture, a tinted seed, and food values. Seeds grow like wheat on farmland and drop the produce (+ seeds) when harvested.
+- **Lava cauldron fix**: finished results no longer burn in the lava — they drop fire-proof onto the cauldron.
+- **Effect lore**: foods that grant an effect now list it in the item lore (e.g. `Strength I (5s)`).
+- **No more double crop texture**: the hovering custom crop model is off by default (`seeds.crop-display`), so planted crops no longer show wheat *and* a floating model at once.
 
 ## What's new in 0.3.x
 
@@ -197,8 +204,8 @@ Pushing a tag named `v*` triggers the GitHub Actions release workflow. The actio
 builds the plugin and publishes the jar as a GitHub Release asset.
 
 ```bash
-git tag v0.3.2
-git push origin v0.3.2
+git tag v0.4.0
+git push origin v0.4.0
 ```
 
 ## License

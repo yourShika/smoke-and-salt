@@ -13,7 +13,7 @@ OX = os.path.join(ROOT, "src", "main", "resources", "oraxen")
 TEX_DIR = os.path.join(OX, "pack", "textures", "sas")
 ITEMS_DIR = os.path.join(OX, "items")
 MANIFEST = os.path.join(OX, "asset-manifest.properties")
-ASSET_VERSION = "6"
+ASSET_VERSION = "7"
 
 # ---------------------------------------------------------------------------
 #  Zeichen-Primitive auf einer 16x16 RGBA-Leinwand
@@ -407,6 +407,144 @@ ITEMS = {
     "reis_crop_6": ("<#e0c877>Rice Crop 6", "PAPER", 3028, "sas/crops/reis_stage6.png"),
     "reis_crop_7": ("<#e6cf82>Rice Crop 7", "PAPER", 3029, "sas/crops/reis_stage7.png"),
 }
+
+# ---------------------------------------------------------------------------
+#  Neue Pflanzen: Ernte-Sprites + getoente Samen
+# ---------------------------------------------------------------------------
+
+def seed_sprite(img, col):
+    for (x, y) in [(6, 6), (9, 6), (7, 9), (10, 9), (8, 8), (5, 8), (11, 7)]:
+        put(img, x, y, col); put(img, x, y + 1, _mul(col, 0.78))
+    put(img, 4, 11, C(120, 150, 66)); put(img, 12, 10, C(120, 150, 66))
+
+def t_tomato(i):
+    disc(i, 8, 9, 5, C(202, 52, 44)); disc(i, 6, 7, 2, C(238, 104, 92))
+    for p in [(8, 3), (7, 4), (9, 4), (8, 5)]: put(i, *p, C(72, 142, 60))
+    put(i, 6, 4, C(72, 142, 60)); put(i, 10, 4, C(72, 142, 60))
+
+def t_onion(i):
+    disc(i, 8, 9, 5, C(224, 204, 172))
+    for x in range(5, 12): put(i, x, 6, C(206, 158, 158))
+    line(i, 6, 12, 7, 8, C(206, 184, 150)); line(i, 10, 12, 9, 8, C(206, 184, 150))
+    line(i, 8, 5, 8, 1, C(96, 162, 72)); put(i, 9, 3, C(96, 162, 72))
+    put(i, 7, 14, C(230, 230, 220)); put(i, 9, 14, C(230, 230, 220))
+
+def t_lettuce(i):
+    disc(i, 8, 9, 6, C(74, 138, 58)); disc(i, 8, 8, 4, C(110, 176, 86))
+    disc(i, 8, 8, 2, C(150, 200, 120))
+    for p in [(4, 7), (12, 7), (5, 12), (11, 12), (8, 3)]: put(i, *p, C(60, 120, 48))
+
+def t_corn(i):
+    for y in range(3, 14):
+        for x in range(6, 10):
+            put(i, x, y, C(236, 200, 72) if (x + y) % 2 == 0 else C(210, 170, 50))
+    line(i, 5, 4, 4, 12, C(84, 150, 62)); line(i, 10, 4, 11, 12, C(84, 150, 62))
+    put(i, 7, 2, C(120, 180, 90)); put(i, 8, 2, C(120, 180, 90))
+
+def t_cucumber(i):
+    for k in range(11):
+        x = 3 + k; y = 12 - k
+        put(i, x, y, C(70, 132, 52)); put(i, x, y - 1, C(96, 158, 72)); put(i, x + 1, y, C(56, 114, 44))
+    for k in range(0, 11, 3): put(i, 3 + k, 12 - k, C(150, 190, 110))
+
+def t_garlic(i):
+    disc(i, 8, 9, 5, C(240, 236, 228))
+    line(i, 8, 4, 8, 13, C(208, 202, 194)); line(i, 6, 6, 6, 13, C(220, 214, 206))
+    line(i, 10, 6, 10, 13, C(220, 214, 206)); line(i, 8, 4, 8, 1, C(200, 196, 190))
+    put(i, 7, 14, C(220, 214, 206)); put(i, 9, 14, C(220, 214, 206))
+
+def t_chili(i):
+    for k in range(9): put(i, 4 + k, 5 + (k * k) // 12, C(198, 44, 38))
+    for k in range(9): put(i, 4 + k, 6 + (k * k) // 12, C(150, 26, 22))
+    put(i, 4, 4, C(80, 150, 64)); line(i, 4, 4, 3, 2, C(80, 150, 64)); put(i, 6, 6, C(236, 96, 84))
+
+def t_strawberry(i):
+    disc(i, 8, 9, 5, C(206, 48, 44))
+    put(i, 8, 14, C(180, 34, 30)); put(i, 7, 13, C(196, 44, 40)); put(i, 9, 13, C(196, 44, 40))
+    for p in [(6, 7), (9, 8), (7, 10), (10, 10), (8, 12), (6, 11)]: put(i, *p, C(244, 220, 90))
+    for x in range(5, 12): put(i, x, 4, C(74, 146, 60))
+    put(i, 8, 3, C(96, 166, 78))
+
+def t_blueberry(i):
+    for (x, y) in [(6, 7), (10, 7), (8, 6), (7, 10), (10, 10), (9, 12)]:
+        disc(i, x, y, 2, C(70, 86, 168)); put(i, x - 1, y - 1, C(122, 142, 212)); put(i, x, y, C(48, 62, 138))
+
+def t_soybean(i):
+    for k in range(10): put(i, 4 + k, 11 - (k * k) // 10, C(120, 168, 72))
+    for (cx, cy) in [(6, 10), (8, 9), (10, 7)]: disc(i, cx, cy, 1, C(152, 194, 98))
+    put(i, 4, 12, C(96, 140, 58))
+
+def t_cotton(i):
+    for (x, y) in [(6, 7), (10, 7), (8, 6), (8, 9)]:
+        disc(i, x, y, 2, C(244, 244, 240)); put(i, x, y, C(255, 255, 252))
+    for p in [(6, 10), (8, 11), (10, 10)]: put(i, *p, C(120, 90, 54))
+
+def t_cabbage(i):
+    disc(i, 8, 9, 6, C(70, 132, 54)); disc(i, 8, 9, 4, C(104, 168, 80)); disc(i, 8, 9, 2, C(140, 192, 110))
+    for r in [(8, 4), (4, 9), (12, 9), (8, 14)]: put(i, *r, C(56, 116, 44))
+
+def t_bell_pepper(i):
+    disc(i, 7, 10, 4, C(198, 48, 42)); disc(i, 10, 10, 3, C(198, 48, 42))
+    disc(i, 6, 8, 2, C(238, 96, 84)); line(i, 8, 5, 8, 3, C(84, 150, 62)); put(i, 7, 4, C(84, 150, 62))
+
+def t_pineapple(i):
+    for y in range(6, 14):
+        for x in range(5, 12):
+            put(i, x, y, C(224, 180, 64) if (x + y) % 2 == 0 else C(196, 150, 48))
+    for p in [(8, 1), (7, 2), (9, 2), (6, 3), (10, 3), (8, 3)]: put(i, *p, C(78, 146, 60))
+    line(i, 5, 6, 11, 12, C(160, 120, 40))
+
+def t_grapes(i):
+    for (x, y) in [(6, 9), (9, 9), (7, 11), (10, 11), (8, 10), (8, 12), (11, 9)]:
+        disc(i, x, y, 1, C(120, 66, 150)); put(i, x - 1, y - 1, C(160, 110, 190))
+    put(i, 8, 6, C(96, 150, 64)); line(i, 8, 7, 8, 5, C(120, 90, 50))
+
+def t_coffee_beans(i):
+    for (x, y) in [(6, 8), (10, 9)]:
+        disc(i, x, y, 3, C(120, 74, 40)); line(i, x, y - 2, x, y + 2, C(80, 48, 26)); put(i, x - 1, y - 1, C(150, 100, 60))
+
+def t_zucchini(i):
+    for k in range(11):
+        x = 4 + k; y = 12 - k
+        put(i, x, y, C(46, 102, 40)); put(i, x, y - 1, C(64, 124, 52)); put(i, x + 1, y, C(36, 86, 32))
+    for k in range(0, 11, 3): put(i, 4 + k, 12 - k, C(96, 150, 72))
+    put(i, 4, 13, C(90, 140, 60))
+
+def t_eggplant(i):
+    disc(i, 8, 10, 5, C(96, 52, 120)); disc(i, 8, 12, 3, C(110, 64, 138))
+    disc(i, 6, 8, 2, C(150, 110, 180))
+    for p in [(8, 3), (7, 4), (9, 4), (8, 5)]: put(i, *p, C(78, 146, 60))
+    line(i, 8, 4, 8, 2, C(70, 130, 54))
+
+# id -> (display, draw, seed-tint, custom_model_data-base)
+PLANTS = [
+    ("tomato", "Tomato", t_tomato, C(200, 60, 50)),
+    ("onion", "Onion", t_onion, C(206, 184, 150)),
+    ("lettuce", "Lettuce", t_lettuce, C(90, 160, 74)),
+    ("corn", "Corn", t_corn, C(232, 196, 70)),
+    ("cucumber", "Cucumber", t_cucumber, C(90, 158, 72)),
+    ("garlic", "Garlic", t_garlic, C(230, 224, 214)),
+    ("chili", "Chili", t_chili, C(198, 44, 38)),
+    ("strawberry", "Strawberry", t_strawberry, C(206, 48, 44)),
+    ("blueberry", "Blueberry", t_blueberry, C(90, 110, 190)),
+    ("soybean", "Soybean", t_soybean, C(120, 168, 72)),
+    ("cotton", "Cotton", t_cotton, C(240, 240, 236)),
+    ("cabbage", "Cabbage", t_cabbage, C(104, 168, 80)),
+    ("bell_pepper", "Bell Pepper", t_bell_pepper, C(198, 48, 42)),
+    ("pineapple", "Pineapple", t_pineapple, C(224, 180, 64)),
+    ("grapes", "Grapes", t_grapes, C(140, 90, 170)),
+    ("coffee_beans", "Coffee Beans", t_coffee_beans, C(140, 94, 60)),
+    ("zucchini", "Zucchini", t_zucchini, C(64, 124, 52)),
+    ("eggplant", "Eggplant", t_eggplant, C(120, 70, 150)),
+]
+
+_cmd = 3030
+for _pid, _pname, _pdraw, _scol in PLANTS:
+    DRAW[_pid] = _pdraw
+    DRAW[_pid + "_seeds"] = (lambda col: (lambda im: seed_sprite(im, col)))(_scol)
+    ITEMS[_pid] = ("<white>" + _pname, "PAPER", _cmd)
+    ITEMS[_pid + "_seeds"] = ("<white>" + _pname + " Seeds", "WHEAT_SEEDS", _cmd + 1)
+    _cmd += 2
 
 OUTLINE = C(60, 44, 32, 255)
 

@@ -205,9 +205,10 @@ public final class ItemRegistry {
         ItemMeta meta = item.getItemMeta();
         if (meta != null) {
             meta.displayName(Text.line(def.displayName()));
-            if (!def.lore().isEmpty()) {
-                List<Component> lore = new ArrayList<>();
-                for (String s : def.lore()) lore.add(Text.line(s));
+            List<Component> lore = new ArrayList<>();
+            for (String s : def.lore()) lore.add(Text.line(s));
+            appendEffectLore(lore, def.food());
+            if (!lore.isEmpty()) {
                 meta.lore(lore);
             }
             meta.getPersistentDataContainer().set(keys.itemId, PersistentDataType.STRING, def.id());
@@ -221,6 +222,41 @@ public final class ItemRegistry {
         plugin.moduleManager().applyExternalModel(item, def.providerId());
         applyFood(item, def.food());
         return item;
+    }
+
+    /** Ergaenzt die Lore um eine lesbare Auflistung der Ess-Effekte. */
+    private void appendEffectLore(List<Component> lore, FoodProfile food) {
+        if (food == null || food.effects().isEmpty()) return;
+        lore.add(Text.line(" "));
+        lore.add(Text.line("<gray>When eaten:"));
+        for (PotionEffect effect : food.effects()) {
+            String name = prettyEffect(effect.getType());
+            String level = roman(effect.getAmplifier() + 1);
+            String seconds = String.valueOf(Math.round(effect.getDuration() / 20.0));
+            lore.add(Text.line("<blue>• " + name + " " + level + " <dark_gray>(" + seconds + "s)"));
+        }
+    }
+
+    private String prettyEffect(PotionEffectType type) {
+        String key = type.getKey().getKey().replace('_', ' ');
+        String[] parts = key.split(" ");
+        StringBuilder out = new StringBuilder();
+        for (String p : parts) {
+            if (p.isEmpty()) continue;
+            out.append(Character.toUpperCase(p.charAt(0))).append(p.substring(1)).append(' ');
+        }
+        return out.toString().trim();
+    }
+
+    private String roman(int n) {
+        return switch (n) {
+            case 1 -> "I";
+            case 2 -> "II";
+            case 3 -> "III";
+            case 4 -> "IV";
+            case 5 -> "V";
+            default -> String.valueOf(n);
+        };
     }
 
     private void applyFood(ItemStack item, FoodProfile food) {

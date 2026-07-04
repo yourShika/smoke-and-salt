@@ -289,3 +289,363 @@ sas_reis_crop_7:
       - sas/crops/reis_stage7.png
     custom_model_data: 3029
 
+sas_tomato:
+  displayname: "<white>Tomato"
+  material: PAPER
+  Pack:
+    generate_model: true
+    parent_model: "item/generated"
+    textures:
+      - sas/tomato.png
+    custom_model_data: 3030
+
+sas_tomato_seeds:
+  displayname: "<white>Tomato Seeds"
+  material: WHEAT_SEEDS
+  Pack:
+    generate_model: true
+    parent_model: "item/generated"
+    textures:
+      - sas/tomato_seeds.png
+    custom_model_data: 3031
+
+sas_onion:
+  displayname: "<white>Onion"
+  material: PAPER
+  Pack:
+    generate_model: true
+    parent_model: "item/generated"
+    textures:
+      - sas/onion.png
+    custom_model_data: 3032
+
+sas_onion_seeds:
+  displayname: "<white>Onion Seeds"
+  material: WHEAT_SEEDS
+  Pack:
+    generate_model: true
+    parent_model: "item/generated"
+    textures:
+      - sas/onion_seeds.png
+    custom_model_data: 3033
+
+sas_lettuce:
+  displayname: "<white>Lettuce"
+  material: PAPER
+  Pack:
+    generate_model: true
+    parent_model: "item/generated"
+    textures:
+      - sas/lettuce.png
+    custom_model_data: 3034
+
+sas_lettuce_seeds:
+  displayname: "<white>Lettuce Seeds"
+  material: WHEAT_SEEDS
+  Pack:
+    generate_model: true
+    parent_model: "item/generated"
+    textures:
+      - sas/lettuce_seeds.png
+    custom_model_data: 3035
+
+sas_corn:
+  displayname: "<white>Corn"
+  material: PAPER
+  Pack:
+    generate_model: true
+    parent_model: "item/generated"
+    textures:
+      - sas/corn.png
+    custom_model_data: 3036
+
+sas_corn_seeds:
+  displayname: "<white>Corn Seeds"
+  material: WHEAT_SEEDS
+  Pack:
+    generate_model: true
+    parent_model: "item/generated"
+    textures:
+      - sas/corn_seeds.png
+    custom_model_data: 3037
+
+sas_cucumber:
+  displayname: "<white>Cucumber"
+  material: PAPER
+  Pack:
+    generate_model: true
+    parent_model: "item/generated"
+    textures:
+      - sas/cucumber.png
+    custom_model_data: 3038
+
+sas_cucumber_seeds:
+  displayname: "<white>Cucumber Seeds"
+  material: WHEAT_SEEDS
+  Pack:
+    generate_model: true
+    parent_model: "item/generated"
+    textures:
+      - sas/cucumber_seeds.png
+    custom_model_data: 3039
+
+sas_garlic:
+  displayname: "<white>Garlic"
+  material: PAPER
+  Pack:
+    generate_model: true
+    parent_model: "item/generated"
+    textures:
+      - sas/garlic.png
+    custom_model_data: 3040
+
+sas_garlic_seeds:
+  displayname: "<white>Garlic Seeds"
+  material: WHEAT_SEEDS
+  Pack:
+    generate_model: true
+    parent_model: "item/generated"
+    textures:
+      - sas/garlic_seeds.png
+    custom_model_data: 3041
+
+sas_chili:
+  displayname: "<white>Chili"
+  material: PAPER
+  Pack:
+    generate_model: true
+    parent_model: "item/generated"
+    textures:
+      - sas/chili.png
+    custom_model_data: 3042
+
+sas_chili_seeds:
+  displayname: "<white>Chili Seeds"
+  material: WHEAT_SEEDS
+  Pack:
+    generate_model: true
+    parent_model: "item/generated"
+    textures:
+      - sas/chili_seeds.png
+    custom_model_data: 3043
+
+sas_strawberry:
+  displayname: "<white>Strawberry"
+  material: PAPER
+  Pack:
+    generate_model: true
+    parent_model: "item/generated"
+    textures:
+      - sas/strawberry.png
+    custom_model_data: 3044
+
+sas_strawberry_seeds:
+  displayname: "<white>Strawberry Seeds"
+  material: WHEAT_SEEDS
+  Pack:
+    generate_model: true
+    parent_model: "item/generated"
+    textures:
+      - sas/strawberry_seeds.png
+    custom_model_data: 3045
+
+sas_blueberry:
+  displayname: "<white>Blueberry"
+  material: PAPER
+  Pack:
+    generate_model: true
+    parent_model: "item/generated"
+    textures:
+      - sas/blueberry.png
+    custom_model_data: 3046
+
+sas_blueberry_seeds:
+  displayname: "<white>Blueberry Seeds"
+  material: WHEAT_SEEDS
+  Pack:
+    generate_model: true
+    parent_model: "item/generated"
+    textures:
+      - sas/blueberry_seeds.png
+    custom_model_data: 3047
+
+sas_soybean:
+  displayname: "<white>Soybean"
+  material: PAPER
+  Pack:
+    generate_model: true
+    parent_model: "item/generated"
+    textures:
+      - sas/soybean.png
+    custom_model_data: 3048
+
+sas_soybean_seeds:
+  displayname: "<white>Soybean Seeds"
+  material: WHEAT_SEEDS
+  Pack:
+    generate_model: true
+    parent_model: "item/generated"
+    textures:
+      - sas/soybean_seeds.png
+    custom_model_data: 3049
+
+sas_cotton:
+  displayname: "<white>Cotton"
+  material: PAPER
+  Pack:
+    generate_model: true
+    parent_model: "item/generated"
+    textures:
+      - sas/cotton.png
+    custom_model_data: 3050
+
+sas_cotton_seeds:
+  displayname: "<white>Cotton Seeds"
+  material: WHEAT_SEEDS
+  Pack:
+    generate_model: true
+    parent_model: "item/generated"
+    textures:
+      - sas/cotton_seeds.png
+    custom_model_data: 3051
+
+sas_cabbage:
+  displayname: "<white>Cabbage"
+  material: PAPER
+  Pack:
+    generate_model: true
+    parent_model: "item/generated"
+    textures:
+      - sas/cabbage.png
+    custom_model_data: 3052
+
+sas_cabbage_seeds:
+  displayname: "<white>Cabbage Seeds"
+  material: WHEAT_SEEDS
+  Pack:
+    generate_model: true
+    parent_model: "item/generated"
+    textures:
+      - sas/cabbage_seeds.png
+    custom_model_data: 3053
+
+sas_bell_pepper:
+  displayname: "<white>Bell Pepper"
+  material: PAPER
+  Pack:
+    generate_model: true
+    parent_model: "item/generated"
+    textures:
+      - sas/bell_pepper.png
+    custom_model_data: 3054
+
+sas_bell_pepper_seeds:
+  displayname: "<white>Bell Pepper Seeds"
+  material: WHEAT_SEEDS
+  Pack:
+    generate_model: true
+    parent_model: "item/generated"
+    textures:
+      - sas/bell_pepper_seeds.png
+    custom_model_data: 3055
+
+sas_pineapple:
+  displayname: "<white>Pineapple"
+  material: PAPER
+  Pack:
+    generate_model: true
+    parent_model: "item/generated"
+    textures:
+      - sas/pineapple.png
+    custom_model_data: 3056
+
+sas_pineapple_seeds:
+  displayname: "<white>Pineapple Seeds"
+  material: WHEAT_SEEDS
+  Pack:
+    generate_model: true
+    parent_model: "item/generated"
+    textures:
+      - sas/pineapple_seeds.png
+    custom_model_data: 3057
+
+sas_grapes:
+  displayname: "<white>Grapes"
+  material: PAPER
+  Pack:
+    generate_model: true
+    parent_model: "item/generated"
+    textures:
+      - sas/grapes.png
+    custom_model_data: 3058
+
+sas_grapes_seeds:
+  displayname: "<white>Grapes Seeds"
+  material: WHEAT_SEEDS
+  Pack:
+    generate_model: true
+    parent_model: "item/generated"
+    textures:
+      - sas/grapes_seeds.png
+    custom_model_data: 3059
+
+sas_coffee_beans:
+  displayname: "<white>Coffee Beans"
+  material: PAPER
+  Pack:
+    generate_model: true
+    parent_model: "item/generated"
+    textures:
+      - sas/coffee_beans.png
+    custom_model_data: 3060
+
+sas_coffee_beans_seeds:
+  displayname: "<white>Coffee Beans Seeds"
+  material: WHEAT_SEEDS
+  Pack:
+    generate_model: true
+    parent_model: "item/generated"
+    textures:
+      - sas/coffee_beans_seeds.png
+    custom_model_data: 3061
+
+sas_zucchini:
+  displayname: "<white>Zucchini"
+  material: PAPER
+  Pack:
+    generate_model: true
+    parent_model: "item/generated"
+    textures:
+      - sas/zucchini.png
+    custom_model_data: 3062
+
+sas_zucchini_seeds:
+  displayname: "<white>Zucchini Seeds"
+  material: WHEAT_SEEDS
+  Pack:
+    generate_model: true
+    parent_model: "item/generated"
+    textures:
+      - sas/zucchini_seeds.png
+    custom_model_data: 3063
+
+sas_eggplant:
+  displayname: "<white>Eggplant"
+  material: PAPER
+  Pack:
+    generate_model: true
+    parent_model: "item/generated"
+    textures:
+      - sas/eggplant.png
+    custom_model_data: 3064
+
+sas_eggplant_seeds:
+  displayname: "<white>Eggplant Seeds"
+  material: WHEAT_SEEDS
+  Pack:
+    generate_model: true
+    parent_model: "item/generated"
+    textures:
+      - sas/eggplant_seeds.png
+    custom_model_data: 3065
+

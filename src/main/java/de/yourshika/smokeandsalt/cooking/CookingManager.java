@@ -148,8 +148,7 @@ public final class CookingManager {
         }
         ItemStack result = registry.buildResult(cook.recipe());
         if (result != null && loc.getWorld() != null) {
-            Item drop = loc.getWorld().dropItem(loc.clone().add(0.5, 1.1, 0.5), result);
-            drop.setVelocity(new Vector(0, 0.15, 0));
+            dropSafe(loc.clone().add(0.5, 1.1, 0.5), result);
         }
         effects.finish(loc);
     }
@@ -162,8 +161,20 @@ public final class CookingManager {
             return;
         }
         if (cook.input() != null && loc.getWorld() != null) {
-            loc.getWorld().dropItem(loc.clone().add(0.5, 1.1, 0.5), cook.input().clone());
+            dropSafe(loc.clone().add(0.5, 1.1, 0.5), cook.input().clone());
         }
+    }
+
+    /**
+     * Gibt ein Item sicher ueber der Station aus. Der Lavakessel steht in der Lava;
+     * damit das Ergebnis nicht verbrennt, wird die Item-Entity unverwundbar gemacht
+     * und nur minimal nach oben gestossen.
+     */
+    private void dropSafe(Location loc, ItemStack stack) {
+        if (loc.getWorld() == null) return;
+        Item drop = loc.getWorld().dropItem(loc, stack);
+        drop.setVelocity(new Vector(0, 0.08, 0));
+        drop.setInvulnerable(true);
     }
 
     /**

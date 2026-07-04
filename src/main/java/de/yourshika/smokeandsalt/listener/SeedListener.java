@@ -210,6 +210,9 @@ public final class SeedListener implements Listener {
 
     private void spawnOrUpdateCropDisplay(Block crop, SeedDefinition def, int stage) {
         removeCropDisplays(crop);
+        // Standardmaessig aus: sonst sieht man Weizen UND das schwebende Custom-Modell
+        // (doppelte Textur). Wer die Custom-Optik will, aktiviert seeds.crop-display.
+        if (!plugin.getConfig().getBoolean("seeds.crop-display", false)) return;
         String providerId = cropProviderId(def, stage);
         if (providerId == null || !plugin.moduleManager().isActive("oraxen")) return;
 

@@ -232,3 +232,143 @@ items:
     display-name: "<#f7f3e3>Rice"
     lore: ["<dark_gray>Smoke & Salt - Ingredient"]
     provider-id: sas_reis
+
+  # --- New plants (harvest produce) ---
+  tomato:
+    material: PAPER
+    display-name: "#e2564aTomato"
+    lore: ["<dark_gray>Smoke & Salt - Produce"]
+    provider-id: sas_tomato
+    food:
+      nutrition: 2
+      saturation: 1.6
+  onion:
+    material: PAPER
+    display-name: "#e0c39aOnion"
+    lore: ["<dark_gray>Smoke & Salt - Produce"]
+    provider-id: sas_onion
+    food:
+      nutrition: 1
+      saturation: 0.6
+  lettuce:
+    material: PAPER
+    display-name: "#6fbe57Lettuce"
+    lore: ["<dark_gray>Smoke & Salt - Produce"]
+    provider-id: sas_lettuce
+    food:
+      nutrition: 2
+      saturation: 1.2
+  corn:
+    material: PAPER
+    display-name: "#e8c447Corn"
+    lore: ["<dark_gray>Smoke & Salt - Produce"]
+    provider-id: sas_corn
+    food:
+      nutrition: 3
+      saturation: 3.6
+  cucumber:
+    material: PAPER
+    display-name: "#5fa64aCucumber"
+    lore: ["<dark_gray>Smoke & Salt - Produce"]
+    provider-id: sas_cucumber
+    food:
+      nutrition: 2
+      saturation: 1.6
+  garlic:
+    material: PAPER
+    display-name: "#e6e0d6Garlic"
+    lore: ["<dark_gray>Smoke & Salt - Produce"]
+    provider-id: sas_garlic
+    food:
+      nutrition: 1
+      saturation: 0.6
+  chili:
+    material: PAPER
+    display-name: "#c62c26Chili"
+    lore: ["<dark_gray>Smoke & Salt - Produce"]
+    provider-id: sas_chili
+    food:
+      nutrition: 1
+      saturation: 0.6
+  strawberry:
+    material: PAPER
+    display-name: "#ce3030Strawberry"
+    lore: ["<dark_gray>Smoke & Salt - Produce"]
+    provider-id: sas_strawberry
+    food:
+      nutrition: 2
+      saturation: 2.4
+  blueberry:
+    material: PAPER
+    display-name: "#5a6ec0Blueberry"
+    lore: ["<dark_gray>Smoke & Salt - Produce"]
+    provider-id: sas_blueberry
+    food:
+      nutrition: 2
+      saturation: 2.4
+  soybean:
+    material: PAPER
+    display-name: "#78a848Soybean"
+    lore: ["<dark_gray>Smoke & Salt - Produce"]
+    provider-id: sas_soybean
+    food:
+      nutrition: 2
+      saturation: 1.6
+  cotton:
+    material: PAPER
+    display-name: "#f0f0ecCotton"
+    lore: ["<dark_gray>Smoke & Salt - Produce"]
+    provider-id: sas_cotton
+  cabbage:
+    material: PAPER
+    display-name: "#68a850Cabbage"
+    lore: ["<dark_gray>Smoke & Salt - Produce"]
+    provider-id: sas_cabbage
+    food:
+      nutrition: 3
+      saturation: 2.4
+  bell_pepper:
+    material: PAPER
+    display-name: "#c6302aBell Pepper"
+    lore: ["<dark_gray>Smoke & Salt - Produce"]
+    provider-id: sas_bell_pepper
+    food:
+      nutrition: 2
+      saturation: 1.6
+  pineapple:
+    material: PAPER
+    display-name: "#e0b440Pineapple"
+    lore: ["<dark_gray>Smoke & Salt - Produce"]
+    provider-id: sas_pineapple
+    food:
+      nutrition: 3
+      saturation: 3.6
+  grapes:
+    material: PAPER
+    display-name: "#8c5aaaGrapes"
+    lore: ["<dark_gray>Smoke & Salt - Produce"]
+    provider-id: sas_grapes
+    food:
+      nutrition: 2
+      saturation: 2.4
+  coffee_beans:
+    material: PAPER
+    display-name: "#8c5e3cCoffee Beans"
+    lore: ["<dark_gray>Smoke & Salt - Produce"]
+    provider-id: sas_coffee_beans
+  zucchini:
+    material: PAPER
+    display-name: "#407c34Zucchini"
+    lore: ["<dark_gray>Smoke & Salt - Produce"]
+    provider-id: sas_zucchini
+    food:
+      nutrition: 2
+      saturation: 1.6
+  eggplant:
+    material: PAPER
+    display-name: "#7846a0Eggplant"
+    lore: ["<dark_gray>Smoke & Salt - Produce"]
+    provider-id: sas_eggplant
+    food:
+      nutrition: 2
+      saturation: 1.6

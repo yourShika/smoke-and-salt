@@ -8,10 +8,17 @@ GUIs, and optional Oraxen textures.
 ![Minecraft](https://img.shields.io/badge/Minecraft-26.1.2-62b47a?style=flat-square&logo=minecraft&logoColor=white)
 ![Platform](https://img.shields.io/badge/Platform-Paper%2FSpigot-f7a41d?style=flat-square)
 ![Java](https://img.shields.io/badge/Java-25-ED8B00?style=flat-square&logo=openjdk&logoColor=white)
-![Version](https://img.shields.io/badge/Version-0.3.0-blue?style=flat-square)
+![Version](https://img.shields.io/badge/Version-0.3.1-blue?style=flat-square)
 ![License](https://img.shields.io/badge/License-MIT-blue?style=flat-square)
 
 ## What's new in 0.3.x
+
+### 0.3.1
+
+- Rice now shows a full 8-stage growth (`reis_stage0..7`) mapped onto wheat's ages, instead of only 4 stages.
+- Burger and cheeseburger textures reworked with a rounded, domed silhouette instead of a hard rectangle.
+
+### 0.3.0
 
 - All bundled dishes now use real food data for hunger and saturation.
 - Fried Egg is no longer throwable and is now a proper edible custom item.
@@ -181,8 +188,8 @@ Pushing a tag named `v*` triggers the GitHub Actions release workflow. The actio
 builds the plugin and publishes the jar as a GitHub Release asset.
 
 ```bash
-git tag v0.3.0
-git push origin v0.3.0
+git tag v0.3.1
+git push origin v0.3.1
 ```
 
 ## License

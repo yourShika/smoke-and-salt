@@ -911,7 +911,7 @@ sas_kirschlimo:
 
 sas_oel:
   displayname: "<#e8c34a>Oil"
-  material: HONEY_BOTTLE
+  material: PAPER
   Pack:
     generate_model: true
     parent_model: "item/generated"

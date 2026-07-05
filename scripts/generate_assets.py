@@ -13,7 +13,7 @@ OX = os.path.join(ROOT, "src", "main", "resources", "oraxen")
 TEX_DIR = os.path.join(OX, "pack", "textures", "sas")
 ITEMS_DIR = os.path.join(OX, "items")
 MANIFEST = os.path.join(OX, "asset-manifest.properties")
-ASSET_VERSION = "11"
+ASSET_VERSION = "12"
 
 # ---------------------------------------------------------------------------
 #  Zeichen-Primitive auf einer 16x16 RGBA-Leinwand
@@ -866,7 +866,7 @@ NEW_DISHES = [
     ("onigiri", "<#f2efe6>Onigiri", "PAPER", 3093, t_onigiri),
     ("apfelsaft", "<#e2a33a>Apple Juice", "HONEY_BOTTLE", 3094, t_apfelsaft),
     ("kirschlimo", "<#f0668a>Cherry Lemonade", "HONEY_BOTTLE", 3095, t_kirschlimo),
-    ("oel", "<#e8c34a>Oil", "HONEY_BOTTLE", 3096, t_oel),
+    ("oel", "<#e8c34a>Oil", "PAPER", 3096, t_oel),
     ("tintenfischringe", "<#d9b48a>Calamari Rings", "PAPER", 3097, t_tintenfischringe),
     ("chips", "<#f0d060>Chips", "PAPER", 3098, t_chips),
     ("creeper_keks", "<#4caf50>Creeper Cookie", "COOKIE", 3099, t_creeper_keks),

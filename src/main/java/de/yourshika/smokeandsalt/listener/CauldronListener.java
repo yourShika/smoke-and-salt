@@ -13,6 +13,8 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.entity.EntityCombustEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.entity.EntityPickupItemEvent;
+import org.bukkit.event.inventory.InventoryPickupItemEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.EquipmentSlot;
@@ -124,14 +126,38 @@ public final class CauldronListener implements Listener {
 
     // --- Hilfen --------------------------------------------------------------
 
+    /** Aufgehaengte Anzeige-Items nicht von Spielern/Mobs aufsammeln lassen. */
+    @EventHandler(ignoreCancelled = true)
+    public void onPickup(EntityPickupItemEvent event) {
+        if (plugin.cooking().isFloatingCook(event.getItem())) {
+            event.setCancelled(true);
+        }
+    }
+
+    /** ... und auch nicht von Hoppern aufsaugen lassen. */
+    @EventHandler(ignoreCancelled = true)
+    public void onHopper(InventoryPickupItemEvent event) {
+        if (plugin.cooking().isFloatingCook(event.getItem())) {
+            event.setCancelled(true);
+        }
+    }
+
     /** Die zustaendige Station fuer diesen Block (oder {@code null}). */
     private CauldronStation stationFor(Block block) {
         Material type = block.getType();
-        if (type == Material.WATER_CAULDRON && plugin.pluginConfig().cauldronWaterEnabled()) {
+        boolean water = plugin.pluginConfig().cauldronWaterEnabled();
+        boolean lava = plugin.pluginConfig().cauldronLavaEnabled();
+        if (type == Material.WATER_CAULDRON && water) {
             return plugin.cauldron();
         }
-        if (type == Material.LAVA_CAULDRON && plugin.pluginConfig().cauldronLavaEnabled()) {
+        if (type == Material.LAVA_CAULDRON && lava) {
             return plugin.lavaCauldron();
+        }
+        if (type == Material.CAULDRON) {
+            // Leerer Kessel: dem bestehenden Container folgen, sonst Wasser bevorzugen.
+            if (lava && plugin.lavaCauldron().hasStation(block)) return plugin.lavaCauldron();
+            if (water) return plugin.cauldron();
+            if (lava) return plugin.lavaCauldron();
         }
         return null;
     }
@@ -145,7 +171,9 @@ public final class CauldronListener implements Listener {
     }
 
     private boolean isCauldron(Block block) {
-        return block.getType() == Material.WATER_CAULDRON || block.getType() == Material.LAVA_CAULDRON;
+        return block.getType() == Material.WATER_CAULDRON
+                || block.getType() == Material.LAVA_CAULDRON
+                || block.getType() == Material.CAULDRON;
     }
 
     private boolean protectLavaIngredient(Item item) {

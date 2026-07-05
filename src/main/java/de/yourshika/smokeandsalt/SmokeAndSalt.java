@@ -53,6 +53,7 @@ public final class SmokeAndSalt extends JavaPlugin {
     private CookingManager cooking;
     private de.yourshika.smokeandsalt.cooking.StationRecipeManager stationRecipes;
     private de.yourshika.smokeandsalt.cooking.CauldronManager cauldron;
+    private de.yourshika.smokeandsalt.cooking.LavaCauldronManager lavaCauldron;
     private de.yourshika.smokeandsalt.crafting.CraftingManager crafting;
     private ChainManager chains;
     private Effects effects;
@@ -82,6 +83,7 @@ public final class SmokeAndSalt extends JavaPlugin {
         this.cooking = new CookingManager(this, cookingRegistry, effects, keys);
         this.stationRecipes = new de.yourshika.smokeandsalt.cooking.StationRecipeManager(this);
         this.cauldron = new de.yourshika.smokeandsalt.cooking.CauldronManager(this);
+        this.lavaCauldron = new de.yourshika.smokeandsalt.cooking.LavaCauldronManager(this);
         this.crafting = new de.yourshika.smokeandsalt.crafting.CraftingManager(this);
         this.updater = new GitHubUpdater(this);
 
@@ -96,6 +98,10 @@ public final class SmokeAndSalt extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(new GuiListener(), this);
         Bukkit.getPluginManager().registerEvents(new CuttingListener(this), this);
         Bukkit.getPluginManager().registerEvents(new CauldronListener(this), this);
+        Bukkit.getPluginManager().registerEvents(
+                new de.yourshika.smokeandsalt.listener.CauldronMenuListener(this), this);
+        Bukkit.getPluginManager().registerEvents(
+                new de.yourshika.smokeandsalt.listener.ConsumeEffectListener(this), this);
         Bukkit.getPluginManager().registerEvents(new CustomItemSafetyListener(this), this);
         Bukkit.getPluginManager().registerEvents(new SeedListener(this, seeds), this);
         Bukkit.getPluginManager().registerEvents(new ChainListener(this, chains), this);
@@ -115,6 +121,7 @@ public final class SmokeAndSalt extends JavaPlugin {
         // Koch-Tick + Ambient-Kochen.
         cooking.start();
         cauldron.start();
+        lavaCauldron.start();
         crops.start();
         chains.start();
         // Verwaiste Float-/Behang-Items aus fruehen Crashes aufraeumen.
@@ -133,6 +140,7 @@ public final class SmokeAndSalt extends JavaPlugin {
         if (cooking != null) cooking.stop();
         if (crops != null) crops.stop();
         if (cauldron != null) cauldron.stop();
+        if (lavaCauldron != null) lavaCauldron.stop();
         if (crafting != null) crafting.unregisterAll();
         if (stationRecipes != null) stationRecipes.unregisterAll();
         if (chains != null) chains.stop();
@@ -161,6 +169,7 @@ public final class SmokeAndSalt extends JavaPlugin {
         seeds.loadFromConfig();
         cookingRegistry.loadFromConfig();
         cauldron.clearRecipes();
+        lavaCauldron.clearRecipes();
         crafting.unregisterAll();
         crafting.disableVanillaBreadRecipe();
         stationRecipes.unregisterAll();
@@ -280,6 +289,7 @@ public final class SmokeAndSalt extends JavaPlugin {
     public ModuleManager moduleManager() { return moduleManager; }
     public CookingManager cooking() { return cooking; }
     public de.yourshika.smokeandsalt.cooking.CauldronManager cauldron() { return cauldron; }
+    public de.yourshika.smokeandsalt.cooking.LavaCauldronManager lavaCauldron() { return lavaCauldron; }
     public de.yourshika.smokeandsalt.crafting.CraftingManager crafting() { return crafting; }
     public ChainManager chains() { return chains; }
     public Effects effects() { return effects; }

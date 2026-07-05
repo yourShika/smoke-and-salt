@@ -30,6 +30,7 @@ public final class DefaultContent {
         registerSeeds(plugin);
         registerStationRecipes(plugin);
         registerCauldronRecipes(plugin);
+        registerLavaCauldronRecipes(plugin);
         registerCraftingRecipes(plugin);
     }
 
@@ -76,6 +77,31 @@ public final class DefaultContent {
         item(plugin, "kandierter_apfel", Material.APPLE, "<#e74c3c>Candy Apple", "Snack",
                 FoodProfile.withEffect(5, 4.0f, effect(PotionEffectType.SPEED, 120)));
         item(plugin, "reis", Material.PAPER, "<#f7f3e3>Rice", "Ingredient");
+
+        // --- 0.8.0: neue Gerichte ------------------------------------------
+        item(plugin, "beerenkekse", Material.COOKIE, "<#d98a4a>Berry Cookies", "Snack",
+                FoodProfile.withEffect(4, 3.2f, effect(PotionEffectType.SPEED, 80)));
+        item(plugin, "kaesekuchen_beeren", Material.PAPER, "<#f3d9a0>Cheesecake with Berry Sauce", "Dish",
+                FoodProfile.withEffect(8, 9.6f, effect(PotionEffectType.REGENERATION, 80)));
+        item(plugin, "sushi", Material.PAPER, "<#e8e0d0>Sushi", "Dish",
+                FoodProfile.withEffect(6, 7.2f, effect(PotionEffectType.DOLPHINS_GRACE, 100)));
+        item(plugin, "sakura_sushi", Material.PAPER, "<#f4c2d0>Sakura Sushi", "Dish",
+                FoodProfile.withEffect(5, 6.0f, effect(PotionEffectType.LUCK, 160)));
+        item(plugin, "onigiri", Material.PAPER, "<#f2efe6>Onigiri", "Dish",
+                FoodProfile.of(7, 8.4f));
+        item(plugin, "apfelsaft", Material.HONEY_BOTTLE, "<#e2a33a>Apple Juice", "Drink",
+                FoodProfile.withEffect(3, 2.4f, effect(PotionEffectType.REGENERATION, 60)));
+        item(plugin, "kirschlimo", Material.HONEY_BOTTLE, "<#f0668a>Cherry Lemonade", "Drink",
+                FoodProfile.withEffect(3, 2.0f, effect(PotionEffectType.SPEED, 100)));
+        item(plugin, "oel", Material.HONEY_BOTTLE, "<#e8c34a>Oil", "Ingredient");
+        item(plugin, "tintenfischringe", Material.PAPER, "<#d9b48a>Calamari Rings", "Snack",
+                FoodProfile.withEffect(6, 7.2f, effect(PotionEffectType.WATER_BREATHING, 100)));
+        item(plugin, "chips", Material.PAPER, "<#f0d060>Chips", "Snack",
+                FoodProfile.of(5, 5.2f));
+        item(plugin, "creeper_keks", Material.COOKIE, "<#4caf50>Creeper Cookie", "Snack",
+                FoodProfile.withEffect(5, 3.0f, effect(PotionEffectType.SPEED, 80)));
+        item(plugin, "schmalzgebaeck", Material.PAPER, "<#e8c890>Lard Pastry", "Snack",
+                FoodProfile.withEffect(6, 6.4f, effect(PotionEffectType.SPEED, 80)));
     }
 
     private static PotionEffect effect(PotionEffectType type, int durationTicks) {
@@ -121,9 +147,6 @@ public final class DefaultContent {
         campfire(reg, "campfire_marshmallow", b -> b.inputMaterial(Material.SUGAR).resultItem("marshmallow").duration(120));
         campfire(reg, "campfire_kaiserbroetchen", b -> b.inputItem("teig").resultItem("kaiserbroetchen").duration(160));
 
-        // Lavakessel
-        lava(reg, "lava_pommes", b -> b.inputMaterial(Material.POTATO).resultItem("pommes").duration(140));
-
         // Schneiden
         cutting(reg, "cutting_chicken_nuggets", b -> b.inputMaterial(Material.COOKED_CHICKEN)
                 .resultItem("chicken_nuggets").resultAmount(3).duration(60));
@@ -141,11 +164,6 @@ public final class DefaultContent {
     private static void campfire(de.yourshika.smokeandsalt.cooking.CookingRegistry reg, String id, Cfg cfg) {
         if (reg.contains(id)) return;
         reg.register(cfg.apply(CookingRecipe.builder(id, CookingStation.CAMPFIRE)).build());
-    }
-
-    private static void lava(de.yourshika.smokeandsalt.cooking.CookingRegistry reg, String id, Cfg cfg) {
-        if (reg.contains(id)) return;
-        reg.register(cfg.apply(CookingRecipe.builder(id, CookingStation.CAULDRON_LAVA)).build());
     }
 
     private static void cutting(de.yourshika.smokeandsalt.cooking.CookingRegistry reg, String id, Cfg cfg) {
@@ -177,7 +195,47 @@ public final class DefaultContent {
                         Ingredient.material(Material.CARROT, "Carrot"),
                         Ingredient.material(Material.KELP, "Kelp"),
                         Ingredient.material(Material.COD, "Fish")),
-                ResultSpec.item("misosuppe", 1), 260, 0, true));
+                ResultSpec.item("misosuppe", 1), 260, 1));
+
+        // 0.8.0: Getraenke und Oel
+        if (!c.contains("cauldron_apfelsaft")) c.register(new CauldronRecipe("cauldron_apfelsaft",
+                List.of(Ingredient.material(Material.APPLE, "Apple")),
+                ResultSpec.item("apfelsaft", 1), 120, 1));
+        if (!c.contains("cauldron_kirschlimo")) c.register(new CauldronRecipe("cauldron_kirschlimo",
+                List.of(Ingredient.material(Material.PINK_PETALS, "Cherry Blossom"),
+                        Ingredient.material(Material.SUGAR, "Sugar")),
+                ResultSpec.item("kirschlimo", 1), 140, 1));
+        if (!c.contains("cauldron_oel")) c.register(new CauldronRecipe("cauldron_oel",
+                List.of(Ingredient.material(Material.SUNFLOWER, "Sunflower")),
+                ResultSpec.item("oel", 1), 160, 1));
+    }
+
+    // --- Lavakessel (mehrere Zutaten, Frittieren) ---------------------------
+
+    private static void registerLavaCauldronRecipes(SmokeAndSalt plugin) {
+        var l = plugin.lavaCauldron();
+        // Mehr-Zutaten-Rezepte zuerst, damit sie vor dem Ein-Zutat-Rezept greifen.
+        if (!l.contains("lava_tintenfischringe")) l.register(new CauldronRecipe("lava_tintenfischringe",
+                List.of(Ingredient.item("oel", "Oil"),
+                        Ingredient.material(Material.INK_SAC, "Squid")),
+                ResultSpec.item("tintenfischringe", 1), 160));
+        if (!l.contains("lava_chips")) l.register(new CauldronRecipe("lava_chips",
+                List.of(Ingredient.item("oel", "Oil"),
+                        Ingredient.material(Material.POTATO, "Potato")),
+                ResultSpec.item("chips", 1), 140));
+        if (!l.contains("lava_creeper_keks")) l.register(new CauldronRecipe("lava_creeper_keks",
+                List.of(Ingredient.item("oel", "Oil"),
+                        Ingredient.item("teig", "Dough"),
+                        Ingredient.material(Material.GUNPOWDER, "Gunpowder")),
+                ResultSpec.item("creeper_keks", 1), 160));
+        if (!l.contains("lava_schmalzgebaeck")) l.register(new CauldronRecipe("lava_schmalzgebaeck",
+                List.of(Ingredient.item("oel", "Oil"),
+                        Ingredient.item("teig", "Dough"),
+                        Ingredient.material(Material.SUGAR, "Sugar")),
+                ResultSpec.item("schmalzgebaeck", 1), 160));
+        if (!l.contains("lava_pommes")) l.register(new CauldronRecipe("lava_pommes",
+                List.of(Ingredient.material(Material.POTATO, "Potato")),
+                ResultSpec.item("pommes", 1), 140));
     }
 
     // --- Werkbank (shapeless) ----------------------------------------------
@@ -229,5 +287,35 @@ public final class DefaultContent {
                 List.of(Ingredient.material(Material.APPLE, "Apple"),
                         Ingredient.material(Material.SUGAR, "Sugar")),
                 ResultSpec.item("kandierter_apfel", 1)));
+
+        // 0.8.0: neue Werkbank-Gerichte
+        if (!cm.contains("beerenkekse")) cm.register(new CraftingRecipe("beerenkekse",
+                List.of(Ingredient.material(Material.WHEAT, "Wheat"),
+                        Ingredient.material(Material.SWEET_BERRIES, "Sweet Berries"),
+                        Ingredient.material(Material.SUGAR, "Sugar")),
+                ResultSpec.item("beerenkekse", 1)));
+
+        if (!cm.contains("kaesekuchen_beeren")) cm.register(new CraftingRecipe("kaesekuchen_beeren",
+                List.of(Ingredient.item("teig", "Dough"),
+                        Ingredient.material(Material.SWEET_BERRIES, "Sweet Berries"),
+                        Ingredient.material(Material.SUGAR, "Sugar"),
+                        Ingredient.material(Material.MILK_BUCKET, "Milk")),
+                ResultSpec.item("kaesekuchen_beeren", 1)));
+
+        if (!cm.contains("sushi")) cm.register(new CraftingRecipe("sushi",
+                List.of(Ingredient.item("reis", "Rice"),
+                        Ingredient.material(Material.COD, "Fish")),
+                ResultSpec.item("sushi", 1)));
+
+        if (!cm.contains("sakura_sushi")) cm.register(new CraftingRecipe("sakura_sushi",
+                List.of(Ingredient.item("reis", "Rice"),
+                        Ingredient.material(Material.PINK_PETALS, "Cherry Blossom")),
+                ResultSpec.item("sakura_sushi", 1)));
+
+        if (!cm.contains("onigiri")) cm.register(new CraftingRecipe("onigiri",
+                List.of(Ingredient.item("reis", "Rice"),
+                        Ingredient.material(Material.COOKED_BEEF, "Meat"),
+                        Ingredient.material(Material.DRIED_KELP, "Seaweed")),
+                ResultSpec.item("onigiri", 1)));
     }
 }

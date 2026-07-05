@@ -94,11 +94,12 @@ public final class SmokeAndSaltCommand implements CommandExecutor, TabCompleter 
             RecipesMenu.open(plugin, player);
             return;
         }
-        int total = plugin.cooking().registry().size() + plugin.cauldron().size() + plugin.crafting().size();
+        int cauldronCount = plugin.cauldron().size() + plugin.lavaCauldron().size();
+        int total = plugin.cooking().registry().size() + cauldronCount + plugin.crafting().size();
         msg.send(sender, "recipes.count",
                 ph("count", String.valueOf(total)),
                 ph("station", String.valueOf(plugin.cooking().registry().size())),
-                ph("cauldron", String.valueOf(plugin.cauldron().size())),
+                ph("cauldron", String.valueOf(cauldronCount)),
                 ph("crafting", String.valueOf(plugin.crafting().size())));
     }
 
@@ -115,7 +116,8 @@ public final class SmokeAndSaltCommand implements CommandExecutor, TabCompleter 
         String hooks = plugin.moduleManager().modules().stream()
                 .filter(Module::isActive).map(Module::displayName).reduce((a, b) -> a + ", " + b).orElse("-");
         msg.sendRaw(sender, "version.hooks", ph("hooks", hooks));
-        int recipes = plugin.cooking().registry().size() + plugin.cauldron().size() + plugin.crafting().size();
+        int recipes = plugin.cooking().registry().size() + plugin.cauldron().size()
+                + plugin.lavaCauldron().size() + plugin.crafting().size();
         msg.sendRaw(sender, "version.stats",
                 ph("items", String.valueOf(plugin.items().all().size())),
                 ph("recipes", String.valueOf(recipes)),

@@ -25,7 +25,6 @@ public final class ContentFileLoader {
     private static final Map<String, CookingStation> SIMPLE_RECIPE_FILES = Map.of(
             "smoker.yml", CookingStation.SMOKER,
             "campfire.yml", CookingStation.CAMPFIRE,
-            "lava_cauldron.yml", CookingStation.CAULDRON_LAVA,
             "cutting.yml", CookingStation.CUTTING
     );
 
@@ -45,7 +44,7 @@ public final class ContentFileLoader {
 
     /** Bei Bump wird der content-Ordner gesichert und aus dem JAR neu erzeugt,
      *  damit Fixes/neue Inhalte auf bestehenden Servern automatisch ankommen. */
-    private static final int CONTENT_VERSION = 2;
+    private static final int CONTENT_VERSION = 3;
 
     public static void saveDefaults(SmokeAndSalt plugin) {
         File dir = new File(plugin.getDataFolder(), "content");
@@ -112,7 +111,9 @@ public final class ContentFileLoader {
                 plugin.cooking().registry().loadFromSection(simple, defaultStation, true, source);
             }
 
-            loadCauldron(plugin, yaml.getConfigurationSection("cauldron-recipes"), source);
+            de.yourshika.smokeandsalt.cooking.CauldronStation cauldronTarget =
+                    file.equals("lava_cauldron.yml") ? plugin.lavaCauldron() : plugin.cauldron();
+            loadCauldron(plugin, yaml.getConfigurationSection("cauldron-recipes"), source, cauldronTarget);
             loadCrafting(plugin, yaml.getConfigurationSection("crafting-recipes"), source);
         }
     }
@@ -131,16 +132,17 @@ public final class ContentFileLoader {
         plugin.seeds().loadFromSection(definitions != null ? definitions : seeds, true, source);
     }
 
-    private static void loadCauldron(SmokeAndSalt plugin, ConfigurationSection root, String source) {
+    private static void loadCauldron(SmokeAndSalt plugin, ConfigurationSection root, String source,
+                                     de.yourshika.smokeandsalt.cooking.CauldronStation target) {
         if (root == null) return;
         for (String id : root.getKeys(false)) {
-            if (plugin.cauldron().contains(id)) continue;
+            if (target.contains(id)) continue;
             ConfigurationSection sec = root.getConfigurationSection(id);
             if (sec == null) continue;
             try {
                 List<Ingredient> ingredients = parseIngredients(plugin, sec, source, id);
                 ResultSpec result = parseResult(sec);
-                plugin.cauldron().register(new CauldronRecipe(
+                target.register(new CauldronRecipe(
                         id.toLowerCase(Locale.ROOT),
                         ingredients,
                         result,

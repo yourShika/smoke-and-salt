@@ -1,7 +1,64 @@
-# Lava cauldron recipes. Station defaults to CAULDRON_LAVA in this file.
+# Lava cauldron recipes. Like the water cauldron, the lava cauldron now accepts
+# multiple ingredients that are gathered in a persistent container (thrown in or
+# added via the sneak-right-click GUI) and fried batch after batch.
+#
+# Note: multi-ingredient recipes are matched before single-ingredient ones, so
+# "Oil + Potato" becomes Chips while a lone Potato becomes Fries.
 
-recipes:
+cauldron-recipes:
+  lava_tintenfischringe:
+    ingredients:
+      - item: oel
+        display: Oil
+      - material: INK_SAC
+        display: Squid
+    result:
+      item: tintenfischringe
+      amount: 1
+    duration-ticks: 160
+
+  lava_chips:
+    ingredients:
+      - item: oel
+        display: Oil
+      - material: POTATO
+        display: Potato
+    result:
+      item: chips
+      amount: 1
+    duration-ticks: 140
+
+  lava_creeper_keks:
+    ingredients:
+      - item: oel
+        display: Oil
+      - item: teig
+        display: Dough
+      - material: GUNPOWDER
+        display: Gunpowder
+    result:
+      item: creeper_keks
+      amount: 1
+    duration-ticks: 160
+
+  lava_schmalzgebaeck:
+    ingredients:
+      - item: oel
+        display: Oil
+      - item: teig
+        display: Dough
+      - material: SUGAR
+        display: Sugar
+    result:
+      item: schmalzgebaeck
+      amount: 1
+    duration-ticks: 160
+
   lava_pommes:
-    input-material: POTATO
-    result-item: pommes
+    ingredients:
+      - material: POTATO
+        display: Potato
+    result:
+      item: pommes
+      amount: 1
     duration-ticks: 140

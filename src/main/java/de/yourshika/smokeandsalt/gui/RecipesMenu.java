@@ -131,13 +131,15 @@ public final class RecipesMenu {
         }
         for (CauldronRecipe r : plugin.cauldron().recipes()) {
             String note = null;
-            if (r.serveWithBowl()) {
-                note = "After cooking, right-click the cauldron with bowls to take portions until the water is empty.";
-            } else if (r.waterCost() > 0) {
+            if (r.waterCost() > 0) {
                 note = "Consumes " + r.waterCost() + " water level from the cauldron.";
             }
             out.add(RecipeView.single(r.id(), RecipeCategory.WATER_CAULDRON, "Water Cauldron", Material.CAULDRON,
                     icons(plugin, r.ingredients()), r.result().build(plugin), r.duration(), note));
+        }
+        for (CauldronRecipe r : plugin.lavaCauldron().recipes()) {
+            out.add(RecipeView.single(r.id(), RecipeCategory.LAVA_CAULDRON, "Lava Cauldron", Material.LAVA_BUCKET,
+                    icons(plugin, r.ingredients()), r.result().build(plugin), r.duration(), null));
         }
 
         List<CraftingRecipe> shashlik = new ArrayList<>();
@@ -237,6 +239,7 @@ public final class RecipesMenu {
             if (r.inputIsCustom()) ids.add(r.inputItemId().toLowerCase(java.util.Locale.ROOT));
         }
         for (CauldronRecipe r : plugin.cauldron().recipes()) collectCustom(ids, r.ingredients());
+        for (CauldronRecipe r : plugin.lavaCauldron().recipes()) collectCustom(ids, r.ingredients());
         for (CraftingRecipe r : plugin.crafting().recipes()) collectCustom(ids, r.ingredients());
         return ids;
     }

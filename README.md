@@ -8,8 +8,41 @@ GUIs, and optional Oraxen textures.
 ![Minecraft](https://img.shields.io/badge/Minecraft-26.1.2-62b47a?style=flat-square&logo=minecraft&logoColor=white)
 ![Platform](https://img.shields.io/badge/Platform-Paper%2FSpigot-f7a41d?style=flat-square)
 ![Java](https://img.shields.io/badge/Java-25-ED8B00?style=flat-square&logo=openjdk&logoColor=white)
-![Version](https://img.shields.io/badge/Version-0.7.0-blue?style=flat-square)
+![Version](https://img.shields.io/badge/Version-0.8.0-blue?style=flat-square)
 ![License](https://img.shields.io/badge/License-MIT-blue?style=flat-square)
+
+## What's new in 0.8.0
+
+**Cauldron stations now have a GUI (furnace-style)**
+- **Sneak + right-click** a water or lava cauldron to open a small station GUI. Drop items into the input slots on the left, watch the progress in the middle, and take finished dishes from the output slots on the right.
+- The container is **persistent** (`water_cauldron_stations.yml` / `lava_cauldron_stations.yml`): whatever you load stays in the cauldron across chunk reloads and restarts.
+- **Both input methods coexist**: throwing a matching ingredient onto the cauldron still works — it now lands in the same persistent container instead of floating on top.
+- **Batch processing**: pack in whole stacks and the cauldron works through them recipe by recipe. The GUI header shows the **water level** (water cauldron) or frying heat (lava cauldron); the water cauldron still needs a heat source below.
+- **Lava cauldron reworked to multi-ingredient**: it now uses the same container/recipe system as the water cauldron, enabling the new fried dishes below (multi-ingredient recipes are matched before single-ingredient ones, so *Oil + Potato* → Chips while a lone Potato → Fries).
+- Breaking a cauldron **returns its whole container** instead of losing it.
+- *Note:* the old "serve Miso Soup with bowls" mechanic is replaced by the GUI output; Miso Soup now finishes into the output slot and consumes 1 water level.
+
+**12 new textured dishes**
+
+| Item | Station | Recipe | Hunger | Saturation | Effect |
+| --- | --- | --- | ---: | ---: | --- |
+| Berry Cookies | Crafting | Wheat + Sweet Berries + Sugar | 4 | 3.2 | Speed I, 4s |
+| Cheesecake with Berry Sauce | Crafting | Dough + Sweet Berries + Sugar + Milk | 8 | 9.6 | Regeneration I, 4s |
+| Sushi | Crafting | Rice + Fish | 6 | 7.2 | Dolphin's Grace I, 5s |
+| Sakura Sushi | Crafting | Rice + Cherry Blossom (Pink Petals) | 5 | 6.0 | Luck I, 8s |
+| Onigiri | Crafting | Rice + Meat + Dried Kelp | 7 | 8.4 | – |
+| Apple Juice | Water Cauldron | Apple (+ water) | 3 | 2.4 | Regeneration I, 3s |
+| Cherry Lemonade | Water Cauldron | Cherry Blossom + Sugar (+ water) | 3 | 2.0 | Speed I, 5s |
+| Oil | Water Cauldron | Sunflower (+ water) | 0 | 0.0 | not edible – ingredient only |
+| Calamari Rings | Lava Cauldron | Oil + Ink Sac | 6 | 7.2 | Water Breathing I, 5s |
+| Chips | Lava Cauldron | Oil + Potato | 5 | 5.2 | – |
+| Creeper Cookie | Lava Cauldron | Oil + Dough + Gunpowder | 5 | 3.0 | Speed I, 4s + harmless explosion puff on eat |
+| Lard Pastry | Lava Cauldron | Oil + Dough + Sugar | 6 | 6.4 | Speed I, 4s |
+
+All twelve ship with their own 16×16 Oraxen textures. **Oil** is a new intermediate made in the water cauldron and used by every lava-cauldron fry recipe.
+
+**Texture overhaul**
+- All existing dishes, produce and seeds now use hand-made 16×16 sprites (source art in `textures/`, wired into `scripts/generate_assets.py` as overrides). The generator still falls back to its procedural art for anything without an override (currently the 12 new dishes and the crop overlays).
 
 ## What's new in 0.7.0
 

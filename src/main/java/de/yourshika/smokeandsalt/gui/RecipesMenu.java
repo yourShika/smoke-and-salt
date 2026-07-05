@@ -171,15 +171,15 @@ public final class RecipesMenu {
                     biomes.addAll(drop.biomes());
                     chance = Math.max(chance, drop.chance());
                 }
-                for (Material m : blocks) inputs.add(new ItemStack(m));
+                for (Material m : blocks) inputs.add(iconFor(m));
                 note.append("Drops from ")
                         .append(String.join(", ", blocks.stream().map(RecipesMenu::pretty).toList()));
                 if (!biomes.isEmpty()) note.append(" in ").append(String.join(", ", biomes));
                 note.append(" (~").append(Math.round(chance * 100)).append("%). ");
             } else {
-                inputs.add(new ItemStack(Material.SHORT_GRASS));
+                inputs.add(iconFor(Material.SHORT_GRASS));
             }
-            inputs.add(new ItemStack(Material.FARMLAND));
+            inputs.add(iconFor(Material.FARMLAND));
             note.append("Plant on farmland; harvest yields ").append(seedResultName(seed)).append(" + seeds.");
             out.add(RecipeView.single("seed_" + seed.id(), RecipeCategory.SEEDS, "Seed Drop & Farming",
                     Material.WHEAT_SEEDS, inputs, result, 0, note.toString()));
@@ -190,6 +190,19 @@ public final class RecipesMenu {
     private static String pretty(Material material) {
         String s = material.name().toLowerCase(java.util.Locale.ROOT).replace('_', ' ');
         return Character.toUpperCase(s.charAt(0)) + s.substring(1);
+    }
+
+    /** Baut ein GUI-Icon aus einem Material - block-only Materialien (z.B.
+     *  TALL_SEAGRASS, SWEET_BERRY_BUSH) werden auf ein passendes Item abgebildet. */
+    private static ItemStack iconFor(Material material) {
+        if (material.isItem()) return new ItemStack(material);
+        Material alt = switch (material) {
+            case TALL_SEAGRASS -> Material.SEAGRASS;
+            case SWEET_BERRY_BUSH -> Material.SWEET_BERRIES;
+            case TALL_GRASS -> Material.SHORT_GRASS;
+            default -> Material.GRASS_BLOCK;
+        };
+        return new ItemStack(alt.isItem() ? alt : Material.PAPER);
     }
 
     private static Map<RecipeCategory, Integer> counts(SmokeAndSalt plugin, List<RecipeView> views) {

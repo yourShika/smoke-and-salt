@@ -132,7 +132,7 @@ public final class CraftingManager implements Listener {
         }
     }
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true, priority = org.bukkit.event.EventPriority.HIGH)
     public void onCraft(CraftItemEvent event) {
         CraftingRecipe ours = lookup(event.getRecipe());
         if (ours == null) return;
@@ -152,8 +152,10 @@ public final class CraftingManager implements Listener {
         plugin.effects().craft(player.getLocation());
 
         if (special.isEmpty()) return;
-        // Werkzeuge/Eimer nach dem Verbrauch zurueckgeben.
+        // Werkzeuge/Eimer nach dem Verbrauch zurueckgeben - nur wenn der Craft
+        // wirklich durchlief (kein spaeter Abbruch -> sonst Dupe).
         Bukkit.getScheduler().runTask(plugin, () -> {
+            if (event.isCancelled()) return;
             for (ItemStack ret : special) {
                 Map<Integer, ItemStack> leftover = player.getInventory().addItem(ret);
                 leftover.values().forEach(s -> player.getWorld().dropItemNaturally(player.getLocation(), s));

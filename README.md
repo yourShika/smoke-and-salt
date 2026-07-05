@@ -8,8 +8,25 @@ GUIs, and optional Oraxen textures.
 ![Minecraft](https://img.shields.io/badge/Minecraft-26.1.2-62b47a?style=flat-square&logo=minecraft&logoColor=white)
 ![Platform](https://img.shields.io/badge/Platform-Paper%2FSpigot-f7a41d?style=flat-square)
 ![Java](https://img.shields.io/badge/Java-25-ED8B00?style=flat-square&logo=openjdk&logoColor=white)
-![Version](https://img.shields.io/badge/Version-0.6.1-blue?style=flat-square)
+![Version](https://img.shields.io/badge/Version-0.7.0-blue?style=flat-square)
 ![License](https://img.shields.io/badge/License-MIT-blue?style=flat-square)
+
+## What's new in 0.7.0
+
+**Robustness / anti-dupe**
+- Cauldron float items and chain-hung items are no longer persistent → **no more crash-orphans**; a startup/chunk-load sweep also removes legacy leftovers.
+- **Chains now persist** (`chains.yml`) and re-spawn per chunk; **breaking a chain returns the hung item** instead of losing it.
+- Cauldron tick **skips unloaded chunks** (no force-load, no item loss).
+- Crafting tool/bucket return is guarded against late craft cancellation (no free sword/bucket).
+- Seed and leaf drops no longer trigger in **Creative** or with **Silk Touch**.
+- **Content files auto-update** on version bumps (old files backed up) — fixes like the name bug and seed drops now reach existing servers automatically.
+
+**Cutting rework**
+- You must **keep attacking** (arm swing) for the whole duration; stopping aborts. Same length, with a live **progress bar** in the action bar. Randomized yield + tool wear stay, plus a stricter anti-dupe re-check.
+
+**QoL**
+- Admins get an **update notice on join** (`notify-updates`).
+- Right-click a **composter with a custom produce** for a chance at its seed (`seeds.compost-seed-chance`).
 
 ## What's new in 0.6.0
 
@@ -214,8 +231,8 @@ Pushing a tag named `v*` triggers the GitHub Actions release workflow. The actio
 builds the plugin and publishes the jar as a GitHub Release asset.
 
 ```bash
-git tag v0.6.1
-git push origin v0.6.1
+git tag v0.7.0
+git push origin v0.7.0
 ```
 
 ## License

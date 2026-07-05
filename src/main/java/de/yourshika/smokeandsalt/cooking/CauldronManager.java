@@ -229,6 +229,11 @@ public final class CauldronManager {
             Pot pot = it.next().getValue();
             Block block = pot.block;
 
+            // Entladene Chunks ueberspringen (kein Force-Load, kein Item-Loss).
+            if (!block.getWorld().isChunkLoaded(block.getX() >> 4, block.getZ() >> 4)) {
+                continue;
+            }
+
             if (block.getType() != Material.WATER_CAULDRON || !Heat.hasHeatSourceBelow(block)) {
                 releaseEntities(pot); // nicht mehr kochend -> Zutaten freigeben
                 it.remove();
@@ -412,6 +417,7 @@ public final class CauldronManager {
         entity.setPickupDelay(Integer.MAX_VALUE);
         entity.setUnlimitedLifetime(true);
         entity.setCanMobPickup(false);
+        entity.setPersistent(false); // kein Crash-Orphan: verschwindet bei Unload/Neustart
         entity.getPersistentDataContainer().set(plugin.keys().cookingFloat, PersistentDataType.BYTE, (byte) 1);
     }
 

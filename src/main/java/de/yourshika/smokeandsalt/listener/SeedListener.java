@@ -180,7 +180,11 @@ public final class SeedListener implements Listener {
         }
 
         // Konfigurierte Seed-Drops (drops-from / biomes / chance).
-        if (!seeds.isEmpty()) {
+        // Nicht im Kreativ-Modus und nicht mit Silk Touch (dann bleibt der Block heil).
+        Player breaker = event.getPlayer();
+        boolean silk = breaker.getInventory().getItemInMainHand()
+                .containsEnchantment(org.bukkit.enchantments.Enchantment.SILK_TOUCH);
+        if (breaker.getGameMode() != GameMode.CREATIVE && !silk && !seeds.isEmpty()) {
             for (SeedDefinition def : seeds.all()) {
                 for (de.yourshika.smokeandsalt.seed.SeedDrop drop : seeds.dropsFor(def.id())) {
                     if (drop.matches(block) && Math.random() < drop.chance()) {
@@ -228,7 +232,7 @@ public final class SeedListener implements Listener {
         return min + (int) Math.floor(Math.random() * (max - min + 1));
     }
 
-    // --- Komposter-Drops ----------------------------------------------------
+    // --- Komposter ----------------------------------------------------------
 
     @EventHandler(ignoreCancelled = true)
     public void onComposter(PlayerInteractEvent event) {
@@ -239,13 +243,43 @@ public final class SeedListener implements Listener {
         if (block == null || block.getType() != Material.COMPOSTER) return;
         if (seeds.isEmpty()) return;
         if (!(block.getBlockData() instanceof Levelled levelled)) return;
-        if (levelled.getLevel() < levelled.getMaximumLevel()) return; // nur voller Komposter
 
-        for (SeedDefinition def : seeds.all()) {
-            if (def.composterChance() > 0 && Math.random() < def.composterChance()) {
-                ItemStack drop = seeds.create(def.id(), 1);
-                if (drop != null) {
-                    block.getWorld().dropItemNaturally(block.getLocation().add(0.5, 1.0, 0.5), drop);
+        Player player = event.getPlayer();
+        ItemStack hand = player.getInventory().getItemInMainHand();
+
+        // Custom-Produkt in den Komposter -> Chance auf das passende Saatgut.
+        String produceId = plugin.items().idOf(hand);
+        if (produceId != null && levelled.getLevel() < levelled.getMaximumLevel()) {
+            SeedDefinition match = null;
+            for (SeedDefinition def : seeds.all()) {
+                if (produceId.equalsIgnoreCase(def.resultItemId())) {
+                    match = def;
+                    break;
+                }
+            }
+            if (match != null) {
+                event.setCancelled(true);
+                if (player.getGameMode() != GameMode.CREATIVE) hand.setAmount(hand.getAmount() - 1);
+                double chance = plugin.getConfig().getDouble("seeds.compost-seed-chance", 0.4);
+                if (Math.random() < chance) {
+                    ItemStack seed = seeds.create(match.id(), 1);
+                    if (seed != null) {
+                        player.getWorld().dropItemNaturally(block.getLocation().add(0.5, 1.0, 0.5), seed);
+                    }
+                }
+                plugin.effects().finish(block.getLocation());
+                return;
+            }
+        }
+
+        // Voller Komposter: konfigurierte composter-chance-Seeds.
+        if (levelled.getLevel() >= levelled.getMaximumLevel()) {
+            for (SeedDefinition def : seeds.all()) {
+                if (def.composterChance() > 0 && Math.random() < def.composterChance()) {
+                    ItemStack drop = seeds.create(def.id(), 1);
+                    if (drop != null) {
+                        block.getWorld().dropItemNaturally(block.getLocation().add(0.5, 1.0, 0.5), drop);
+                    }
                 }
             }
         }

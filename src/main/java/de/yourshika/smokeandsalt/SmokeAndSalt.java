@@ -99,6 +99,8 @@ public final class SmokeAndSalt extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(new CustomItemSafetyListener(this), this);
         Bukkit.getPluginManager().registerEvents(new SeedListener(this, seeds), this);
         Bukkit.getPluginManager().registerEvents(new ChainListener(this, chains), this);
+        Bukkit.getPluginManager().registerEvents(
+                new de.yourshika.smokeandsalt.listener.UpdateNotifyListener(this), this);
         Bukkit.getPluginManager().registerEvents(new de.yourshika.smokeandsalt.listener.LeafDropListener(this), this);
         Bukkit.getPluginManager().registerEvents(crafting, this);
 
@@ -114,6 +116,12 @@ public final class SmokeAndSalt extends JavaPlugin {
         cooking.start();
         cauldron.start();
         crops.start();
+        chains.start();
+        // Verwaiste Float-/Behang-Items aus fruehen Crashes aufraeumen.
+        de.yourshika.smokeandsalt.listener.OrphanSweeper sweeper =
+                new de.yourshika.smokeandsalt.listener.OrphanSweeper(this);
+        Bukkit.getPluginManager().registerEvents(sweeper, this);
+        sweeper.sweepLoaded();
         new BoilingAmbientTask(this).runTaskTimer(this, 40L, 10L);
 
         getLogger().info("Smoke & Salt v" + getPluginMeta().getVersion()
@@ -127,7 +135,7 @@ public final class SmokeAndSalt extends JavaPlugin {
         if (cauldron != null) cauldron.stop();
         if (crafting != null) crafting.unregisterAll();
         if (stationRecipes != null) stationRecipes.unregisterAll();
-        if (chains != null) chains.releaseAll();
+        if (chains != null) chains.stop();
         if (seeds != null) seeds.cropStore().save();
         if (moduleManager != null) moduleManager.shutdown();
         getLogger().info("Smoke & Salt deaktiviert.");

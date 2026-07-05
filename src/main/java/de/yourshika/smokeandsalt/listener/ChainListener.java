@@ -73,6 +73,18 @@ public final class ChainListener implements Listener {
         }
     }
 
+    /** Wird der Ketten-Block abgebaut, das aufgehaengte Item zurueckgeben. */
+    @EventHandler(ignoreCancelled = true)
+    public void onBreak(org.bukkit.event.block.BlockBreakEvent event) {
+        Block block = event.getBlock();
+        if (!Tag.CHAINS.isTagged(block.getType())) return;
+        if (!chains.isHung(block)) return;
+        ItemStack stack = chains.retrieve(block);
+        if (stack != null) {
+            block.getWorld().dropItemNaturally(block.getLocation().add(0.5, 0.3, 0.5), stack);
+        }
+    }
+
     /** Aufgehaengte Items nicht von Spielern aufsammeln lassen. */
     @EventHandler(ignoreCancelled = true)
     public void onPickup(EntityPickupItemEvent event) {

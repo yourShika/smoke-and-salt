@@ -6,80 +6,137 @@ import de.yourshika.smokeandsalt.cooking.CookingStation;
 import org.bukkit.Material;
 import org.bukkit.Tag;
 import org.bukkit.entity.Player;
-import org.bukkit.event.Event;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.block.Action;
+import org.bukkit.event.player.PlayerAnimationEvent;
+import org.bukkit.event.player.PlayerAnimationType;
 import org.bukkit.event.player.PlayerItemConsumeEvent;
-import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitTask;
 
+import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.Map;
 
 /**
- * Schneide-Station: Axt in einer Hand + Zutat in der anderen, dann Rechtsklick.
- * Loest einen kurzen Schnitt-Vorgang aus und verwandelt eine Zutat gemaess
- * Rezept in das Ergebnis. Ohne passendes Rezept passiert nichts Besonderes.
+ * Schneide-Station: Axt in einer Hand + Zutat in der anderen. Man muss
+ * <strong>durchgehend zuschlagen</strong> (Linksklick/Arm-Schwung); hoert man auf,
+ * bricht der Vorgang ab. Die Gesamtdauer entspricht der Rezeptdauer.
  */
 public final class CuttingListener implements Listener {
 
+    /** Ohne einen Schwung innerhalb dieser Zeit bricht das Schneiden ab. */
+    private static final long SWING_GRACE_MS = 500L;
+    private static final int STEP = 2; // Ticks pro Fortschritt
+
     private final SmokeAndSalt plugin;
-    /** Kurze Abkling-Zeit pro Spieler, um Doppel-Ausloesen zu vermeiden. */
-    private final Map<UUID, Long> cooldown = new ConcurrentHashMap<>();
-    private final Map<UUID, BukkitTask> active = new ConcurrentHashMap<>();
+    private final Map<UUID, Session> sessions = new ConcurrentHashMap<>();
 
     public CuttingListener(SmokeAndSalt plugin) {
         this.plugin = plugin;
     }
 
     @EventHandler
-    public void onInteract(PlayerInteractEvent event) {
-        if (event.getAction() != Action.RIGHT_CLICK_AIR && event.getAction() != Action.RIGHT_CLICK_BLOCK) return;
-
+    public void onSwing(PlayerAnimationEvent event) {
+        if (event.getAnimationType() != PlayerAnimationType.ARM_SWING) return;
         Player player = event.getPlayer();
         var config = plugin.pluginConfig();
         if (!config.cookingEnabled() || !config.cuttingEnabled()) return;
         if (!player.hasPermission("smokeandsalt.use")) return;
         if (!config.isWorldAllowed(player.getWorld().getName())) return;
 
+        UUID id = player.getUniqueId();
+        Session session = sessions.get(id);
+        if (session != null) {
+            session.lastSwingMs = System.currentTimeMillis(); // weiter zuschlagen
+            return;
+        }
+
         CutSetup setup = findSetup(player);
         if (setup == null) return;
-
         Optional<CookingRecipe> recipe = plugin.cooking().registry().find(CookingStation.CUTTING, setup.ingredient());
         if (recipe.isEmpty()) return;
 
-        event.setCancelled(true);
-        event.setUseItemInHand(Event.Result.DENY);
-        event.setUseInteractedBlock(Event.Result.DENY);
+        Session started = new Session(recipe.get().id(), setup.axeHand(), setup.ingredientHand());
+        started.lastSwingMs = System.currentTimeMillis();
+        started.task = plugin.getServer().getScheduler().runTaskTimer(plugin,
+                () -> tick(id), STEP, STEP);
+        sessions.put(id, started);
+        plugin.effects().cut(cutLocation(player));
+    }
 
-        UUID id = player.getUniqueId();
-        if (active.containsKey(id)) return;
-
-        long now = System.currentTimeMillis();
-        Long last = cooldown.get(id);
-        if (last != null && now - last < 400) {
+    private void tick(UUID id) {
+        Session session = sessions.get(id);
+        if (session == null) return;
+        Player player = plugin.getServer().getPlayer(id);
+        if (player == null || !player.isOnline()) {
+            end(id);
             return;
         }
-        cooldown.put(id, now);
+        // Aufgehoert zuzuschlagen -> Abbruch.
+        if (System.currentTimeMillis() - session.lastSwingMs > SWING_GRACE_MS) {
+            end(id);
+            return;
+        }
+        // Setup muss weiterhin passen (Anti-Dupe).
+        CookingRecipe recipe = currentRecipe(player, session);
+        if (recipe == null) {
+            end(id);
+            return;
+        }
+        session.progress += STEP;
+        if (session.progress % 10 < STEP) {
+            plugin.effects().cut(cutLocation(player));
+        }
+        int total = Math.max(20, recipe.durationTicks());
+        int pct = Math.min(100, (int) (100.0 * session.progress / total));
+        int bars = pct / 10;
+        player.sendActionBar(plugin.messages().mini().deserialize(
+                "<gray>Cutting <green>" + "|".repeat(bars) + "<dark_gray>" + "|".repeat(10 - bars)
+                        + " <white>" + pct + "%"));
+        if (session.progress >= total) {
+            finish(player, session, recipe);
+            end(id);
+        }
+    }
 
-        // Schnitt-Effekt vor dem Spieler; Abschluss folgt nach der Rezeptdauer.
-        plugin.effects().cut(player.getEyeLocation().add(player.getLocation().getDirection().multiply(0.6)));
-        int duration = Math.max(20, recipe.get().durationTicks());
-        BukkitTask task = plugin.getServer().getScheduler().runTaskLater(plugin,
-                () -> finishCut(id, recipe.get(), setup), duration);
-        active.put(id, task);
-        scheduleCutEffects(id, player, duration);
+    private void finish(Player player, Session session, CookingRecipe recipe) {
+        ItemStack axe = itemIn(player, session.axeHand);
+        ItemStack ingredient = itemIn(player, session.ingredientHand);
+        if (!isAxe(axe.getType()) || ingredient.getType().isAir()) return;
+
+        ingredient.setAmount(ingredient.getAmount() - 1);
+        ItemStack result = plugin.cooking().registry().buildResult(recipe);
+        if (result != null) {
+            result.setAmount(recipe.rollResultAmount());
+            var leftover = player.getInventory().addItem(result);
+            leftover.values().forEach(s -> player.getWorld().dropItemNaturally(player.getLocation(), s));
+        }
+        damageAxe(player, axe);
+        plugin.effects().cut(cutLocation(player));
+    }
+
+    /** Prueft, dass Axt + passende Zutat noch in den erwarteten Haenden liegen. */
+    private CookingRecipe currentRecipe(Player player, Session session) {
+        ItemStack axe = itemIn(player, session.axeHand);
+        ItemStack ingredient = itemIn(player, session.ingredientHand);
+        if (!isAxe(axe.getType()) || ingredient.getType().isAir()) return null;
+        return plugin.cooking().registry().find(CookingStation.CUTTING, ingredient)
+                .filter(r -> r.id().equals(session.recipeId))
+                .orElse(null);
+    }
+
+    private void end(UUID id) {
+        Session session = sessions.remove(id);
+        if (session != null && session.task != null) session.task.cancel();
     }
 
     @EventHandler(ignoreCancelled = true)
     public void onConsume(PlayerItemConsumeEvent event) {
         Player player = event.getPlayer();
-        if (active.containsKey(player.getUniqueId())) {
+        if (sessions.containsKey(player.getUniqueId())) {
             event.setCancelled(true);
             return;
         }
@@ -87,40 +144,6 @@ public final class CuttingListener implements Listener {
         if (setup == null) return;
         if (plugin.cooking().registry().find(CookingStation.CUTTING, event.getItem()).isPresent()) {
             event.setCancelled(true);
-        }
-    }
-
-    private void finishCut(UUID id, CookingRecipe recipe, CutSetup setup) {
-        active.remove(id);
-        Player player = plugin.getServer().getPlayer(id);
-        if (player == null || !player.isOnline()) return;
-
-        ItemStack axe = itemIn(player, setup.axeHand());
-        ItemStack ingredient = itemIn(player, setup.ingredientHand());
-        if (!isAxe(axe.getType())) return;
-        Optional<CookingRecipe> current = plugin.cooking().registry().find(CookingStation.CUTTING, ingredient);
-        if (current.isEmpty() || !current.get().id().equals(recipe.id())) return;
-
-        // Eine Zutat verbrauchen und Ergebnis in zufaelliger Menge ausgeben.
-        ingredient.setAmount(ingredient.getAmount() - 1);
-        ItemStack result = plugin.cooking().registry().buildResult(recipe);
-        if (result != null) {
-            result.setAmount(recipe.rollResultAmount());
-            var leftover = player.getInventory().addItem(result);
-            leftover.values().forEach(stack ->
-                    player.getWorld().dropItemNaturally(player.getLocation(), stack));
-        }
-        // Zufaellige Werkzeug-Abnutzung (Standard 1-5, konfigurierbar).
-        damageAxe(player, axe);
-        plugin.effects().cut(player.getEyeLocation().add(player.getLocation().getDirection().multiply(0.6)));
-    }
-
-    private void scheduleCutEffects(UUID id, Player player, int duration) {
-        for (int delay = 10; delay < duration; delay += 10) {
-            plugin.getServer().getScheduler().runTaskLater(plugin, () -> {
-                if (!active.containsKey(id) || !player.isOnline()) return;
-                plugin.effects().cut(player.getEyeLocation().add(player.getLocation().getDirection().multiply(0.6)));
-            }, delay);
         }
     }
 
@@ -135,6 +158,10 @@ public final class CuttingListener implements Listener {
         ItemStack ingredient = ingredientHand == EquipmentSlot.HAND ? main : off;
         if (ingredient == null || ingredient.getType().isAir()) return null;
         return new CutSetup(axeHand, ingredientHand, ingredient);
+    }
+
+    private org.bukkit.Location cutLocation(Player player) {
+        return player.getEyeLocation().add(player.getLocation().getDirection().multiply(0.6));
     }
 
     private boolean isAxe(Material material) {
@@ -160,5 +187,20 @@ public final class CuttingListener implements Listener {
     }
 
     private record CutSetup(EquipmentSlot axeHand, EquipmentSlot ingredientHand, ItemStack ingredient) {
+    }
+
+    private static final class Session {
+        private final String recipeId;
+        private final EquipmentSlot axeHand;
+        private final EquipmentSlot ingredientHand;
+        private int progress;
+        private long lastSwingMs;
+        private BukkitTask task;
+
+        private Session(String recipeId, EquipmentSlot axeHand, EquipmentSlot ingredientHand) {
+            this.recipeId = recipeId;
+            this.axeHand = axeHand;
+            this.ingredientHand = ingredientHand;
+        }
     }
 }

@@ -53,6 +53,7 @@ update:
   downloading: "<gray>Downloading version <white><version></white> ..."
   success: "<green>Update to v<version> downloaded. It will be applied on next restart."
   failed: "<red>Update failed: <white><error></white>"
+  available: "<gray>A new Smoke & Salt version is available: <white>v<version></white> <dark_gray>(run /sas update)</dark_gray>"
 
 assets:
   no-oraxen: "<red>Oraxen is not active - redeploy not possible."

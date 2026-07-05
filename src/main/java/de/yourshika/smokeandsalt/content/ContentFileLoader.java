@@ -43,9 +43,55 @@ public final class ContentFileLoader {
     private ContentFileLoader() {
     }
 
+    /** Bei Bump wird der content-Ordner gesichert und aus dem JAR neu erzeugt,
+     *  damit Fixes/neue Inhalte auf bestehenden Servern automatisch ankommen. */
+    private static final int CONTENT_VERSION = 2;
+
     public static void saveDefaults(SmokeAndSalt plugin) {
+        File dir = new File(plugin.getDataFolder(), "content");
+        File marker = new File(dir, ".content-version");
+        int current = readContentVersion(marker);
+
+        if (current < CONTENT_VERSION && dir.exists() && current > 0) {
+            // Bestehende Dateien sichern und mit den neuen Defaults ersetzen.
+            String stamp = new java.text.SimpleDateFormat("yyyyMMdd-HHmmss").format(new java.util.Date());
+            File backup = new File(plugin.getDataFolder(), "content-backup-" + stamp);
+            try {
+                for (String file : ALL_FILES) {
+                    File src = new File(dir, file);
+                    if (src.exists()) {
+                        backup.mkdirs();
+                        java.nio.file.Files.copy(src.toPath(), new File(backup, file).toPath());
+                        src.delete();
+                    }
+                }
+                plugin.getLogger().warning("content/ war veraltet (v" + current + ") - aktualisiert auf v"
+                        + CONTENT_VERSION + ". Alte Dateien gesichert unter '" + backup.getName() + "'.");
+            } catch (Exception ex) {
+                plugin.getLogger().warning("content/ konnte nicht gesichert werden: " + ex.getMessage());
+            }
+        }
+
         for (String file : ALL_FILES) {
             saveResourceIfMissing(plugin, "content/" + file);
+        }
+        writeContentVersion(marker);
+    }
+
+    private static int readContentVersion(File marker) {
+        if (!marker.exists()) return 1; // vorhandener Ordner ohne Marker = v1
+        try {
+            return Integer.parseInt(java.nio.file.Files.readString(marker.toPath()).trim());
+        } catch (Exception ex) {
+            return 1;
+        }
+    }
+
+    private static void writeContentVersion(File marker) {
+        try {
+            marker.getParentFile().mkdirs();
+            java.nio.file.Files.writeString(marker.toPath(), String.valueOf(CONTENT_VERSION));
+        } catch (Exception ignored) {
         }
     }
 

@@ -44,6 +44,10 @@ public final class LeafDropListener implements Listener {
         if (!plugin.getConfig().getBoolean("leaf-drops.enabled", true)) return;
         Block block = event.getBlock();
         if (!Tag.LEAVES.isTagged(block.getType())) return;
+        // Nicht im Kreativ-Modus und nicht mit Silk Touch.
+        if (event.getPlayer().getGameMode() == org.bukkit.GameMode.CREATIVE) return;
+        if (event.getPlayer().getInventory().getItemInMainHand()
+                .containsEnchantment(org.bukkit.enchantments.Enchantment.SILK_TOUCH)) return;
 
         ConfigurationSection drops = plugin.getConfig().getConfigurationSection("leaf-drops.drops");
         if (drops == null) return;

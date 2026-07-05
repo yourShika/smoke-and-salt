@@ -21,6 +21,9 @@ language: en
 # Zusaetzliche Log-Ausgaben fuer die Fehlersuche.
 debug: false
 
+# Admins beim Beitreten auf ein verfuegbares Update hinweisen.
+notify-updates: true
+
 # --------------------------------------------------------------------------
 #  Koch-System
 # --------------------------------------------------------------------------

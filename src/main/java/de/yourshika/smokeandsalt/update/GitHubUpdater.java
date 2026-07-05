@@ -47,6 +47,32 @@ public final class GitHubUpdater {
         Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> run(sender));
     }
 
+    /** Prueft still (nur lesen) und weist {@code sender} auf ein Update hin, falls vorhanden. */
+    public void notifyIfOutdated(CommandSender sender) {
+        Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
+            try {
+                HttpClient client = HttpClient.newBuilder()
+                        .connectTimeout(Duration.ofSeconds(10))
+                        .followRedirects(HttpClient.Redirect.NORMAL).build();
+                HttpRequest request = HttpRequest.newBuilder(URI.create(API_LATEST))
+                        .header("User-Agent", "SmokeAndSalt-Updater")
+                        .header("Accept", "application/vnd.github+json")
+                        .timeout(Duration.ofSeconds(15)).GET().build();
+                HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+                if (response.statusCode() != 200) return;
+                Matcher tag = TAG.matcher(response.body());
+                if (!tag.find()) return;
+                String latest = tag.group(1).replaceFirst("^[vV]", "");
+                String current = plugin.getPluginMeta().getVersion();
+                if (!latest.equalsIgnoreCase(current)) {
+                    Bukkit.getScheduler().runTask(plugin, () ->
+                            plugin.messages().send(sender, "update.available", ph("version", latest)));
+                }
+            } catch (Throwable ignored) {
+            }
+        });
+    }
+
     private void run(CommandSender sender) {
         try {
             HttpClient client = HttpClient.newBuilder()

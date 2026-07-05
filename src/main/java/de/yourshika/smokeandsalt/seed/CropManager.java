@@ -49,7 +49,7 @@ public final class CropManager {
     }
 
     public boolean enabled() {
-        return plugin.getConfig().getBoolean("seeds.custom-crops", true);
+        return plugin.getConfig().getBoolean("seeds.custom-crops", false);
     }
 
     public void start() {
@@ -144,6 +144,16 @@ public final class CropManager {
     // --- Tick ---------------------------------------------------------------
 
     private void tick() {
+        // Custom-Crop-Display aus -> keine Displays verwalten (Vanilla-Weizen wird genutzt).
+        if (!enabled()) {
+            if (!displays.isEmpty()) {
+                for (ItemDisplay display : displays.values()) {
+                    if (display.isValid()) display.remove();
+                }
+                displays.clear();
+            }
+            return;
+        }
         if (crops.isEmpty()) return;
         int perStage = ticksPerStage();
         Iterator<Map.Entry<String, Crop>> it = crops.entrySet().iterator();

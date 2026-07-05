@@ -159,14 +159,37 @@ public final class RecipesMenu {
 
         for (SeedDefinition seed : plugin.seeds().all()) {
             ItemStack result = plugin.seeds().create(seed.id(), 1);
-            String note = "Break seagrass for a chance to get this seed. Plant it on farmland; fully grown crops yield "
-                    + seedResultName(seed) + " and seeds back.";
+            var drops = plugin.seeds().dropsFor(seed.id());
+            List<ItemStack> inputs = new ArrayList<>();
+            StringBuilder note = new StringBuilder();
+            if (!drops.isEmpty()) {
+                java.util.LinkedHashSet<Material> blocks = new java.util.LinkedHashSet<>();
+                java.util.LinkedHashSet<String> biomes = new java.util.LinkedHashSet<>();
+                double chance = 0;
+                for (var drop : drops) {
+                    blocks.addAll(drop.blocks());
+                    biomes.addAll(drop.biomes());
+                    chance = Math.max(chance, drop.chance());
+                }
+                for (Material m : blocks) inputs.add(new ItemStack(m));
+                note.append("Drops from ")
+                        .append(String.join(", ", blocks.stream().map(RecipesMenu::pretty).toList()));
+                if (!biomes.isEmpty()) note.append(" in ").append(String.join(", ", biomes));
+                note.append(" (~").append(Math.round(chance * 100)).append("%). ");
+            } else {
+                inputs.add(new ItemStack(Material.SHORT_GRASS));
+            }
+            inputs.add(new ItemStack(Material.FARMLAND));
+            note.append("Plant on farmland; harvest yields ").append(seedResultName(seed)).append(" + seeds.");
             out.add(RecipeView.single("seed_" + seed.id(), RecipeCategory.SEEDS, "Seed Drop & Farming",
-                    Material.WHEAT_SEEDS,
-                    List.of(new ItemStack(Material.SEAGRASS), new ItemStack(Material.FARMLAND)),
-                    result, 0, note));
+                    Material.WHEAT_SEEDS, inputs, result, 0, note.toString()));
         }
         return out;
+    }
+
+    private static String pretty(Material material) {
+        String s = material.name().toLowerCase(java.util.Locale.ROOT).replace('_', ' ');
+        return Character.toUpperCase(s.charAt(0)) + s.substring(1);
     }
 
     private static Map<RecipeCategory, Integer> counts(SmokeAndSalt plugin, List<RecipeView> views) {

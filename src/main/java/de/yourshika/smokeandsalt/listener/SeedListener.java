@@ -110,6 +110,31 @@ public final class SeedListener implements Listener {
         }
     }
 
+    // --- Identifizieren (Rechtsklick auf Weizen-Custom-Crop) ----------------
+
+    @EventHandler(ignoreCancelled = true)
+    public void onIdentify(PlayerInteractEvent event) {
+        if (!plugin.getConfig().getBoolean("seeds.crop-identify", true)) return;
+        if (plugin.crops().enabled()) return; // nur im Vanilla-Weizen-Modus
+        if (event.getAction() != Action.RIGHT_CLICK_BLOCK) return;
+        if (event.getHand() != EquipmentSlot.HAND) return;
+        Block block = event.getClickedBlock();
+        if (block == null || !seeds.cropStore().contains(block)) return;
+        SeedDefinition def = seeds.definition(seeds.cropStore().get(block));
+        if (def == null) return;
+
+        String display = def.resultItemId() != null && plugin.items().definition(def.resultItemId()) != null
+                ? plugin.items().definition(def.resultItemId()).displayName()
+                : def.displayName();
+        int stage = 0, max = 7;
+        if (block.getBlockData() instanceof Ageable a) {
+            stage = a.getAge();
+            max = a.getMaximumAge();
+        }
+        event.getPlayer().sendActionBar(plugin.messages().mini().deserialize(
+                display + " <dark_gray>-</dark_gray> <gray>Stage " + stage + "/" + max));
+    }
+
     // --- Ernte + Gras-Drops -------------------------------------------------
 
     @EventHandler(ignoreCancelled = true)
@@ -154,8 +179,20 @@ public final class SeedListener implements Listener {
             return;
         }
 
-        // Drops beim Abbauen von Land-Gras bzw. Seegras.
+        // Konfigurierte Seed-Drops (drops-from / biomes / chance).
         if (!seeds.isEmpty()) {
+            for (SeedDefinition def : seeds.all()) {
+                for (de.yourshika.smokeandsalt.seed.SeedDrop drop : seeds.dropsFor(def.id())) {
+                    if (drop.matches(block) && Math.random() < drop.chance()) {
+                        ItemStack seed = seeds.create(def.id(), 1);
+                        if (seed != null) {
+                            block.getWorld().dropItemNaturally(block.getLocation().add(0.5, 0.2, 0.5), seed);
+                        }
+                        break; // pro Seed nur ein passender Drop-Wurf
+                    }
+                }
+            }
+            // Rueckwaerts-Kompatibilitaet: alte grass-/seagrass-chance.
             boolean land = isGrass(block.getType());
             boolean sea = isSeagrass(block.getType());
             if (land || sea) {

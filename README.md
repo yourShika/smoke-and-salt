@@ -8,8 +8,14 @@ GUIs, and optional Oraxen textures.
 ![Minecraft](https://img.shields.io/badge/Minecraft-26.1.2-62b47a?style=flat-square&logo=minecraft&logoColor=white)
 ![Platform](https://img.shields.io/badge/Platform-Paper%2FSpigot-f7a41d?style=flat-square)
 ![Java](https://img.shields.io/badge/Java-25-ED8B00?style=flat-square&logo=openjdk&logoColor=white)
-![Version](https://img.shields.io/badge/Version-0.5.0-blue?style=flat-square)
+![Version](https://img.shields.io/badge/Version-0.6.0-blue?style=flat-square)
 ![License](https://img.shields.io/badge/License-MIT-blue?style=flat-square)
+
+## What's new in 0.6.0
+
+- **Seed drops**: every seed can now drop from configured blocks in specific biomes with a chance (`drops-from` / `biomes` / `chance`), e.g. Rice from seagrass in rivers/swamps, Tomato from grass in plains/forest, Grapes from jungle/oak/birch leaves. Shown in `/sas recipes` under *Seeds*.
+- **Name bug fixed**: new seeds/produce showed the raw hex code instead of a colored name — now proper MiniMessage colors.
+- **Crops default to vanilla wheat again** (`seeds.custom-crops: false`): performant and **breakable by hand** (drops the produce + seeds). Right-click a crop to see which plant it is (`seeds.crop-identify`). The plugin-driven per-plant display is still available with `seeds.custom-crops: true`.
 
 ## What's new in 0.5.0
 
@@ -208,8 +214,8 @@ Pushing a tag named `v*` triggers the GitHub Actions release workflow. The actio
 builds the plugin and publishes the jar as a GitHub Release asset.
 
 ```bash
-git tag v0.5.0
-git push origin v0.5.0
+git tag v0.6.0
+git push origin v0.6.0
 ```
 
 ## License

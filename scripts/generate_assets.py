@@ -13,7 +13,7 @@ OX = os.path.join(ROOT, "src", "main", "resources", "oraxen")
 TEX_DIR = os.path.join(OX, "pack", "textures", "sas")
 ITEMS_DIR = os.path.join(OX, "items")
 MANIFEST = os.path.join(OX, "asset-manifest.properties")
-ASSET_VERSION = "10"
+ASSET_VERSION = "11"
 
 # ---------------------------------------------------------------------------
 #  Zeichen-Primitive auf einer 16x16 RGBA-Leinwand
@@ -878,12 +878,98 @@ for _did, _dname, _dmat, _dcmd, _dfn in NEW_DISHES:
 
 OUTLINE = C(44, 34, 28, 255)
 
+# ---------------------------------------------------------------------------
+#  Handgemalte Overrides: fertige 16x16-Texturen aus textures/ werden 1:1
+#  uebernommen (ohne Shading/Outline). Fehlt eine Datei, wird auf die
+#  prozedurale Zeichnung zurueckgefallen.
+# ---------------------------------------------------------------------------
+
+OVERRIDE_DIR = os.path.join(ROOT, "textures")
+
+OVERRIDES = {
+    "rotebeete_chips": "pixellab-Beetroot-Chips-Food-1783247070643.png",
+    "bell_pepper": "bell_pepper.png",
+    "bell_pepper_seeds": "pixellab-Bell-Pepper-more-small-Seeds-1783243783574.png",
+    "blueberry": "pixellab-Blueberry-Food-1783244059622.png",
+    "blueberry_seeds": "pixellab-Blueberry-Seed-1783244005350.png",
+    "teig": "pixellab-Bread-Dough-1783247510769.png",
+    "burger": "pixellab-Burger-Food-1783244180445.png",
+    "cabbage": "pixellab-Cabbage-Food-1783244219809.png",
+    "cabbage_seeds": "pixellab-Cabbage-Seeds-1783244279340.png",
+    "kandierter_apfel": "pixellab-Candy-Apple-Food-1783246248381.png",
+    "cheeseburger": "pixellab-Cheese-Burger-Food--1783244324497.png",
+    "kaese": "pixellab-Cheese-Food-1783245790388.png",
+    "chicken_nuggets": "pixellab-Chicken-Nuggets-Food---1783244380107.png",
+    "chili": "pixellab-Chilli-Food--1783244430130.png",
+    "chili_seeds": "pixellab-Chilli-Seeds-1783244486254.png",
+    "coffee_beans": "pixellab-Coffee-Beans-Food-1783244572620.png",
+    "coffee_beans_seeds": "pixellab-Coffee-Beans-Seeds-Food-1783244603352.png",
+    "corn": "pixellab-Corn-Food-1783244674323.png",
+    "corn_seeds": "pixellab-Corn-Seeds-Food-1783244698825.png",
+    "cotton": "pixellab-Cotton-Food-1783244732173.png",
+    "cotton_seeds": "pixellab-Cotton-Seeds-Food-1783244875510.png",
+    "cucumber": "pixellab-Cucumber-as-a-food-1783245117238.png",
+    "cucumber_seeds": "pixellab-Cucumber-seeds-1783245160861.png",
+    "eggplant": "pixellab-Eggplant-Food-1783245252106.png",
+    "eggplant_seeds": "pixellab-Eggplant-Seeds-Food-1783245286554.png",
+    "spiegelei": "pixellab-Fried-Egg-1783247367810.png",
+    "pommes": "pixellab-Fries-Food-1783246915017.png",
+    "garlic": "pixellab-Garlic-Food-1783245334326.png",
+    "garlic_seeds": "pixellab-Garlic-seeds-Food-1783245360740.png",
+    "grapes": "pixellab-Grapes-Food-1783245630326.png",
+    "grapes_seeds": "pixellab-Grapes-Seeds-Food-1783245734904.png",
+    "kaiserbroetchen": "pixellab-kaiser-bread1783246175515.png",
+    "lettuce": "pixellab-Lettuce-Food-1783246343003.png",
+    "lettuce_seeds": "pixellab-Lettuce-Seeds-Food-1783246369879.png",
+    "marshmallow": "pixellab-Marshmallow-Food-1783246456644.png",
+    "misosuppe": "pixellab-Miso-Soup-in-a-bowl-1783246490761.png",
+    "nudeln": "pixellab-Noddle-Food-1783246636927.png",
+    "onion": "pixellab-Onion-Food-1783246739913.png",
+    "onion_seeds": "pixellab-Onion-Seeds-Vegetable-1783246768453.png",
+    "ofenkartoffel_sourcream": "pixellab-Oven-Potato-with-Sour-Cream-1783246705636.png",
+    "pineapple": "pixellab-Pineapple-Vegetable-1783246802590.png",
+    "pineapple_seeds": "pixellab-Pineapple-Seeds-Vegetable-1783246844976.png",
+    "sauce": "pixellab-Red-Sauce--1783247138422.png",
+    "reis": "pixellab-Rice-grain--1783246980190.png",
+    "reis_samen": "pixellab-Rice-seeds-Vegetable-1783247020431.png",
+    "geroestete_karotte": "pixellab-Roasted-Carrot-Food-1783245532974.png",
+    "schaschlik": "pixellab-Schaschlik-on-a-stick-Food-1783247194772.png",
+    "sourcream": "pixellab-Sourcream-Sauce-1783247231959.png",
+    "soybean": "pixellab-Soybean-Vegetable-1783247281408.png",
+    "soybean_seeds": "pixellab-Soybean-Seeds-Vegetable-1783247304872.png",
+    "spaghetti": "pixellab-Spaghetti-Food-1783247332524.png",
+    "strawberry": "pixellab-Strawberry-Vegetable-1783247428008.png",
+    "strawberry_seeds": "pixellab-Strawberry-Seeds-Vegetable-1783247467574.png",
+    "tomato_seeds": "pixellab-Tomato-Seeds-Vegetable-1783247641978.png",
+    "zucchini": "pixellab-Zucchini-Vegetable-1783247680210.png",
+    "zucchini_seeds": "pixellab-Zucchini-Seeds-Vegetable-1783247780349.png",
+}
+
+
+def override_image(item_id):
+    """Fertige Override-Textur (16x16 RGBA) fuer item_id oder None."""
+    name = OVERRIDES.get(item_id)
+    if not name:
+        return None
+    path = os.path.join(OVERRIDE_DIR, name)
+    if not os.path.exists(path):
+        print(f"  ! Override fuer '{item_id}' fehlt ({name}) - zeichne prozedural.")
+        return None
+    img = Image.open(path).convert("RGBA")
+    if img.size != (16, 16):
+        img = img.resize((16, 16), Image.NEAREST)
+    return img
+
 
 def generate():
     os.makedirs(TEX_DIR, exist_ok=True)
     os.makedirs(ITEMS_DIR, exist_ok=True)
 
     for item_id, fn in DRAW.items():
+        override = override_image(item_id)
+        if override is not None:
+            override.save(os.path.join(TEX_DIR, item_id + ".png"))
+            continue
         img = canvas()
         fn(img)
         apply_shading(img)

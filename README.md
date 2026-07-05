@@ -41,6 +41,9 @@ GUIs, and optional Oraxen textures.
 
 All twelve ship with their own 16×16 Oraxen textures. **Oil** is a new intermediate made in the water cauldron and used by every lava-cauldron fry recipe.
 
+**Texture overhaul**
+- All existing dishes, produce and seeds now use hand-made 16×16 sprites (source art in `textures/`, wired into `scripts/generate_assets.py` as overrides). The generator still falls back to its procedural art for anything without an override (currently the 12 new dishes and the crop overlays).
+
 ## What's new in 0.7.0
 
 **Robustness / anti-dupe**

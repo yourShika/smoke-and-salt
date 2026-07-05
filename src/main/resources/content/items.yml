@@ -462,7 +462,7 @@ items:
           amplifier: 0
 
   oel:
-    material: HONEY_BOTTLE
+    material: PAPER
     display-name: "<#e8c34a>Oil"
     lore: ["<dark_gray>Smoke & Salt - Ingredient"]
     provider-id: sas_oel

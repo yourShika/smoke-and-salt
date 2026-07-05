@@ -14,6 +14,7 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.ProjectileLaunchEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerItemConsumeEvent;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.EnumSet;
@@ -59,6 +60,22 @@ public final class CustomItemSafetyListener implements Listener {
                 || event.getAction() == Action.RIGHT_CLICK_BLOCK
                 || THROWABLES.contains(item.getType())) {
             event.setUseItemInHand(Event.Result.DENY);
+        }
+    }
+
+    /**
+     * Custom-Items ohne eigene Nahrungswerte duerfen nicht gegessen/getrunken
+     * werden, auch wenn ihr Basis-Material (z.B. HONEY_BOTTLE) essbar waere.
+     * So bleibt z.B. Oel eine reine Zutat.
+     */
+    @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
+    public void onConsume(PlayerItemConsumeEvent event) {
+        String id = plugin.items().idOf(event.getItem());
+        if (id == null) return;
+        ItemDefinition def = plugin.items().definition(id);
+        if (def == null || def.food() == null) {
+            event.setCancelled(true);
+            event.getPlayer().updateInventory();
         }
     }
 

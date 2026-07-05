@@ -93,7 +93,7 @@ public final class DefaultContent {
                 FoodProfile.withEffect(3, 2.4f, effect(PotionEffectType.REGENERATION, 60)));
         item(plugin, "kirschlimo", Material.HONEY_BOTTLE, "<#f0668a>Cherry Lemonade", "Drink",
                 FoodProfile.withEffect(3, 2.0f, effect(PotionEffectType.SPEED, 100)));
-        item(plugin, "oel", Material.HONEY_BOTTLE, "<#e8c34a>Oil", "Ingredient");
+        item(plugin, "oel", Material.PAPER, "<#e8c34a>Oil", "Ingredient");
         item(plugin, "tintenfischringe", Material.PAPER, "<#d9b48a>Calamari Rings", "Snack",
                 FoodProfile.withEffect(6, 7.2f, effect(PotionEffectType.WATER_BREATHING, 100)));
         item(plugin, "chips", Material.PAPER, "<#f0d060>Chips", "Snack",

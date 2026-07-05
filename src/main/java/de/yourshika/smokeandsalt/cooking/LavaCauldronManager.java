@@ -20,8 +20,15 @@ public final class LavaCauldronManager extends CauldronStation {
     }
 
     @Override
-    protected Material blockMaterial() {
-        return Material.LAVA_CAULDRON;
+    protected boolean isStationBlock(Block block) {
+        // Auch der leere Kessel zaehlt weiter (z.B. Lava herausgeschoepft),
+        // damit der Inhalt und die GUI erhalten bleiben.
+        return block.getType() == Material.LAVA_CAULDRON || block.getType() == Material.CAULDRON;
+    }
+
+    @Override
+    protected double displayHeight() {
+        return 0.7;
     }
 
     @Override

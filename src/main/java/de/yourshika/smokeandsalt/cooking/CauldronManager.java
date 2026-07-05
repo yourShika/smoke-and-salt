@@ -23,8 +23,15 @@ public final class CauldronManager extends CauldronStation {
     }
 
     @Override
-    protected Material blockMaterial() {
-        return Material.WATER_CAULDRON;
+    protected boolean isStationBlock(Block block) {
+        // Auch der leere Kessel zaehlt weiter, damit der Inhalt nach dem
+        // Aufbrauchen des Wassers nicht verloren geht.
+        return block.getType() == Material.WATER_CAULDRON || block.getType() == Material.CAULDRON;
+    }
+
+    @Override
+    protected double displayHeight() {
+        return 0.55;
     }
 
     @Override

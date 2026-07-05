@@ -8,8 +8,14 @@ GUIs, and optional Oraxen textures.
 ![Minecraft](https://img.shields.io/badge/Minecraft-26.1.2-62b47a?style=flat-square&logo=minecraft&logoColor=white)
 ![Platform](https://img.shields.io/badge/Platform-Paper%2FSpigot-f7a41d?style=flat-square)
 ![Java](https://img.shields.io/badge/Java-25-ED8B00?style=flat-square&logo=openjdk&logoColor=white)
-![Version](https://img.shields.io/badge/Version-0.8.0-blue?style=flat-square)
+![Version](https://img.shields.io/badge/Version-0.8.1-blue?style=flat-square)
 ![License](https://img.shields.io/badge/License-MIT-blue?style=flat-square)
+
+## What's new in 0.8.1
+
+- **Ingredients are shown floating in the cauldron** again — whatever sits in a water/lava cauldron's container now appears as items hovering in the liquid (non-persistent, no crash-orphans), on top of the GUI.
+- **Empty cauldrons keep their contents and GUI**: when a water cauldron runs out of water it no longer closes the menu or loses items. The container persists on the empty cauldron, the GUI stays usable, and cooking simply resumes once you add water + heat. Contents only ever leave when you break the block (dropped safely above it, never burned).
+- **Custom ingredients can no longer be eaten if they aren't food** — e.g. **Oil** is now a proper non-edible ingredient (base item changed to a non-consumable, plus a consume guard for any food-less custom item).
 
 ## What's new in 0.8.0
 

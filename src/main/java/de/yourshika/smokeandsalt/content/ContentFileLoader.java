@@ -44,7 +44,7 @@ public final class ContentFileLoader {
 
     /** Bei Bump wird der content-Ordner gesichert und aus dem JAR neu erzeugt,
      *  damit Fixes/neue Inhalte auf bestehenden Servern automatisch ankommen. */
-    private static final int CONTENT_VERSION = 3;
+    private static final int CONTENT_VERSION = 4;
 
     public static void saveDefaults(SmokeAndSalt plugin) {
         File dir = new File(plugin.getDataFolder(), "content");

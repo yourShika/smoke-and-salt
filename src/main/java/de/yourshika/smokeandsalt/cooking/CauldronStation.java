@@ -10,13 +10,17 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.World;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.HumanEntity;
+import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.scheduler.BukkitTask;
+import org.bukkit.util.Vector;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -62,11 +66,18 @@ public abstract class CauldronStation {
 
     // --- Stationsspezifisch --------------------------------------------------
 
-    /** Der Blocktyp, der diese Station traegt (Wasser-/Lavakessel). */
-    protected abstract Material blockMaterial();
+    /**
+     * Gehoert dieser Block noch zu dieser Station? Umfasst bewusst auch den leeren
+     * {@code CAULDRON}, damit der Container (und die GUI) erhalten bleiben, wenn das
+     * Wasser aufgebraucht ist - der Kessel kocht dann nur nicht.
+     */
+    protected abstract boolean isStationBlock(Block block);
 
     /** Kann der Kessel gerade kochen (Wasser: Wasserstand + Waerme; Lava: immer)? */
     protected abstract boolean canCook(Block block);
+
+    /** Hoehe (relativ zum Block) fuer die schwebende Zutaten-Anzeige. */
+    protected abstract double displayHeight();
 
     /** Partikel waehrend des Kochens. */
     protected abstract void cookParticles(Location center, int count);
@@ -120,11 +131,12 @@ public abstract class CauldronStation {
             task.cancel();
             task = null;
         }
-        // Offene GUIs synchronisieren und schliessen.
+        // Offene GUIs schliessen und Anzeige-Entities entfernen (nicht persistent).
         for (Station station : stations.values()) {
             for (HumanEntity viewer : new ArrayList<>(viewers(station))) {
                 viewer.closeInventory();
             }
+            clearDisplay(station);
         }
         save();
     }
@@ -141,6 +153,7 @@ public abstract class CauldronStation {
         Station station = station(block, true);
         ItemStack leftover = addToInput(station, stack);
         syncOpenInventory(station);
+        refreshDisplay(station);
         save();
         if (leftover == null || leftover.getAmount() < stack.getAmount()) {
             sizzle(block.getLocation());
@@ -169,6 +182,7 @@ public abstract class CauldronStation {
         writeContainer(station, inv);
         renderStatus(station, inv);
         player.openInventory(inv);
+        refreshDisplay(station);
     }
 
     /** Beim Schliessen: Inhalt aus der offenen GUI zurueck in den Container lesen. */
@@ -185,7 +199,13 @@ public abstract class CauldronStation {
         Station station = stations.get(stationKey);
         if (station == null) return;
         readContainer(station, inv);
+        refreshDisplay(station);
         save();
+    }
+
+    /** Fuehrt diese Station bereits einen Container an diesem Block? */
+    public boolean hasStation(Block block) {
+        return stations.containsKey(key(block));
     }
 
     /** Gibt den kompletten Inhalt aus und entfernt die Station (Kessel abgebaut). */
@@ -252,11 +272,13 @@ public abstract class CauldronStation {
             if (!block.getWorld().isChunkLoaded(block.getX() >> 4, block.getZ() >> 4)) {
                 continue;
             }
-            // Kessel entfernt -> Inhalt sicher ausgeben und Station verwerfen.
-            if (block.getType() != blockMaterial()) {
+            // Kein Kessel mehr (abgebaut) -> Inhalt sicher ausgeben und verwerfen.
+            // Der leere CAULDRON zaehlt weiter als Station, damit nichts verloren geht.
+            if (!isStationBlock(block)) {
                 Inventory openNow = openInventory(station);
                 if (openNow != null) readContainer(station, openNow);
                 closeViewers(station);
+                clearDisplay(station);
                 dropAll(station);
                 it.remove();
                 save();
@@ -268,6 +290,7 @@ public abstract class CauldronStation {
             if (open != null) readContainer(station, open);
 
             process(station);
+            refreshDisplay(station);
 
             if (open != null) {
                 writeContainer(station, open);
@@ -275,6 +298,7 @@ public abstract class CauldronStation {
             }
 
             if (isEmpty(station) && open == null) {
+                clearDisplay(station);
                 it.remove();
             }
         }
@@ -597,13 +621,16 @@ public abstract class CauldronStation {
     }
 
     private void dropAll(Station station) {
-        Location out = station.block.getLocation().add(0.5, 0.5, 0.5);
+        clearDisplay(station);
+        // Ueber dem Block ausgeben und unverwundbar machen, damit nichts in der
+        // Lava/im Feuer unter dem Kessel verbrennt.
+        Location out = station.block.getLocation().add(0.5, 1.1, 0.5);
         if (out.getWorld() != null) {
             for (ItemStack s : station.input) {
-                if (s != null && !s.getType().isAir()) out.getWorld().dropItemNaturally(out, s);
+                if (s != null && !s.getType().isAir()) dropSafe(out, s);
             }
             for (ItemStack s : station.output.values()) {
-                if (s != null && !s.getType().isAir()) out.getWorld().dropItemNaturally(out, s);
+                if (s != null && !s.getType().isAir()) dropSafe(out, s);
             }
         }
         // Nach dem Ausgeben leeren, damit nichts doppelt persistiert/gedroppt wird.
@@ -611,6 +638,78 @@ public abstract class CauldronStation {
         station.output.clear();
         station.active = null;
         station.elapsed = 0;
+    }
+
+    private void dropSafe(Location loc, ItemStack stack) {
+        if (loc.getWorld() == null) return;
+        Item drop = loc.getWorld().dropItem(loc, stack);
+        drop.setVelocity(new Vector(0, 0.1, 0));
+        drop.setInvulnerable(true);
+    }
+
+    // --- Schwebende Zutaten-Anzeige -----------------------------------------
+
+    /**
+     * Zeigt die eingelegten Zutaten als schwebende Items im Kessel an. Die Entities
+     * sind bewusst NICHT persistent (kein Crash-Orphan) und werden bei Bedarf pro
+     * Tick neu erzeugt/aktualisiert.
+     */
+    private void refreshDisplay(Station station) {
+        Block block = station.block;
+        World world = block.getWorld();
+        station.display.removeIf(e -> e == null || !e.isValid() || e.isDead());
+
+        List<ItemStack> shown = new ArrayList<>();
+        for (ItemStack s : station.input) {
+            if (s != null && !s.getType().isAir()) shown.add(s);
+        }
+        if (shown.isEmpty() || world == null
+                || !world.isChunkLoaded(block.getX() >> 4, block.getZ() >> 4)) {
+            clearDisplay(station);
+            return;
+        }
+        while (station.display.size() > shown.size()) {
+            Item e = station.display.remove(station.display.size() - 1);
+            if (e != null && e.isValid()) e.remove();
+        }
+        Location center = block.getLocation().add(0.5, displayHeight(), 0.5);
+        int n = shown.size();
+        for (int i = 0; i < n; i++) {
+            Location loc = n == 1 ? center
+                    : center.clone().add(Math.cos(2 * Math.PI * i / n) * 0.22, 0,
+                    Math.sin(2 * Math.PI * i / n) * 0.22);
+            ItemStack one = shown.get(i).clone();
+            one.setAmount(1);
+            Item entity;
+            if (i < station.display.size()) {
+                entity = station.display.get(i);
+                if (!one.isSimilar(entity.getItemStack())) entity.setItemStack(one);
+                if (entity.getLocation().distanceSquared(loc) > 0.01) entity.teleport(loc);
+            } else {
+                entity = world.dropItem(loc, one);
+                freezeDisplay(entity);
+                station.display.add(entity);
+            }
+            entity.setVelocity(new Vector(0, 0, 0));
+        }
+    }
+
+    private void freezeDisplay(Item entity) {
+        entity.setGravity(false);
+        entity.setVelocity(new Vector(0, 0, 0));
+        entity.setPickupDelay(Integer.MAX_VALUE);
+        entity.setUnlimitedLifetime(true);
+        entity.setCanMobPickup(false);
+        entity.setPersistent(false);
+        entity.setInvulnerable(true);
+        entity.getPersistentDataContainer().set(plugin.keys().cookingFloat, PersistentDataType.BYTE, (byte) 1);
+    }
+
+    private void clearDisplay(Station station) {
+        for (Item entity : station.display) {
+            if (entity != null && entity.isValid()) entity.remove();
+        }
+        station.display.clear();
     }
 
     private Inventory openInventory(Station station) {
@@ -677,6 +776,8 @@ public abstract class CauldronStation {
         private final Block block;
         private final ItemStack[] input = new ItemStack[INPUT_SLOTS.length];
         private final Map<Integer, ItemStack> output = new LinkedHashMap<>();
+        /** Schwebende Anzeige-Items im Kessel (nicht persistent). */
+        private final List<Item> display = new ArrayList<>();
         private CauldronRecipe active;
         private int elapsed;
 

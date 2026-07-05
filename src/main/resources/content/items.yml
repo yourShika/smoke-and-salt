@@ -236,7 +236,7 @@ items:
   # --- New plants (harvest produce) ---
   tomato:
     material: PAPER
-    display-name: "#e2564aTomato"
+    display-name: "<#e2564a>Tomato"
     lore: ["<dark_gray>Smoke & Salt - Produce"]
     provider-id: sas_tomato
     food:
@@ -244,7 +244,7 @@ items:
       saturation: 1.6
   onion:
     material: PAPER
-    display-name: "#e0c39aOnion"
+    display-name: "<#e0c39a>Onion"
     lore: ["<dark_gray>Smoke & Salt - Produce"]
     provider-id: sas_onion
     food:
@@ -252,7 +252,7 @@ items:
       saturation: 0.6
   lettuce:
     material: PAPER
-    display-name: "#6fbe57Lettuce"
+    display-name: "<#6fbe57>Lettuce"
     lore: ["<dark_gray>Smoke & Salt - Produce"]
     provider-id: sas_lettuce
     food:
@@ -260,7 +260,7 @@ items:
       saturation: 1.2
   corn:
     material: PAPER
-    display-name: "#e8c447Corn"
+    display-name: "<#e8c447>Corn"
     lore: ["<dark_gray>Smoke & Salt - Produce"]
     provider-id: sas_corn
     food:
@@ -268,7 +268,7 @@ items:
       saturation: 3.6
   cucumber:
     material: PAPER
-    display-name: "#5fa64aCucumber"
+    display-name: "<#5fa64a>Cucumber"
     lore: ["<dark_gray>Smoke & Salt - Produce"]
     provider-id: sas_cucumber
     food:
@@ -276,7 +276,7 @@ items:
       saturation: 1.6
   garlic:
     material: PAPER
-    display-name: "#e6e0d6Garlic"
+    display-name: "<#e6e0d6>Garlic"
     lore: ["<dark_gray>Smoke & Salt - Produce"]
     provider-id: sas_garlic
     food:
@@ -284,7 +284,7 @@ items:
       saturation: 0.6
   chili:
     material: PAPER
-    display-name: "#c62c26Chili"
+    display-name: "<#c62c26>Chili"
     lore: ["<dark_gray>Smoke & Salt - Produce"]
     provider-id: sas_chili
     food:
@@ -292,7 +292,7 @@ items:
       saturation: 0.6
   strawberry:
     material: PAPER
-    display-name: "#ce3030Strawberry"
+    display-name: "<#ce3030>Strawberry"
     lore: ["<dark_gray>Smoke & Salt - Produce"]
     provider-id: sas_strawberry
     food:
@@ -300,7 +300,7 @@ items:
       saturation: 2.4
   blueberry:
     material: PAPER
-    display-name: "#5a6ec0Blueberry"
+    display-name: "<#5a6ec0>Blueberry"
     lore: ["<dark_gray>Smoke & Salt - Produce"]
     provider-id: sas_blueberry
     food:
@@ -308,7 +308,7 @@ items:
       saturation: 2.4
   soybean:
     material: PAPER
-    display-name: "#78a848Soybean"
+    display-name: "<#78a848>Soybean"
     lore: ["<dark_gray>Smoke & Salt - Produce"]
     provider-id: sas_soybean
     food:
@@ -316,12 +316,12 @@ items:
       saturation: 1.6
   cotton:
     material: PAPER
-    display-name: "#f0f0ecCotton"
+    display-name: "<#f0f0ec>Cotton"
     lore: ["<dark_gray>Smoke & Salt - Produce"]
     provider-id: sas_cotton
   cabbage:
     material: PAPER
-    display-name: "#68a850Cabbage"
+    display-name: "<#68a850>Cabbage"
     lore: ["<dark_gray>Smoke & Salt - Produce"]
     provider-id: sas_cabbage
     food:
@@ -329,7 +329,7 @@ items:
       saturation: 2.4
   bell_pepper:
     material: PAPER
-    display-name: "#c6302aBell Pepper"
+    display-name: "<#c6302a>Bell Pepper"
     lore: ["<dark_gray>Smoke & Salt - Produce"]
     provider-id: sas_bell_pepper
     food:
@@ -337,7 +337,7 @@ items:
       saturation: 1.6
   pineapple:
     material: PAPER
-    display-name: "#e0b440Pineapple"
+    display-name: "<#e0b440>Pineapple"
     lore: ["<dark_gray>Smoke & Salt - Produce"]
     provider-id: sas_pineapple
     food:
@@ -345,7 +345,7 @@ items:
       saturation: 3.6
   grapes:
     material: PAPER
-    display-name: "#8c5aaaGrapes"
+    display-name: "<#8c5aaa>Grapes"
     lore: ["<dark_gray>Smoke & Salt - Produce"]
     provider-id: sas_grapes
     food:
@@ -353,12 +353,12 @@ items:
       saturation: 2.4
   coffee_beans:
     material: PAPER
-    display-name: "#8c5e3cCoffee Beans"
+    display-name: "<#8c5e3c>Coffee Beans"
     lore: ["<dark_gray>Smoke & Salt - Produce"]
     provider-id: sas_coffee_beans
   zucchini:
     material: PAPER
-    display-name: "#407c34Zucchini"
+    display-name: "<#407c34>Zucchini"
     lore: ["<dark_gray>Smoke & Salt - Produce"]
     provider-id: sas_zucchini
     food:
@@ -366,7 +366,7 @@ items:
       saturation: 1.6
   eggplant:
     material: PAPER
-    display-name: "#7846a0Eggplant"
+    display-name: "<#7846a0>Eggplant"
     lore: ["<dark_gray>Smoke & Salt - Produce"]
     provider-id: sas_eggplant
     food:

@@ -28,6 +28,7 @@ public final class SeedManager {
     private final ItemKeys keys;
     private final CropStore cropStore;
     private final Map<String, SeedDefinition> definitions = new LinkedHashMap<>();
+    private final Map<String, List<SeedDrop>> dropsById = new LinkedHashMap<>();
 
     public SeedManager(SmokeAndSalt plugin, ItemKeys keys) {
         this.plugin = plugin;
@@ -41,6 +42,7 @@ public final class SeedManager {
 
     public void loadFromConfig() {
         definitions.clear();
+        dropsById.clear();
         cropStore.load();
         ConfigurationSection root = plugin.getConfig().getConfigurationSection("seeds.definitions");
         loadFromSection(root, false, "config.yml");
@@ -58,7 +60,9 @@ public final class SeedManager {
             if (sec == null) continue;
             if (skipExisting && definition(id) != null) continue;
             try {
-                register(parse(id.toLowerCase(Locale.ROOT), sec));
+                SeedDefinition def = parse(id.toLowerCase(Locale.ROOT), sec);
+                register(def);
+                dropsById.put(def.id().toLowerCase(Locale.ROOT), parseDrops(sec));
                 loaded++;
             } catch (Exception ex) {
                 plugin.getLogger().warning(source + " Seed '" + id
@@ -89,6 +93,38 @@ public final class SeedManager {
                 sec.getDouble("grass-chance", 0.0),
                 sec.getDouble("seagrass-chance", 0.0),
                 sec.getDouble("composter-chance", 0.0));
+    }
+
+    /** Liest die Drop-Quellen eines Seeds ({@code drops-from} / {@code biomes} / {@code chance}). */
+    private List<SeedDrop> parseDrops(ConfigurationSection sec) {
+        List<SeedDrop> out = new ArrayList<>();
+        List<String> from = sec.getStringList("drops-from");
+        if (from.isEmpty()) from = sec.getStringList("drops_from");
+        if (!from.isEmpty()) {
+            java.util.Set<Material> blocks = new java.util.HashSet<>();
+            for (String name : from) {
+                Material m = Material.matchMaterial(name.toUpperCase(Locale.ROOT));
+                if (m != null) blocks.add(m);
+            }
+            java.util.Set<String> biomes = new java.util.HashSet<>();
+            for (String b : sec.getStringList("biomes")) {
+                biomes.add(b.toLowerCase(Locale.ROOT).replace("minecraft:", ""));
+            }
+            double chance = sec.getDouble("chance", 0.0);
+            if (!blocks.isEmpty() && chance > 0) {
+                out.add(new SeedDrop(blocks, biomes, chance));
+            }
+        }
+        return out;
+    }
+
+    /** Drop-Quellen fuer einen Seed (oder leer). */
+    public List<SeedDrop> dropsFor(String id) {
+        return dropsById.getOrDefault(id == null ? "" : id.toLowerCase(Locale.ROOT), List.of());
+    }
+
+    public boolean hasDrops() {
+        return dropsById.values().stream().anyMatch(l -> !l.isEmpty());
     }
 
     public void register(SeedDefinition def) {

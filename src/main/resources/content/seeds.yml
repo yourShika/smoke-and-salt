@@ -11,8 +11,17 @@ seeds:
       result-amount: 1
       seed-return-min: 1
       seed-return-max: 2
+      drops-from:
+        - SEAGRASS
+        - TALL_SEAGRASS
+      biomes:
+        - river
+        - swamp
+        - ocean
+        - mangrove_swamp
+      chance: 0.08
       grass-chance: 0.0
-      seagrass-chance: 0.35
+      seagrass-chance: 0.0
       composter-chance: 0.0
       # Oraxen crop display textures used while planted (8 stages for wheat age 0..7):
       # sas/crops/reis_stage0.png ... sas/crops/reis_stage7.png
@@ -29,163 +38,295 @@ seeds:
     # --- New plant seeds (grow like wheat) ---
     tomato_seeds:
       material: WHEAT_SEEDS
-      display-name: "#e2564aTomato Seeds"
+      display-name: "<#e2564a>Tomato Seeds"
       provider-id: sas_tomato_seeds
       crop-material: WHEAT
       result-item: tomato
       result-amount: 1
       seed-return-min: 1
       seed-return-max: 2
+      drops-from:
+        - SHORT_GRASS
+        - TALL_GRASS
+      biomes:
+        - plains
+        - forest
+      chance: 0.035
     onion_seeds:
       material: WHEAT_SEEDS
-      display-name: "#e0c39aOnion Seeds"
+      display-name: "<#e0c39a>Onion Seeds"
       provider-id: sas_onion_seeds
       crop-material: WHEAT
       result-item: onion
       result-amount: 1
       seed-return-min: 1
       seed-return-max: 2
+      drops-from:
+        - SHORT_GRASS
+        - TALL_GRASS
+      biomes:
+        - plains
+        - meadow
+      chance: 0.035
     lettuce_seeds:
       material: WHEAT_SEEDS
-      display-name: "#6fbe57Lettuce Seeds"
+      display-name: "<#6fbe57>Lettuce Seeds"
       provider-id: sas_lettuce_seeds
       crop-material: WHEAT
       result-item: lettuce
       result-amount: 1
       seed-return-min: 1
       seed-return-max: 2
+      drops-from:
+        - SHORT_GRASS
+        - TALL_GRASS
+      biomes:
+        - plains
+        - meadow
+      chance: 0.035
     corn_seeds:
       material: WHEAT_SEEDS
-      display-name: "#e8c447Corn Seeds"
+      display-name: "<#e8c447>Corn Seeds"
       provider-id: sas_corn_seeds
       crop-material: WHEAT
       result-item: corn
       result-amount: 1
       seed-return-min: 1
       seed-return-max: 2
+      drops-from:
+        - SHORT_GRASS
+        - TALL_GRASS
+      biomes:
+        - plains
+        - savanna
+      chance: 0.03
     cucumber_seeds:
       material: WHEAT_SEEDS
-      display-name: "#5fa64aCucumber Seeds"
+      display-name: "<#5fa64a>Cucumber Seeds"
       provider-id: sas_cucumber_seeds
       crop-material: WHEAT
       result-item: cucumber
       result-amount: 1
       seed-return-min: 1
       seed-return-max: 2
+      drops-from:
+        - SHORT_GRASS
+        - TALL_GRASS
+        - MOSS_BLOCK
+      biomes:
+        - jungle
+        - lush_caves
+      chance: 0.03
     garlic_seeds:
       material: WHEAT_SEEDS
-      display-name: "#e6e0d6Garlic Seeds"
+      display-name: "<#e6e0d6>Garlic Seeds"
       provider-id: sas_garlic_seeds
       crop-material: WHEAT
       result-item: garlic
       result-amount: 1
       seed-return-min: 1
       seed-return-max: 2
+      drops-from:
+        - SHORT_GRASS
+        - TALL_GRASS
+        - FERN
+      biomes:
+        - taiga
+        - old_growth_pine_taiga
+        - old_growth_spruce_taiga
+      chance: 0.03
     chili_seeds:
       material: WHEAT_SEEDS
-      display-name: "#c62c26Chili Seeds"
+      display-name: "<#c62c26>Chili Seeds"
       provider-id: sas_chili_seeds
       crop-material: WHEAT
       result-item: chili
       result-amount: 1
       seed-return-min: 1
       seed-return-max: 2
+      drops-from:
+        - SHORT_GRASS
+        - TALL_GRASS
+        - DEAD_BUSH
+      biomes:
+        - desert
+        - badlands
+        - savanna
+      chance: 0.02
     strawberry_seeds:
       material: WHEAT_SEEDS
-      display-name: "#ce3030Strawberry Seeds"
+      display-name: "<#ce3030>Strawberry Seeds"
       provider-id: sas_strawberry_seeds
       crop-material: WHEAT
       result-item: strawberry
       result-amount: 1
       seed-return-min: 1
       seed-return-max: 2
+      drops-from:
+        - SWEET_BERRY_BUSH
+        - SHORT_GRASS
+      biomes:
+        - taiga
+        - meadow
+      chance: 0.06
     blueberry_seeds:
       material: WHEAT_SEEDS
-      display-name: "#5a6ec0Blueberry Seeds"
+      display-name: "<#5a6ec0>Blueberry Seeds"
       provider-id: sas_blueberry_seeds
       crop-material: WHEAT
       result-item: blueberry
       result-amount: 1
       seed-return-min: 1
       seed-return-max: 2
+      drops-from:
+        - SWEET_BERRY_BUSH
+        - SHORT_GRASS
+      biomes:
+        - taiga
+        - snowy_taiga
+      chance: 0.06
     soybean_seeds:
       material: WHEAT_SEEDS
-      display-name: "#78a848Soybean Seeds"
+      display-name: "<#78a848>Soybean Seeds"
       provider-id: sas_soybean_seeds
       crop-material: WHEAT
       result-item: soybean
       result-amount: 1
       seed-return-min: 1
       seed-return-max: 2
+      drops-from:
+        - SHORT_GRASS
+        - TALL_GRASS
+      biomes:
+        - plains
+        - sunflower_plains
+      chance: 0.035
     cotton_seeds:
       material: WHEAT_SEEDS
-      display-name: "#f0f0ecCotton Seeds"
+      display-name: "<#f0f0ec>Cotton Seeds"
       provider-id: sas_cotton_seeds
       crop-material: WHEAT
       result-item: cotton
       result-amount: 1
       seed-return-min: 1
       seed-return-max: 2
+      drops-from:
+        - SHORT_GRASS
+        - TALL_GRASS
+      biomes:
+        - savanna
+        - plains
+      chance: 0.035
     cabbage_seeds:
       material: WHEAT_SEEDS
-      display-name: "#68a850Cabbage Seeds"
+      display-name: "<#68a850>Cabbage Seeds"
       provider-id: sas_cabbage_seeds
       crop-material: WHEAT
       result-item: cabbage
       result-amount: 1
       seed-return-min: 1
       seed-return-max: 2
+      drops-from:
+        - SHORT_GRASS
+        - TALL_GRASS
+      biomes:
+        - plains
+        - meadow
+      chance: 0.035
     bell_pepper_seeds:
       material: WHEAT_SEEDS
-      display-name: "#c6302aBell Pepper Seeds"
+      display-name: "<#c6302a>Bell Pepper Seeds"
       provider-id: sas_bell_pepper_seeds
       crop-material: WHEAT
       result-item: bell_pepper
       result-amount: 1
       seed-return-min: 1
       seed-return-max: 2
+      drops-from:
+        - SHORT_GRASS
+        - TALL_GRASS
+      biomes:
+        - savanna
+        - sparse_jungle
+      chance: 0.03
     pineapple_seeds:
       material: WHEAT_SEEDS
-      display-name: "#e0b440Pineapple Seeds"
+      display-name: "<#e0b440>Pineapple Seeds"
       provider-id: sas_pineapple_seeds
       crop-material: WHEAT
       result-item: pineapple
       result-amount: 1
       seed-return-min: 1
       seed-return-max: 2
+      drops-from:
+        - JUNGLE_LEAVES
+        - SHORT_GRASS
+      biomes:
+        - jungle
+        - bamboo_jungle
+      chance: 0.02
     grapes_seeds:
       material: WHEAT_SEEDS
-      display-name: "#8c5aaaGrapes Seeds"
+      display-name: "<#8c5aaa>Grapes Seeds"
       provider-id: sas_grapes_seeds
       crop-material: WHEAT
       result-item: grapes
       result-amount: 1
       seed-return-min: 1
       seed-return-max: 2
+      drops-from:
+        - JUNGLE_LEAVES
+        - OAK_LEAVES
+        - BIRCH_LEAVES
+      biomes:
+        - forest
+        - jungle
+      chance: 0.02
     coffee_beans_seeds:
       material: WHEAT_SEEDS
-      display-name: "#8c5e3cCoffee Beans Seeds"
+      display-name: "<#8c5e3c>Coffee Beans Seeds"
       provider-id: sas_coffee_beans_seeds
       crop-material: WHEAT
       result-item: coffee_beans
       result-amount: 1
       seed-return-min: 1
       seed-return-max: 2
+      drops-from:
+        - JUNGLE_LEAVES
+        - SHORT_GRASS
+      biomes:
+        - jungle
+        - bamboo_jungle
+      chance: 0.02
     zucchini_seeds:
       material: WHEAT_SEEDS
-      display-name: "#407c34Zucchini Seeds"
+      display-name: "<#407c34>Zucchini Seeds"
       provider-id: sas_zucchini_seeds
       crop-material: WHEAT
       result-item: zucchini
       result-amount: 1
       seed-return-min: 1
       seed-return-max: 2
+      drops-from:
+        - SHORT_GRASS
+        - TALL_GRASS
+      biomes:
+        - plains
+        - forest
+      chance: 0.035
     eggplant_seeds:
       material: WHEAT_SEEDS
-      display-name: "#7846a0Eggplant Seeds"
+      display-name: "<#7846a0>Eggplant Seeds"
       provider-id: sas_eggplant_seeds
       crop-material: WHEAT
       result-item: eggplant
       result-amount: 1
       seed-return-min: 1
       seed-return-max: 2
+      drops-from:
+        - SHORT_GRASS
+        - TALL_GRASS
+      biomes:
+        - savanna
+        - plains
+      chance: 0.03

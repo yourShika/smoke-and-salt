@@ -13,7 +13,7 @@ OX = os.path.join(ROOT, "src", "main", "resources", "oraxen")
 TEX_DIR = os.path.join(OX, "pack", "textures", "sas")
 ITEMS_DIR = os.path.join(OX, "items")
 MANIFEST = os.path.join(OX, "asset-manifest.properties")
-ASSET_VERSION = "8"
+ASSET_VERSION = "9"
 
 # ---------------------------------------------------------------------------
 #  Zeichen-Primitive auf einer 16x16 RGBA-Leinwand
@@ -87,19 +87,19 @@ def apply_shading(img):
             p = src.getpixel((x, y))
             if p[3] == 0:
                 continue
-            factor = 1.04 - y * 0.012 + max(0, 5 - x) * 0.006
+            factor = 1.08 - y * 0.016 + max(0, 5 - x) * 0.008
             top_open = not opaque(x, y - 1)
             left_open = not opaque(x - 1, y)
             bot_open = not opaque(x, y + 1)
             right_open = not opaque(x + 1, y)
             if top_open or left_open:
-                factor += 0.15
+                factor += 0.18
             elif bot_open or right_open:
-                factor -= 0.20
+                factor -= 0.24
             if (x * 5 + y * 3) % 11 == 0:
-                factor += 0.05
+                factor += 0.06
             elif (x * 7 + y * 2) % 13 == 0:
-                factor -= 0.05
+                factor -= 0.07
             img.putpixel((x, y), _mul(p, factor))
 
 # ---------------------------------------------------------------------------
@@ -107,17 +107,18 @@ def apply_shading(img):
 # ---------------------------------------------------------------------------
 
 def t_teig(i):
-    disc(i, 8, 9, 5, C(226, 210, 164)); disc(i, 6, 7, 3, C(242, 228, 184))
-    disc(i, 10, 10, 3, C(218, 198, 148))
-    for p in [(5, 9), (7, 6), (9, 8), (11, 11), (6, 12)]:
-        put(i, *p, C(202, 184, 138))
-    put(i, 6, 7, C(255, 244, 204)); put(i, 10, 7, C(236, 220, 174))
+    disc(i, 8, 9, 5, C(224, 204, 156)); disc(i, 6, 7, 3, C(244, 228, 184))
+    disc(i, 10, 10, 3, C(214, 190, 136)); disc(i, 9, 7, 2, C(236, 216, 168))
+    line(i, 5, 10, 11, 6, C(196, 172, 124)); line(i, 6, 12, 11, 11, C(184, 158, 112))
+    for p in [(5, 9), (7, 6), (9, 8), (11, 11), (6, 12), (8, 11)]:
+        put(i, *p, C(176, 150, 106))
+    put(i, 6, 6, C(255, 244, 204)); put(i, 10, 7, C(248, 232, 186)); put(i, 4, 8, C(238, 224, 178))
 
 def t_spiegelei(i):
-    disc(i, 8, 9, 6, C(244, 242, 226)); disc(i, 5, 8, 3, C(255, 252, 238))
-    rect(i, 4, 12, 11, 13, C(214, 212, 198)); put(i, 12, 11, C(226, 224, 210))
-    disc(i, 9, 8, 3, C(232, 156, 36)); disc(i, 9, 8, 2, C(255, 202, 70))
-    put(i, 8, 7, C(255, 234, 128)); put(i, 10, 9, C(210, 122, 26)); put(i, 3, 9, C(230, 228, 216))
+    disc(i, 8, 9, 6, C(242, 240, 224)); disc(i, 5, 8, 3, C(255, 252, 238))
+    rect(i, 4, 12, 11, 13, C(210, 206, 190)); put(i, 12, 11, C(226, 224, 210)); put(i, 3, 9, C(230, 228, 216))
+    disc(i, 9, 8, 3, C(224, 142, 30)); disc(i, 9, 8, 2, C(255, 200, 64))
+    put(i, 8, 7, C(255, 238, 130)); put(i, 10, 9, C(190, 104, 22)); put(i, 6, 10, C(222, 220, 206)); put(i, 11, 6, C(255, 250, 230))
 
 def t_rotebeete_chips(i):
     for (x, y, r, col) in [(6, 10, 3, C(148, 36, 70)), (10, 10, 3, C(170, 45, 82)),
@@ -128,36 +129,37 @@ def t_rotebeete_chips(i):
         put(i, x - 1, y - 1, C(218, 82, 116))
         put(i, x + 1, y, C(124, 24, 54))
     line(i, 5, 8, 9, 12, C(112, 24, 50)); line(i, 9, 6, 12, 9, C(224, 82, 118))
+    put(i, 5, 11, C(236, 92, 130)); put(i, 11, 8, C(96, 20, 44)); put(i, 9, 13, C(98, 18, 42))
 
 def t_geroestete_karotte(i):
     for dy in range(3, 14):
         w = max(0, 13 - dy)
         rect(i, 8 - w // 2, dy, 8 + (w + 1) // 2, dy, C(222, 112, 36))
     rect(i, 7, 12, 9, 13, C(172, 76, 24))
-    line(i, 6, 7, 9, 8, C(116, 54, 22)); line(i, 8, 10, 10, 11, C(116, 54, 22))
-    put(i, 7, 5, C(248, 154, 58)); put(i, 9, 6, C(236, 132, 42))
+    line(i, 6, 7, 9, 8, C(112, 50, 20)); line(i, 8, 10, 10, 11, C(112, 50, 20)); put(i, 7, 12, C(104, 44, 18))
+    put(i, 7, 5, C(255, 166, 64)); put(i, 9, 6, C(236, 132, 42)); put(i, 8, 8, C(246, 146, 46))
     rect(i, 7, 1, 9, 3, C(70, 150, 52)); put(i, 6, 2, C(92, 174, 70)); put(i, 10, 2, C(50, 124, 44)); put(i, 8, 0, C(96, 184, 72))
 
 def t_pommes(i):
-    rect(i, 4, 9, 11, 14, C(176, 42, 38)); rect(i, 4, 9, 11, 10, C(224, 70, 54))
-    rect(i, 5, 13, 10, 14, C(116, 28, 28)); put(i, 4, 11, C(214, 58, 48)); put(i, 11, 12, C(122, 26, 26))
+    rect(i, 4, 9, 11, 14, C(168, 38, 34)); rect(i, 4, 9, 11, 10, C(230, 72, 52))
+    rect(i, 5, 13, 10, 14, C(104, 24, 24)); put(i, 4, 11, C(214, 58, 48)); put(i, 11, 12, C(122, 26, 26)); put(i, 6, 10, C(242, 92, 68))
     for x, top, col in ((4, 4, C(236, 196, 74)), (6, 2, C(248, 216, 104)),
                         (8, 3, C(232, 188, 64)), (10, 2, C(250, 224, 120))):
         rect(i, x, top, x + 1, 10, col); put(i, x, top, C(255, 236, 140))
     put(i, 5, 7, C(204, 160, 52)); put(i, 9, 5, C(255, 242, 150)); put(i, 11, 8, C(218, 170, 56))
 
 def t_marshmallow(i):
-    rect(i, 5, 4, 11, 13, C(250, 236, 240)); rect(i, 5, 4, 11, 5, C(255, 252, 253))
-    rect(i, 5, 8, 11, 9, C(248, 204, 216)); rect(i, 6, 13, 10, 13, C(226, 206, 212))
-    rect(i, 5, 11, 11, 12, C(222, 176, 156))
-    put(i, 7, 6, C(255, 255, 255)); put(i, 9, 10, C(230, 190, 204)); put(i, 10, 12, C(170, 104, 74))
+    line(i, 3, 15, 13, 2, C(126, 86, 46))
+    rect(i, 5, 4, 11, 12, C(248, 234, 238)); rect(i, 5, 4, 11, 5, C(255, 252, 253))
+    rect(i, 5, 8, 11, 9, C(246, 202, 214)); rect(i, 6, 12, 10, 13, C(214, 160, 138))
+    put(i, 7, 6, C(255, 255, 255)); put(i, 9, 10, C(226, 184, 198)); put(i, 10, 12, C(150, 82, 54)); put(i, 6, 11, C(236, 190, 162))
 
 def t_kaiserbroetchen(i):
     disc(i, 8, 9, 5, C(204, 144, 76))
     rect(i, 4, 9, 12, 12, C(190, 126, 62))
     disc(i, 8, 7, 4, C(226, 174, 104))
-    line(i, 5, 9, 8, 6, C(132, 82, 42)); line(i, 8, 6, 11, 9, C(132, 82, 42))
-    line(i, 6, 7, 10, 7, C(246, 218, 156))
+    line(i, 5, 9, 8, 6, C(120, 72, 36)); line(i, 8, 6, 11, 9, C(120, 72, 36)); line(i, 6, 11, 11, 10, C(146, 86, 42))
+    line(i, 6, 7, 10, 7, C(250, 224, 160)); put(i, 5, 6, C(238, 190, 120)); put(i, 11, 7, C(176, 104, 50))
     for x in (5, 8, 11):
         put(i, x, 5 + (x % 2), C(248, 232, 172))
 
@@ -170,6 +172,7 @@ def t_nudeln(i):
             if (x + y // 2) % 2 == 0 and (x - 8) ** 2 + (y - 9) ** 2 <= 26:
                 put(i, x, y, C(210, 188, 116))
     line(i, 4, 9, 11, 6, C(250, 236, 176)); line(i, 5, 11, 12, 10, C(218, 196, 126))
+    line(i, 4, 6, 10, 12, C(238, 220, 150)); put(i, 6, 12, C(188, 160, 96)); put(i, 12, 8, C(255, 244, 190))
 
 def t_kaese(i):
     # gelber Keil mit Loechern
@@ -179,20 +182,22 @@ def t_kaese(i):
         put(i, x, y, C(222, 176, 48)); put(i, x + 1, y, C(222, 176, 48))
     for y in range(3, 14):
         put(i, 3, y, C(206, 162, 40))
-    line(i, 4, 4, 12, 12, C(255, 226, 96)); put(i, 9, 10, C(190, 146, 34))
+    line(i, 4, 4, 12, 12, C(255, 226, 96)); put(i, 9, 10, C(190, 146, 34)); put(i, 11, 12, C(188, 140, 30))
+    put(i, 6, 5, C(255, 236, 118)); put(i, 4, 12, C(178, 126, 30))
 
 def t_sourcream(i):
-    rect(i, 4, 7, 11, 13, C(218, 218, 206)); rect(i, 3, 6, 12, 8, C(244, 242, 230))
-    rect(i, 4, 5, 11, 6, C(255, 252, 238)); rect(i, 5, 9, 10, 12, C(236, 236, 224))
-    line(i, 5, 9, 10, 11, C(255, 255, 248)); line(i, 6, 11, 11, 9, C(208, 208, 196))
-    put(i, 6, 6, C(255, 255, 250)); put(i, 9, 8, C(250, 250, 238)); put(i, 10, 10, C(198, 198, 186))
+    rect(i, 4, 7, 11, 13, C(206, 210, 202)); rect(i, 3, 6, 12, 8, C(236, 236, 226))
+    rect(i, 4, 5, 11, 6, C(255, 252, 238)); rect(i, 5, 9, 10, 12, C(244, 244, 234))
+    line(i, 5, 9, 10, 11, C(255, 255, 248)); line(i, 6, 11, 11, 9, C(190, 196, 186))
+    put(i, 6, 6, C(255, 255, 250)); put(i, 8, 8, C(250, 250, 238)); put(i, 10, 10, C(178, 184, 174))
+    put(i, 6, 10, C(102, 150, 74)); put(i, 9, 10, C(102, 150, 74)); put(i, 11, 8, C(154, 160, 150))
 
 def t_sauce(i):
-    # Glas/Napf mit roter Sauce
-    rect(i, 4, 5, 11, 13, C(178, 40, 40)); rect(i, 4, 5, 11, 6, C(206, 60, 60))
-    rect(i, 4, 4, 11, 4, C(150, 26, 26)); rect(i, 3, 13, 12, 14, C(120, 20, 20))
-    put(i, 6, 8, C(220, 76, 70)); put(i, 9, 10, C(210, 70, 70)); put(i, 7, 6, C(242, 92, 84))
-    put(i, 8, 9, C(126, 24, 22)); put(i, 10, 7, C(90, 120, 46))
+    # Glas/Napf mit roter Sauce, Tomatenstuecken und Kraeutern
+    rect(i, 4, 5, 11, 13, C(168, 34, 34)); rect(i, 4, 5, 11, 6, C(226, 64, 56))
+    rect(i, 5, 4, 10, 4, C(120, 22, 22)); rect(i, 3, 13, 12, 14, C(94, 18, 18))
+    put(i, 6, 8, C(238, 86, 76)); put(i, 9, 10, C(214, 64, 58)); put(i, 7, 6, C(255, 104, 92))
+    put(i, 8, 9, C(112, 20, 18)); put(i, 10, 7, C(78, 126, 48)); put(i, 5, 11, C(232, 80, 68)); put(i, 11, 9, C(92, 146, 54))
 
 def _bun_top(i):
     # gewoelbte Broetchen-Oberseite (keine harte Rechteck-Kante)
@@ -215,6 +220,7 @@ def t_burger(i):
     rect(i, 3, 6, 12, 8, C(122, 64, 44))        # Fleisch
     rect(i, 4, 8, 11, 8, C(88, 44, 30))
     put(i, 10, 7, C(150, 84, 56))
+    rect(i, 4, 9, 11, 9, C(226, 52, 42))        # Tomate
     _bun_bottom(i)
 
 def t_cheeseburger(i):
@@ -224,7 +230,8 @@ def t_cheeseburger(i):
     rect(i, 3, 7, 12, 7, C(244, 204, 72))       # Kaese
     put(i, 2, 8, C(240, 196, 64)); put(i, 12, 8, C(240, 196, 64))   # Kaese-Tropfen
     put(i, 5, 8, C(255, 224, 96)); put(i, 9, 8, C(255, 224, 96))
-    rect(i, 3, 9, 12, 9, C(122, 64, 44))        # zweite Fleischkante
+    rect(i, 3, 9, 12, 9, C(118, 60, 40))        # zweite Fleischkante
+    put(i, 4, 5, C(150, 82, 54)); put(i, 10, 9, C(78, 34, 24))
     _bun_bottom(i)
 
 def t_chicken_nuggets(i):
@@ -232,6 +239,7 @@ def t_chicken_nuggets(i):
                            (6, 10, 3, C(232, 184, 104)), (11, 11, 2, C(220, 168, 86))]:
         disc(i, x, y, r, col); put(i, x, y, C(178, 126, 54))
         put(i, x + 1, y - 1, C(252, 216, 140)); put(i, x - 1, y + 1, C(150, 94, 40))
+    put(i, 4, 11, C(246, 206, 130)); put(i, 12, 10, C(150, 92, 38))
 
 def t_schaschlik(i):
     for k in range(12):
@@ -240,28 +248,28 @@ def t_schaschlik(i):
     disc(i, 8, 7, 2, C(224, 112, 38))                    # Karotte
     disc(i, 11, 4, 2, C(170, 132, 70))
     disc(i, 10, 6, 1, C(92, 150, 52))
-    put(i, 5, 10, C(94, 44, 30)); put(i, 11, 4, C(110, 55, 35)); put(i, 8, 6, C(250, 152, 58))
+    put(i, 5, 10, C(94, 44, 30)); put(i, 11, 4, C(110, 55, 35)); put(i, 8, 6, C(250, 152, 58)); put(i, 7, 8, C(230, 210, 120))
 
 def t_ofenkartoffel_sourcream(i):
     disc(i, 8, 9, 6, C(178, 132, 74)); disc(i, 8, 9, 5, C(206, 158, 96))
     rect(i, 5, 6, 11, 8, C(120, 84, 46))                 # Schnitt
     rect(i, 6, 6, 10, 7, C(246, 246, 240))               # Sauerrahm
     put(i, 7, 5, C(96, 150, 60)); put(i, 9, 5, C(96, 150, 60)); put(i, 10, 7, C(86, 136, 54))  # Schnittlauch
-    put(i, 5, 10, C(146, 94, 52)); put(i, 11, 10, C(230, 180, 112))
+    put(i, 5, 10, C(146, 94, 52)); put(i, 11, 10, C(230, 180, 112)); put(i, 4, 8, C(120, 72, 42)); put(i, 10, 6, C(255, 255, 248))
 
 def t_spaghetti(i):
-    rect(i, 3, 9, 12, 13, C(150, 95, 55)); rect(i, 3, 9, 12, 9, C(184, 122, 74))  # Teller
+    rect(i, 3, 9, 12, 13, C(134, 82, 48)); rect(i, 3, 9, 12, 9, C(184, 122, 74))  # Teller
     for x in range(4, 12):
         put(i, x, 6 + (x % 3), C(240, 225, 162))
         put(i, x, 5 + (x % 2), C(226, 208, 140))
     line(i, 4, 8, 12, 6, C(250, 236, 176)); line(i, 5, 7, 11, 10, C(216, 196, 128))
-    put(i, 7, 5, C(190, 40, 40)); put(i, 9, 6, C(190, 40, 40)); put(i, 8, 8, C(212, 70, 42)); put(i, 10, 8, C(90, 128, 48))
+    put(i, 7, 5, C(190, 40, 40)); put(i, 9, 6, C(190, 40, 40)); put(i, 8, 8, C(212, 70, 42)); put(i, 10, 8, C(90, 128, 48)); put(i, 6, 6, C(255, 238, 176))
 
 def t_misosuppe(i):
-    rect(i, 3, 8, 12, 13, C(150, 95, 55)); rect(i, 3, 8, 12, 8, C(184, 122, 74))
-    rect(i, 4, 6, 11, 8, C(198, 138, 58))                # Bruehe
+    rect(i, 3, 8, 12, 13, C(132, 78, 48)); rect(i, 3, 8, 12, 8, C(196, 134, 76))
+    rect(i, 4, 6, 11, 8, C(204, 142, 58)); rect(i, 5, 7, 10, 8, C(170, 98, 44))  # Bruehe
     put(i, 6, 7, C(70, 130, 70)); put(i, 9, 7, C(70, 130, 70)); put(i, 10, 6, C(52, 96, 52))  # Seetang
-    put(i, 8, 6, C(240, 240, 236)); put(i, 5, 6, C(240, 225, 162)); put(i, 7, 8, C(160, 90, 42))
+    put(i, 8, 6, C(240, 240, 236)); put(i, 5, 6, C(240, 225, 162)); put(i, 7, 8, C(150, 80, 36)); put(i, 11, 8, C(224, 170, 72))
 
 def t_kandierter_apfel(i):
     disc(i, 8, 9, 5, C(216, 52, 46)); disc(i, 8, 9, 4, C(186, 36, 34))
@@ -270,6 +278,7 @@ def t_kandierter_apfel(i):
     line(i, 7, 13, 10, 15, C(146, 30, 28))
     for x in range(4, 13):
         put(i, x, 13, C(120, 22, 22))
+    put(i, 10, 6, C(236, 86, 70)); put(i, 7, 12, C(144, 24, 24))
 
 def t_reis(i):
     # kleiner Haufen weisser Reiskoerner
@@ -277,6 +286,7 @@ def t_reis(i):
     disc(i, 7, 7, 3, C(250, 250, 244))
     for (x, y) in [(6, 8), (9, 8), (7, 10), (10, 10), (8, 9), (6, 11), (9, 11), (11, 9), (5, 10)]:
         put(i, x, y, C(220, 220, 208)); put(i, x + 1, y, C(250, 250, 244))
+    put(i, 5, 12, C(200, 200, 190)); put(i, 11, 11, C(255, 255, 248))
 
 def t_reis_samen(i):
     # Buendel heller Reissamen mit gruenem Halm
@@ -409,13 +419,109 @@ ITEMS = {
 }
 
 # ---------------------------------------------------------------------------
-#  Neue Pflanzen: Ernte-Sprites + getoente Samen
+#  Neue Pflanzen: Ernte-Sprites, eigene Samen und eigene Crop-Overlays
 # ---------------------------------------------------------------------------
 
-def seed_sprite(img, col):
-    for (x, y) in [(6, 6), (9, 6), (7, 9), (10, 9), (8, 8), (5, 8), (11, 7)]:
-        put(img, x, y, col); put(img, x, y + 1, _mul(col, 0.78))
-    put(img, 4, 11, C(120, 150, 66)); put(img, 12, 10, C(120, 150, 66))
+def leaf(i, x, y, col):
+    put(i, x, y, col)
+    put(i, x + 1, y, _mul(col, 1.12))
+    put(i, x, y + 1, _mul(col, 0.78))
+
+def sparkle(i, x, y, col=C(255, 238, 170)):
+    put(i, x, y, col)
+    put(i, x + 1, y, _mul(col, 0.82))
+
+def t_tomato_seeds(i):
+    for x, y in [(5, 7), (7, 6), (10, 6), (6, 10), (9, 10), (11, 8)]:
+        put(i, x, y, C(212, 54, 44)); put(i, x, y + 1, C(134, 28, 26))
+    line(i, 4, 12, 10, 4, C(78, 142, 58)); leaf(i, 9, 5, C(108, 176, 80))
+
+def t_onion_seeds(i):
+    for x, y in [(5, 7), (7, 6), (9, 7), (11, 8), (6, 10), (10, 11)]:
+        put(i, x, y, C(230, 214, 184)); put(i, x, y + 1, C(176, 144, 120))
+    line(i, 8, 12, 8, 4, C(98, 154, 76)); put(i, 7, 5, C(128, 182, 94)); put(i, 9, 6, C(128, 182, 94))
+
+def t_lettuce_seeds(i):
+    for x, y in [(6, 8), (8, 7), (10, 8), (7, 10), (9, 11)]:
+        leaf(i, x, y, C(102, 170, 78))
+    disc(i, 8, 9, 1, C(148, 202, 110)); put(i, 5, 12, C(82, 136, 62)); put(i, 11, 12, C(82, 136, 62))
+
+def t_corn_seeds(i):
+    for x, y in [(6, 5), (8, 5), (10, 6), (5, 8), (7, 8), (9, 9), (11, 10)]:
+        put(i, x, y, C(236, 202, 74)); put(i, x, y + 1, C(178, 128, 42))
+    line(i, 4, 13, 12, 6, C(82, 142, 58)); leaf(i, 10, 7, C(108, 174, 76))
+
+def t_cucumber_seeds(i):
+    for k in range(5):
+        x, y = 5 + k, 9 - k
+        put(i, x, y, C(168, 212, 116)); put(i, x + 1, y, C(90, 148, 70)); put(i, x, y + 1, C(68, 118, 54))
+    for x, y in [(9, 10), (11, 11), (6, 12)]:
+        put(i, x, y, C(126, 184, 92))
+
+def t_garlic_seeds(i):
+    for x, y in [(5, 9), (7, 7), (9, 8), (11, 10), (8, 11)]:
+        disc(i, x, y, 1, C(238, 234, 222)); put(i, x, y + 1, C(178, 168, 154))
+    line(i, 8, 12, 9, 4, C(112, 154, 84)); leaf(i, 9, 5, C(134, 182, 96))
+
+def t_chili_seeds(i):
+    for x, y in [(5, 7), (7, 6), (9, 7), (11, 9), (8, 10), (6, 11)]:
+        put(i, x, y, C(202, 44, 38)); put(i, x + 1, y, C(246, 96, 82)); put(i, x, y + 1, C(128, 22, 20))
+    line(i, 4, 12, 7, 4, C(72, 142, 58))
+
+def t_strawberry_seeds(i):
+    disc(i, 8, 9, 3, C(202, 44, 42)); put(i, 6, 7, C(244, 218, 90)); put(i, 9, 8, C(244, 218, 90))
+    put(i, 7, 10, C(244, 218, 90)); put(i, 10, 10, C(244, 218, 90))
+    for x in range(6, 11): put(i, x, 5, C(78, 150, 62))
+
+def t_blueberry_seeds(i):
+    for x, y in [(6, 7), (9, 6), (11, 9), (7, 10), (10, 11)]:
+        disc(i, x, y, 1, C(70, 86, 168)); put(i, x - 1, y - 1, C(120, 142, 212))
+    line(i, 5, 12, 11, 5, C(74, 132, 62)); leaf(i, 10, 5, C(100, 168, 78))
+
+def t_soybean_seeds(i):
+    for x, y in [(6, 8), (8, 7), (10, 8), (7, 11), (10, 11)]:
+        disc(i, x, y, 1, C(142, 190, 94)); put(i, x, y + 1, C(88, 132, 56))
+    line(i, 5, 13, 11, 5, C(88, 140, 62)); put(i, 12, 7, C(122, 170, 82))
+
+def t_cotton_seeds(i):
+    for x, y in [(6, 8), (9, 7), (11, 9), (7, 11)]:
+        disc(i, x, y, 1, C(244, 244, 238)); put(i, x, y + 1, C(176, 154, 132))
+    line(i, 5, 13, 8, 5, C(118, 86, 54)); leaf(i, 8, 6, C(112, 152, 84))
+
+def t_cabbage_seeds(i):
+    disc(i, 8, 9, 3, C(82, 144, 62)); disc(i, 8, 9, 2, C(122, 186, 92)); put(i, 8, 9, C(160, 212, 126))
+    for p in [(5, 8), (11, 8), (7, 12), (10, 12)]: put(i, *p, C(58, 116, 46))
+
+def t_bell_pepper_seeds(i):
+    disc(i, 7, 9, 2, C(202, 54, 46)); disc(i, 10, 9, 2, C(226, 74, 58))
+    put(i, 6, 8, C(250, 116, 96)); put(i, 9, 8, C(250, 116, 96))
+    line(i, 8, 7, 8, 4, C(76, 142, 58)); leaf(i, 7, 5, C(108, 174, 76))
+
+def t_pineapple_seeds(i):
+    rect(i, 6, 7, 10, 12, C(220, 176, 62)); rect(i, 7, 6, 9, 6, C(246, 210, 92))
+    for p in [(8, 3), (7, 4), (9, 4), (6, 5), (10, 5)]: put(i, *p, C(80, 150, 62))
+    line(i, 6, 8, 10, 12, C(158, 116, 36))
+
+def t_grapes_seeds(i):
+    for x, y in [(6, 8), (8, 7), (10, 8), (7, 10), (9, 11), (11, 10)]:
+        put(i, x, y, C(124, 70, 156)); put(i, x - 1, y - 1, C(176, 124, 204))
+    line(i, 8, 6, 8, 3, C(112, 82, 48)); leaf(i, 9, 4, C(92, 150, 70))
+
+def t_coffee_beans_seeds(i):
+    for x, y in [(6, 8), (9, 7), (11, 10), (7, 11)]:
+        disc(i, x, y, 1, C(128, 80, 44)); put(i, x, y, C(82, 48, 26)); put(i, x - 1, y - 1, C(170, 116, 70))
+    line(i, 5, 13, 11, 5, C(78, 132, 62))
+
+def t_zucchini_seeds(i):
+    for k in range(6):
+        x, y = 5 + k, 12 - k
+        put(i, x, y, C(58, 118, 46)); put(i, x + 1, y - 1, C(92, 154, 70)); put(i, x + 1, y, C(34, 82, 32))
+    sparkle(i, 8, 8, C(152, 190, 112))
+
+def t_eggplant_seeds(i):
+    for x, y in [(6, 8), (9, 7), (11, 9), (7, 11), (10, 11)]:
+        disc(i, x, y, 1, C(112, 64, 148)); put(i, x - 1, y - 1, C(170, 128, 204))
+    line(i, 8, 7, 8, 3, C(72, 140, 58)); leaf(i, 7, 4, C(102, 166, 78))
 
 def t_tomato(i):
     disc(i, 8, 9, 5, C(202, 52, 44)); disc(i, 6, 7, 2, C(238, 104, 92))
@@ -516,32 +622,32 @@ def t_eggplant(i):
     for p in [(8, 3), (7, 4), (9, 4), (8, 5)]: put(i, *p, C(78, 146, 60))
     line(i, 8, 4, 8, 2, C(70, 130, 54))
 
-# id -> (display, draw, seed-tint, custom_model_data-base)
+# id -> (display, draw, seed-draw, custom_model_data-base)
 PLANTS = [
-    ("tomato", "Tomato", t_tomato, C(200, 60, 50)),
-    ("onion", "Onion", t_onion, C(206, 184, 150)),
-    ("lettuce", "Lettuce", t_lettuce, C(90, 160, 74)),
-    ("corn", "Corn", t_corn, C(232, 196, 70)),
-    ("cucumber", "Cucumber", t_cucumber, C(90, 158, 72)),
-    ("garlic", "Garlic", t_garlic, C(230, 224, 214)),
-    ("chili", "Chili", t_chili, C(198, 44, 38)),
-    ("strawberry", "Strawberry", t_strawberry, C(206, 48, 44)),
-    ("blueberry", "Blueberry", t_blueberry, C(90, 110, 190)),
-    ("soybean", "Soybean", t_soybean, C(120, 168, 72)),
-    ("cotton", "Cotton", t_cotton, C(240, 240, 236)),
-    ("cabbage", "Cabbage", t_cabbage, C(104, 168, 80)),
-    ("bell_pepper", "Bell Pepper", t_bell_pepper, C(198, 48, 42)),
-    ("pineapple", "Pineapple", t_pineapple, C(224, 180, 64)),
-    ("grapes", "Grapes", t_grapes, C(140, 90, 170)),
-    ("coffee_beans", "Coffee Beans", t_coffee_beans, C(140, 94, 60)),
-    ("zucchini", "Zucchini", t_zucchini, C(64, 124, 52)),
-    ("eggplant", "Eggplant", t_eggplant, C(120, 70, 150)),
+    ("tomato", "Tomato", t_tomato, t_tomato_seeds),
+    ("onion", "Onion", t_onion, t_onion_seeds),
+    ("lettuce", "Lettuce", t_lettuce, t_lettuce_seeds),
+    ("corn", "Corn", t_corn, t_corn_seeds),
+    ("cucumber", "Cucumber", t_cucumber, t_cucumber_seeds),
+    ("garlic", "Garlic", t_garlic, t_garlic_seeds),
+    ("chili", "Chili", t_chili, t_chili_seeds),
+    ("strawberry", "Strawberry", t_strawberry, t_strawberry_seeds),
+    ("blueberry", "Blueberry", t_blueberry, t_blueberry_seeds),
+    ("soybean", "Soybean", t_soybean, t_soybean_seeds),
+    ("cotton", "Cotton", t_cotton, t_cotton_seeds),
+    ("cabbage", "Cabbage", t_cabbage, t_cabbage_seeds),
+    ("bell_pepper", "Bell Pepper", t_bell_pepper, t_bell_pepper_seeds),
+    ("pineapple", "Pineapple", t_pineapple, t_pineapple_seeds),
+    ("grapes", "Grapes", t_grapes, t_grapes_seeds),
+    ("coffee_beans", "Coffee Beans", t_coffee_beans, t_coffee_beans_seeds),
+    ("zucchini", "Zucchini", t_zucchini, t_zucchini_seeds),
+    ("eggplant", "Eggplant", t_eggplant, t_eggplant_seeds),
 ]
 
 _cmd = 3030
-for _pid, _pname, _pdraw, _scol in PLANTS:
+for _pid, _pname, _pdraw, _seed_draw in PLANTS:
     DRAW[_pid] = _pdraw
-    DRAW[_pid + "_seeds"] = (lambda col: (lambda im: seed_sprite(im, col)))(_scol)
+    DRAW[_pid + "_seeds"] = _seed_draw
     ITEMS[_pid] = ("<white>" + _pname, "PAPER", _cmd)
     ITEMS[_pid + "_seeds"] = ("<white>" + _pname + " Seeds", "WHEAT_SEEDS", _cmd + 1)
     _cmd += 2
@@ -550,49 +656,130 @@ for _pid, _pname, _pdraw, _scol in PLANTS:
 #  Custom-Crop-Texturen (eine je Pflanze, wird beim Wachsen skaliert)
 # ---------------------------------------------------------------------------
 
-def crop_sprite(img, fruit):
-    stem = C(86, 150, 66)
-    stem_d = C(58, 118, 48)
-    for x0, top in [(6, 4), (8, 3), (10, 5)]:
-        line(img, x0, 14, x0, top, stem)
-        line(img, x0, 14, x0 - 1, top + 2, stem_d)
-        put(img, x0, top, C(120, 182, 92))
-    for p in [(5, 12), (11, 12), (7, 13), (9, 13)]:
-        put(img, *p, stem)
-    for (x, y) in [(7, 5), (9, 6), (8, 4)]:
-        put(img, x, y, fruit); put(img, x, y + 1, _mul(fruit, 0.78))
+def crop_base(i, xs=(5, 8, 11), tops=(5, 3, 6), stem=C(86, 150, 66)):
+    _soil(i, min(xs) - 1, max(xs) + 1)
+    for x0, top in zip(xs, tops):
+        line(i, x0, 14, x0, top, stem)
+        line(i, x0, 14, x0 - 1, top + 2, _mul(stem, 0.72))
+        put(i, x0 + 1, top + 1, _mul(stem, 1.2))
 
-# produce-id -> Frucht-Farbe (Crop-Item: sas_<produce>_crop)
+def crop_reis(i):
+    t_reis_crop_stage7(i)
+    # allgemeines Rice-Crop-Overlay: reife Aehren plus kleiner Wasser-/Feldsaum,
+    # damit es nicht die finale Age-Stage dupliziert.
+    rect(i, 2, 13, 13, 13, C(58, 96, 92))
+    put(i, 4, 13, C(90, 132, 122)); put(i, 10, 13, C(90, 132, 122))
+    put(i, 2, 12, C(202, 178, 92)); put(i, 13, 12, C(202, 178, 92))
+
+def crop_tomato(i):
+    crop_base(i, (4, 7, 10, 12), (6, 4, 5, 7))
+    for p in [(6, 6), (9, 6), (10, 8), (5, 9)]: disc(i, p[0], p[1], 1, C(204, 54, 46)); sparkle(i, p[0]-1, p[1]-1, C(246, 116, 96))
+
+def crop_onion(i):
+    crop_base(i, (5, 8, 11), (6, 4, 6), C(96, 160, 82))
+    for p in [(5, 12), (8, 11), (11, 12)]: disc(i, p[0], p[1], 1, C(214, 194, 164))
+    line(i, 8, 4, 8, 1, C(126, 184, 96))
+
+def crop_lettuce(i):
+    crop_base(i, (5, 8, 11), (7, 5, 7))
+    disc(i, 8, 10, 4, C(74, 138, 58)); disc(i, 8, 9, 2, C(138, 198, 110))
+    for p in [(5, 8), (11, 8), (6, 12), (10, 12)]: put(i, *p, C(56, 116, 44))
+
+def crop_corn(i):
+    crop_base(i, (5, 8, 11), (5, 2, 5), C(86, 150, 64))
+    rect(i, 7, 4, 9, 11, C(226, 190, 60)); line(i, 6, 5, 5, 12, C(78, 132, 56)); line(i, 10, 5, 11, 12, C(78, 132, 56))
+    for y in (5, 7, 9): put(i, 8, y, C(252, 226, 102))
+
+def crop_cucumber(i):
+    crop_base(i, (4, 7, 10, 12), (7, 5, 6, 8))
+    line(i, 5, 10, 11, 6, C(72, 134, 52)); line(i, 5, 11, 11, 7, C(46, 94, 38)); sparkle(i, 7, 8, C(152, 196, 110))
+
+def crop_garlic(i):
+    crop_base(i, (5, 8, 11), (7, 3, 7), C(104, 152, 84))
+    for p in [(6, 12), (8, 11), (10, 12)]: disc(i, p[0], p[1], 1, C(236, 232, 222))
+    line(i, 8, 3, 8, 1, C(146, 184, 116))
+
+def crop_chili(i):
+    crop_base(i, (4, 7, 10, 12), (5, 3, 5, 7), C(78, 146, 60))
+    line(i, 5, 7, 7, 10, C(202, 44, 38)); line(i, 9, 5, 12, 8, C(202, 44, 38)); put(i, 6, 8, C(246, 96, 82)); put(i, 10, 6, C(246, 96, 82))
+
+def crop_strawberry(i):
+    crop_base(i, (4, 7, 10, 12), (7, 5, 7, 8), C(72, 142, 60))
+    for p in [(6, 8), (9, 8), (8, 10), (11, 9)]: disc(i, p[0], p[1], 1, C(206, 48, 44)); put(i, p[0], p[1], C(246, 108, 92))
+
+def crop_blueberry(i):
+    crop_base(i, (5, 8, 11), (4, 3, 5), C(72, 128, 62))
+    for p in [(6, 5), (9, 5), (11, 7), (7, 8), (10, 9)]: disc(i, p[0], p[1], 1, C(70, 86, 168)); put(i, p[0]-1, p[1]-1, C(128, 148, 214))
+
+def crop_soybean(i):
+    crop_base(i, (5, 8, 11), (5, 3, 5), C(82, 138, 62))
+    for p in [(6, 8), (8, 6), (10, 7), (9, 10)]: disc(i, p[0], p[1], 1, C(144, 190, 96))
+    line(i, 5, 12, 11, 6, C(104, 158, 70))
+
+def crop_cotton(i):
+    crop_base(i, (5, 8, 11), (5, 3, 5), C(104, 138, 76))
+    for p in [(6, 6), (9, 5), (11, 7), (8, 8)]: disc(i, p[0], p[1], 1, C(246, 246, 240)); put(i, p[0], p[1], C(255, 255, 252))
+
+def crop_cabbage(i):
+    crop_base(i, (5, 8, 11), (7, 5, 7), C(82, 140, 62))
+    disc(i, 8, 10, 4, C(66, 128, 54)); disc(i, 8, 9, 3, C(104, 170, 80)); disc(i, 8, 9, 1, C(152, 210, 116))
+
+def crop_bell_pepper(i):
+    crop_base(i, (4, 7, 10, 12), (5, 3, 5, 7), C(80, 148, 60))
+    for p in [(6, 7), (9, 7), (11, 9)]: disc(i, p[0], p[1], 2, C(200, 54, 46)); put(i, p[0]-1, p[1]-1, C(246, 112, 92))
+
+def crop_pineapple(i):
+    crop_base(i, (5, 8, 11), (8, 5, 8), C(72, 132, 58))
+    rect(i, 6, 7, 10, 13, C(218, 174, 58)); line(i, 6, 8, 10, 12, C(156, 112, 34))
+    for p in [(8, 3), (7, 4), (9, 4), (6, 5), (10, 5)]: put(i, *p, C(72, 142, 58))
+
+def crop_grapes(i):
+    crop_base(i, (5, 8, 11), (4, 3, 5), C(82, 138, 62))
+    for p in [(6, 7), (8, 6), (10, 7), (7, 9), (9, 10), (11, 9)]: disc(i, p[0], p[1], 1, C(124, 70, 156)); put(i, p[0]-1, p[1]-1, C(176, 124, 204))
+
+def crop_coffee_beans(i):
+    crop_base(i, (5, 8, 11), (4, 3, 5), C(76, 130, 62))
+    for p in [(6, 6), (9, 5), (11, 8), (7, 10)]: disc(i, p[0], p[1], 1, C(126, 78, 42)); line(i, p[0], p[1]-1, p[0], p[1]+1, C(76, 44, 24))
+
+def crop_zucchini(i):
+    crop_base(i, (4, 7, 10, 12), (7, 5, 6, 8), C(72, 136, 58))
+    line(i, 5, 11, 12, 6, C(50, 108, 42)); line(i, 5, 10, 12, 5, C(78, 142, 62)); sparkle(i, 8, 8, C(132, 180, 96))
+
+def crop_eggplant(i):
+    crop_base(i, (5, 8, 11), (5, 3, 5), C(76, 142, 60))
+    for p in [(7, 8), (10, 9), (9, 6)]: disc(i, p[0], p[1], 2, C(104, 58, 136)); put(i, p[0]-1, p[1]-1, C(168, 120, 202))
+
+# produce-id -> eigener Crop-Renderer (Crop-Item: sas_<produce>_crop)
 CROPS = [
-    ("reis", C(226, 204, 120)),
-    ("tomato", C(200, 60, 50)),
-    ("onion", C(206, 184, 150)),
-    ("lettuce", C(120, 186, 96)),
-    ("corn", C(232, 196, 70)),
-    ("cucumber", C(90, 158, 72)),
-    ("garlic", C(232, 226, 216)),
-    ("chili", C(198, 44, 38)),
-    ("strawberry", C(206, 48, 44)),
-    ("blueberry", C(90, 110, 190)),
-    ("soybean", C(120, 168, 72)),
-    ("cotton", C(240, 240, 236)),
-    ("cabbage", C(104, 168, 80)),
-    ("bell_pepper", C(198, 48, 42)),
-    ("pineapple", C(224, 180, 64)),
-    ("grapes", C(140, 90, 170)),
-    ("coffee_beans", C(140, 94, 60)),
-    ("zucchini", C(64, 124, 52)),
-    ("eggplant", C(120, 70, 150)),
+    ("reis", crop_reis),
+    ("tomato", crop_tomato),
+    ("onion", crop_onion),
+    ("lettuce", crop_lettuce),
+    ("corn", crop_corn),
+    ("cucumber", crop_cucumber),
+    ("garlic", crop_garlic),
+    ("chili", crop_chili),
+    ("strawberry", crop_strawberry),
+    ("blueberry", crop_blueberry),
+    ("soybean", crop_soybean),
+    ("cotton", crop_cotton),
+    ("cabbage", crop_cabbage),
+    ("bell_pepper", crop_bell_pepper),
+    ("pineapple", crop_pineapple),
+    ("grapes", crop_grapes),
+    ("coffee_beans", crop_coffee_beans),
+    ("zucchini", crop_zucchini),
+    ("eggplant", crop_eggplant),
 ]
 
 _crop_cmd = 3070
-for _cid, _fcol in CROPS:
-    EXTRA_TEXTURES["crops/" + _cid + "_crop"] = (lambda col: (lambda im: crop_sprite(im, col)))(_fcol)
+for _cid, _crop_draw in CROPS:
+    EXTRA_TEXTURES["crops/" + _cid + "_crop"] = _crop_draw
     ITEMS[_cid + "_crop"] = ("<green>" + _cid.replace("_", " ").title() + " Crop", "PAPER",
                              _crop_cmd, "sas/crops/" + _cid + "_crop.png")
     _crop_cmd += 1
 
-OUTLINE = C(60, 44, 32, 255)
+OUTLINE = C(44, 34, 28, 255)
 
 
 def generate():

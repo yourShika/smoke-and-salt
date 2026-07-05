@@ -839,3 +839,123 @@ sas_eggplant_crop:
       - sas/crops/eggplant_crop.png
     custom_model_data: 3088
 
+sas_beerenkekse:
+  displayname: "<#d98a4a>Berry Cookies"
+  material: COOKIE
+  Pack:
+    generate_model: true
+    parent_model: "item/generated"
+    textures:
+      - sas/beerenkekse.png
+    custom_model_data: 3089
+
+sas_kaesekuchen_beeren:
+  displayname: "<#f3d9a0>Cheesecake with Berry Sauce"
+  material: PAPER
+  Pack:
+    generate_model: true
+    parent_model: "item/generated"
+    textures:
+      - sas/kaesekuchen_beeren.png
+    custom_model_data: 3090
+
+sas_sushi:
+  displayname: "<#e8e0d0>Sushi"
+  material: PAPER
+  Pack:
+    generate_model: true
+    parent_model: "item/generated"
+    textures:
+      - sas/sushi.png
+    custom_model_data: 3091
+
+sas_sakura_sushi:
+  displayname: "<#f4c2d0>Sakura Sushi"
+  material: PAPER
+  Pack:
+    generate_model: true
+    parent_model: "item/generated"
+    textures:
+      - sas/sakura_sushi.png
+    custom_model_data: 3092
+
+sas_onigiri:
+  displayname: "<#f2efe6>Onigiri"
+  material: PAPER
+  Pack:
+    generate_model: true
+    parent_model: "item/generated"
+    textures:
+      - sas/onigiri.png
+    custom_model_data: 3093
+
+sas_apfelsaft:
+  displayname: "<#e2a33a>Apple Juice"
+  material: HONEY_BOTTLE
+  Pack:
+    generate_model: true
+    parent_model: "item/generated"
+    textures:
+      - sas/apfelsaft.png
+    custom_model_data: 3094
+
+sas_kirschlimo:
+  displayname: "<#f0668a>Cherry Lemonade"
+  material: HONEY_BOTTLE
+  Pack:
+    generate_model: true
+    parent_model: "item/generated"
+    textures:
+      - sas/kirschlimo.png
+    custom_model_data: 3095
+
+sas_oel:
+  displayname: "<#e8c34a>Oil"
+  material: HONEY_BOTTLE
+  Pack:
+    generate_model: true
+    parent_model: "item/generated"
+    textures:
+      - sas/oel.png
+    custom_model_data: 3096
+
+sas_tintenfischringe:
+  displayname: "<#d9b48a>Calamari Rings"
+  material: PAPER
+  Pack:
+    generate_model: true
+    parent_model: "item/generated"
+    textures:
+      - sas/tintenfischringe.png
+    custom_model_data: 3097
+
+sas_chips:
+  displayname: "<#f0d060>Chips"
+  material: PAPER
+  Pack:
+    generate_model: true
+    parent_model: "item/generated"
+    textures:
+      - sas/chips.png
+    custom_model_data: 3098
+
+sas_creeper_keks:
+  displayname: "<#4caf50>Creeper Cookie"
+  material: COOKIE
+  Pack:
+    generate_model: true
+    parent_model: "item/generated"
+    textures:
+      - sas/creeper_keks.png
+    custom_model_data: 3099
+
+sas_schmalzgebaeck:
+  displayname: "<#e8c890>Lard Pastry"
+  material: PAPER
+  Pack:
+    generate_model: true
+    parent_model: "item/generated"
+    textures:
+      - sas/schmalzgebaeck.png
+    custom_model_data: 3100
+

@@ -91,3 +91,62 @@ crafting-recipes:
     result:
       item: kandierter_apfel
       amount: 1
+
+  # --- 0.8.0: new crafting dishes ---
+  beerenkekse:
+    ingredients:
+      - material: WHEAT
+        display: Wheat
+      - material: SWEET_BERRIES
+        display: Sweet Berries
+      - material: SUGAR
+        display: Sugar
+    result:
+      item: beerenkekse
+      amount: 1
+
+  kaesekuchen_beeren:
+    ingredients:
+      - item: teig
+        display: Dough
+      - material: SWEET_BERRIES
+        display: Sweet Berries
+      - material: SUGAR
+        display: Sugar
+      - material: MILK_BUCKET
+        display: Milk
+    result:
+      item: kaesekuchen_beeren
+      amount: 1
+
+  sushi:
+    ingredients:
+      - item: reis
+        display: Rice
+      - material: COD
+        display: Fish
+    result:
+      item: sushi
+      amount: 1
+
+  sakura_sushi:
+    ingredients:
+      - item: reis
+        display: Rice
+      - material: PINK_PETALS
+        display: Cherry Blossom
+    result:
+      item: sakura_sushi
+      amount: 1
+
+  onigiri:
+    ingredients:
+      - item: reis
+        display: Rice
+      - material: COOKED_BEEF
+        display: Meat
+      - material: DRIED_KELP
+        display: Seaweed
+    result:
+      item: onigiri
+      amount: 1

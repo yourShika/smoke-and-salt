@@ -59,5 +59,37 @@ cauldron-recipes:
       item: misosuppe
       amount: 1
     duration-ticks: 260
-    water-cost: 0
-    serve-with-bowl: true
+    water-cost: 1
+
+  # --- 0.8.0: drinks and oil ---
+  cauldron_apfelsaft:
+    ingredients:
+      - material: APPLE
+        display: Apple
+    result:
+      item: apfelsaft
+      amount: 1
+    duration-ticks: 120
+    water-cost: 1
+
+  cauldron_kirschlimo:
+    ingredients:
+      - material: PINK_PETALS
+        display: Cherry Blossom
+      - material: SUGAR
+        display: Sugar
+    result:
+      item: kirschlimo
+      amount: 1
+    duration-ticks: 140
+    water-cost: 1
+
+  cauldron_oel:
+    ingredients:
+      - material: SUNFLOWER
+        display: Sunflower
+    result:
+      item: oel
+      amount: 1
+    duration-ticks: 160
+    water-cost: 1

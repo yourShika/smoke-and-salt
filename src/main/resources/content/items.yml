@@ -372,3 +372,145 @@ items:
     food:
       nutrition: 2
       saturation: 1.6
+
+  # --- 0.8.0: new dishes ---
+  beerenkekse:
+    material: COOKIE
+    display-name: "<#d98a4a>Berry Cookies"
+    lore: ["<dark_gray>Smoke & Salt - Snack"]
+    provider-id: sas_beerenkekse
+    food:
+      nutrition: 4
+      saturation: 3.2
+      effects:
+        - type: SPEED
+          duration-ticks: 80
+          amplifier: 0
+
+  kaesekuchen_beeren:
+    material: PAPER
+    display-name: "<#f3d9a0>Cheesecake with Berry Sauce"
+    lore: ["<dark_gray>Smoke & Salt - Dish"]
+    provider-id: sas_kaesekuchen_beeren
+    food:
+      nutrition: 8
+      saturation: 9.6
+      effects:
+        - type: REGENERATION
+          duration-ticks: 80
+          amplifier: 0
+
+  sushi:
+    material: PAPER
+    display-name: "<#e8e0d0>Sushi"
+    lore: ["<dark_gray>Smoke & Salt - Dish"]
+    provider-id: sas_sushi
+    food:
+      nutrition: 6
+      saturation: 7.2
+      effects:
+        - type: DOLPHINS_GRACE
+          duration-ticks: 100
+          amplifier: 0
+
+  sakura_sushi:
+    material: PAPER
+    display-name: "<#f4c2d0>Sakura Sushi"
+    lore: ["<dark_gray>Smoke & Salt - Dish"]
+    provider-id: sas_sakura_sushi
+    food:
+      nutrition: 5
+      saturation: 6.0
+      effects:
+        - type: LUCK
+          duration-ticks: 160
+          amplifier: 0
+
+  onigiri:
+    material: PAPER
+    display-name: "<#f2efe6>Onigiri"
+    lore: ["<dark_gray>Smoke & Salt - Dish"]
+    provider-id: sas_onigiri
+    food:
+      nutrition: 7
+      saturation: 8.4
+
+  apfelsaft:
+    material: HONEY_BOTTLE
+    display-name: "<#e2a33a>Apple Juice"
+    lore: ["<dark_gray>Smoke & Salt - Drink"]
+    provider-id: sas_apfelsaft
+    food:
+      nutrition: 3
+      saturation: 2.4
+      effects:
+        - type: REGENERATION
+          duration-ticks: 60
+          amplifier: 0
+
+  kirschlimo:
+    material: HONEY_BOTTLE
+    display-name: "<#f0668a>Cherry Lemonade"
+    lore: ["<dark_gray>Smoke & Salt - Drink"]
+    provider-id: sas_kirschlimo
+    food:
+      nutrition: 3
+      saturation: 2.0
+      effects:
+        - type: SPEED
+          duration-ticks: 100
+          amplifier: 0
+
+  oel:
+    material: HONEY_BOTTLE
+    display-name: "<#e8c34a>Oil"
+    lore: ["<dark_gray>Smoke & Salt - Ingredient"]
+    provider-id: sas_oel
+
+  tintenfischringe:
+    material: PAPER
+    display-name: "<#d9b48a>Calamari Rings"
+    lore: ["<dark_gray>Smoke & Salt - Snack"]
+    provider-id: sas_tintenfischringe
+    food:
+      nutrition: 6
+      saturation: 7.2
+      effects:
+        - type: WATER_BREATHING
+          duration-ticks: 100
+          amplifier: 0
+
+  chips:
+    material: PAPER
+    display-name: "<#f0d060>Chips"
+    lore: ["<dark_gray>Smoke & Salt - Snack"]
+    provider-id: sas_chips
+    food:
+      nutrition: 5
+      saturation: 5.2
+
+  creeper_keks:
+    material: COOKIE
+    display-name: "<#4caf50>Creeper Cookie"
+    lore: ["<dark_gray>Smoke & Salt - Snack"]
+    provider-id: sas_creeper_keks
+    food:
+      nutrition: 5
+      saturation: 3.0
+      effects:
+        - type: SPEED
+          duration-ticks: 80
+          amplifier: 0
+
+  schmalzgebaeck:
+    material: PAPER
+    display-name: "<#e8c890>Lard Pastry"
+    lore: ["<dark_gray>Smoke & Salt - Snack"]
+    provider-id: sas_schmalzgebaeck
+    food:
+      nutrition: 6
+      saturation: 6.4
+      effects:
+        - type: SPEED
+          duration-ticks: 80
+          amplifier: 0

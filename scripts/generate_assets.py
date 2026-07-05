@@ -13,7 +13,7 @@ OX = os.path.join(ROOT, "src", "main", "resources", "oraxen")
 TEX_DIR = os.path.join(OX, "pack", "textures", "sas")
 ITEMS_DIR = os.path.join(OX, "items")
 MANIFEST = os.path.join(OX, "asset-manifest.properties")
-ASSET_VERSION = "9"
+ASSET_VERSION = "10"
 
 # ---------------------------------------------------------------------------
 #  Zeichen-Primitive auf einer 16x16 RGBA-Leinwand
@@ -778,6 +778,103 @@ for _cid, _crop_draw in CROPS:
     ITEMS[_cid + "_crop"] = ("<green>" + _cid.replace("_", " ").title() + " Crop", "PAPER",
                              _crop_cmd, "sas/crops/" + _cid + "_crop.png")
     _crop_cmd += 1
+
+# ---------------------------------------------------------------------------
+#  0.8.0: Neue Gerichte (Kessel-GUI-Rezepte und Werkbank)
+# ---------------------------------------------------------------------------
+
+def t_beerenkekse(i):
+    disc(i, 8, 9, 5, C(196, 140, 82)); disc(i, 7, 7, 3, C(216, 162, 102))
+    for p in [(6, 8), (10, 9), (8, 11), (9, 6), (6, 11)]:
+        put(i, *p, C(120, 40, 70)); put(i, p[0], p[1] + 1, C(90, 28, 54))
+    put(i, 5, 9, C(150, 100, 56)); put(i, 11, 7, C(224, 176, 116))
+
+def t_kaesekuchen_beeren(i):
+    for dy in range(5, 13):
+        w = dy - 4
+        rect(i, 4, dy, 4 + w, dy, C(240, 220, 150))
+    rect(i, 4, 12, 12, 13, C(178, 128, 70))          # Boden
+    for x in range(4, 12):
+        put(i, x, 5 + (x - 4), C(184, 40, 62))        # Beerensauce an der Kante
+    put(i, 6, 8, C(220, 70, 92)); put(i, 8, 10, C(220, 70, 92)); put(i, 5, 11, C(250, 236, 176))
+
+def t_sushi(i):
+    rect(i, 4, 9, 12, 13, C(244, 242, 232))           # Reis
+    rect(i, 4, 6, 12, 9, C(224, 96, 92))              # Lachs
+    for x in range(5, 12, 2): put(i, x, 8, C(242, 148, 132))
+    rect(i, 7, 6, 9, 13, C(42, 62, 50))               # Nori
+    put(i, 8, 7, C(60, 84, 68))
+
+def t_sakura_sushi(i):
+    rect(i, 4, 9, 12, 13, C(244, 242, 232))           # Reis
+    disc(i, 8, 7, 3, C(244, 178, 200))                # Kirschbluete
+    for p in [(6, 6), (10, 6), (7, 9), (9, 9), (8, 4)]: put(i, *p, C(236, 140, 176))
+    put(i, 8, 7, C(250, 220, 120))
+
+def t_onigiri(i):
+    for dy in range(3, 13):
+        w = dy - 2
+        rect(i, 8 - w // 2, dy, 8 + (w + 1) // 2, dy, C(246, 244, 236))
+    rect(i, 6, 11, 10, 13, C(40, 44, 40))             # Nori
+    put(i, 7, 7, C(224, 222, 214)); put(i, 9, 9, C(255, 255, 250))
+
+def t_apfelsaft(i):
+    rect(i, 5, 4, 10, 13, C(214, 220, 228))           # Glas
+    rect(i, 6, 6, 9, 12, C(232, 150, 40))             # Saft
+    rect(i, 6, 6, 9, 7, C(248, 182, 74))
+    put(i, 7, 9, C(255, 196, 96)); put(i, 8, 3, C(200, 60, 50))
+
+def t_kirschlimo(i):
+    rect(i, 5, 4, 10, 13, C(214, 220, 228))           # Glas
+    rect(i, 6, 6, 9, 12, C(236, 96, 130))             # Limo
+    for p in [(7, 7), (8, 9), (7, 11)]: put(i, *p, C(252, 202, 222))
+    put(i, 8, 3, C(228, 84, 118))
+
+def t_oel(i):
+    rect(i, 6, 5, 9, 13, C(228, 200, 90))             # Oel-Koerper
+    rect(i, 7, 2, 8, 4, C(184, 184, 184))             # Hals/Deckel
+    rect(i, 6, 5, 9, 6, C(246, 226, 132))
+    put(i, 7, 9, C(255, 240, 160)); put(i, 8, 11, C(206, 176, 70))
+
+def t_tintenfischringe(i):
+    for (x, y) in [(6, 7), (10, 8), (7, 11)]:
+        disc(i, x, y, 2, C(226, 176, 96)); put(i, x, y, C(178, 128, 68))
+        put(i, x - 1, y - 1, C(244, 206, 140))
+
+def t_chips(i):
+    for (x, y, c) in [(6, 6, C(238, 206, 96)), (9, 8, C(230, 196, 80)), (7, 11, C(244, 214, 110))]:
+        disc(i, x, y, 2, c); put(i, x, y, _mul(c, 0.82))
+    put(i, 5, 9, C(214, 176, 66)); put(i, 11, 10, C(248, 220, 120))
+
+def t_creeper_keks(i):
+    disc(i, 8, 9, 5, C(76, 170, 74)); disc(i, 7, 7, 3, C(102, 192, 98))
+    rect(i, 6, 6, 7, 7, C(28, 58, 30)); rect(i, 9, 6, 10, 7, C(28, 58, 30))   # Augen
+    rect(i, 7, 8, 9, 11, C(28, 58, 30))                                        # Mund
+    put(i, 7, 11, C(28, 58, 30)); put(i, 9, 11, C(28, 58, 30))
+
+def t_schmalzgebaeck(i):
+    disc(i, 8, 9, 5, C(206, 150, 82)); disc(i, 8, 9, 4, C(228, 174, 106))
+    line(i, 5, 7, 11, 12, C(168, 118, 62)); line(i, 11, 7, 5, 12, C(168, 118, 62))  # Zopf
+    for p in [(6, 6), (10, 6), (8, 12)]: put(i, *p, C(246, 214, 154))               # Zucker
+
+# id -> (display, material, custom_model_data, draw)
+NEW_DISHES = [
+    ("beerenkekse", "<#d98a4a>Berry Cookies", "COOKIE", 3089, t_beerenkekse),
+    ("kaesekuchen_beeren", "<#f3d9a0>Cheesecake with Berry Sauce", "PAPER", 3090, t_kaesekuchen_beeren),
+    ("sushi", "<#e8e0d0>Sushi", "PAPER", 3091, t_sushi),
+    ("sakura_sushi", "<#f4c2d0>Sakura Sushi", "PAPER", 3092, t_sakura_sushi),
+    ("onigiri", "<#f2efe6>Onigiri", "PAPER", 3093, t_onigiri),
+    ("apfelsaft", "<#e2a33a>Apple Juice", "HONEY_BOTTLE", 3094, t_apfelsaft),
+    ("kirschlimo", "<#f0668a>Cherry Lemonade", "HONEY_BOTTLE", 3095, t_kirschlimo),
+    ("oel", "<#e8c34a>Oil", "HONEY_BOTTLE", 3096, t_oel),
+    ("tintenfischringe", "<#d9b48a>Calamari Rings", "PAPER", 3097, t_tintenfischringe),
+    ("chips", "<#f0d060>Chips", "PAPER", 3098, t_chips),
+    ("creeper_keks", "<#4caf50>Creeper Cookie", "COOKIE", 3099, t_creeper_keks),
+    ("schmalzgebaeck", "<#e8c890>Lard Pastry", "PAPER", 3100, t_schmalzgebaeck),
+]
+for _did, _dname, _dmat, _dcmd, _dfn in NEW_DISHES:
+    DRAW[_did] = _dfn
+    ITEMS[_did] = (_dname, _dmat, _dcmd)
 
 OUTLINE = C(44, 34, 28, 255)
 

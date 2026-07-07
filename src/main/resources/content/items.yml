@@ -137,11 +137,11 @@ items:
     lore: ["<dark_gray>Smoke & Salt - Dish"]
     provider-id: sas_burger
     food:
-      nutrition: 9
-      saturation: 11.5
+      nutrition: 8
+      saturation: 9.6
       effects:
         - type: STRENGTH
-          duration-ticks: 100
+          duration-ticks: 80
           amplifier: 0
 
   cheeseburger:
@@ -150,11 +150,11 @@ items:
     lore: ["<dark_gray>Smoke & Salt - Dish"]
     provider-id: sas_cheeseburger
     food:
-      nutrition: 10
-      saturation: 13.0
+      nutrition: 8
+      saturation: 10.0
       effects:
         - type: STRENGTH
-          duration-ticks: 120
+          duration-ticks: 80
           amplifier: 0
 
   chicken_nuggets:
@@ -173,10 +173,10 @@ items:
     provider-id: sas_schaschlik
     food:
       nutrition: 8
-      saturation: 10.0
+      saturation: 9.6
       effects:
         - type: STRENGTH
-          duration-ticks: 100
+          duration-ticks: 80
           amplifier: 0
 
   ofenkartoffel_sourcream:
@@ -185,8 +185,8 @@ items:
     lore: ["<dark_gray>Smoke & Salt - Dish"]
     provider-id: sas_ofenkartoffel_sourcream
     food:
-      nutrition: 8
-      saturation: 10.0
+      nutrition: 7
+      saturation: 8.4
       effects:
         - type: RESISTANCE
           duration-ticks: 80
@@ -207,11 +207,11 @@ items:
     lore: ["<dark_gray>Smoke & Salt - Soup"]
     provider-id: sas_misosuppe
     food:
-      nutrition: 7
-      saturation: 8.4
+      nutrition: 6
+      saturation: 7.2
       effects:
         - type: REGENERATION
-          duration-ticks: 80
+          duration-ticks: 60
           amplifier: 0
 
   kandierter_apfel:
@@ -220,11 +220,11 @@ items:
     lore: ["<dark_gray>Smoke & Salt - Snack"]
     provider-id: sas_kandierter_apfel
     food:
-      nutrition: 5
-      saturation: 4.0
+      nutrition: 4
+      saturation: 2.4
       effects:
         - type: SPEED
-          duration-ticks: 120
+          duration-ticks: 80
           amplifier: 0
 
   reis:
@@ -514,3 +514,226 @@ items:
         - type: SPEED
           duration-ticks: 80
           amplifier: 0
+
+  # --- 0.9.0: cutting intermediates ---
+  apfelscheiben:
+    material: APPLE
+    display-name: "<#e2564a>Apple Slices"
+    lore: ["<dark_gray>Smoke & Salt - Ingredient"]
+    provider-id: sas_apfelscheiben
+    food: { nutrition: 2, saturation: 1.6 }
+  steakstreifen:
+    material: COOKED_BEEF
+    display-name: "<#b5651d>Steak Strips"
+    lore: ["<dark_gray>Smoke & Salt - Ingredient"]
+    provider-id: sas_steakstreifen
+    food: { nutrition: 4, saturation: 4.8 }
+  ananasslice:
+    material: PAPER
+    display-name: "<#e0b440>Pineapple Slice"
+    lore: ["<dark_gray>Smoke & Salt - Ingredient"]
+    provider-id: sas_ananasslice
+    food: { nutrition: 2, saturation: 1.6 }
+
+  # --- 0.9.0: smoker ---
+  gebackene_zucchini:
+    material: PAPER
+    display-name: "<#6fbe57>Baked Zucchini"
+    lore: ["<dark_gray>Smoke & Salt - Dish"]
+    provider-id: sas_gebackene_zucchini
+    food: { nutrition: 4, saturation: 4.0 }
+  gebackene_aubergine:
+    material: PAPER
+    display-name: "<#9b6fbe>Baked Eggplant"
+    lore: ["<dark_gray>Smoke & Salt - Dish"]
+    provider-id: sas_gebackene_aubergine
+    food: { nutrition: 4, saturation: 4.0 }
+  popcorn:
+    material: PAPER
+    display-name: "<#f0e0a0>Popcorn"
+    lore: ["<dark_gray>Smoke & Salt - Snack"]
+    provider-id: sas_popcorn
+    food: { nutrition: 3, saturation: 1.8 }
+  geschmolzener_kaese:
+    material: PAPER
+    display-name: "<#f2c94c>Melted Cheese"
+    lore: ["<dark_gray>Smoke & Salt - Ingredient"]
+    provider-id: sas_geschmolzener_kaese
+    food: { nutrition: 3, saturation: 2.4 }
+
+  # --- 0.9.0: campfire ---
+  gegrillter_mais:
+    material: PAPER
+    display-name: "<#e8c447>Grilled Corn"
+    lore: ["<dark_gray>Smoke & Salt - Dish"]
+    provider-id: sas_gegrillter_mais
+    food: { nutrition: 4, saturation: 4.0 }
+  gegrillte_ananas:
+    material: PAPER
+    display-name: "<#e0b440>Grilled Pineapple"
+    lore: ["<dark_gray>Smoke & Salt - Dish"]
+    provider-id: sas_gegrillte_ananas
+    food: { nutrition: 4, saturation: 3.6 }
+  gegrillter_pilz:
+    material: PAPER
+    display-name: "<#c08a5a>Grilled Mushroom"
+    lore: ["<dark_gray>Smoke & Salt - Ingredient"]
+    provider-id: sas_gegrillter_pilz
+    food: { nutrition: 3, saturation: 2.4 }
+
+  # --- 0.9.0: water cauldron ---
+  blaubeergelee:
+    material: PAPER
+    display-name: "<#5a6ec0>Blueberry Jelly"
+    lore: ["<dark_gray>Smoke & Salt - Ingredient"]
+    provider-id: sas_blaubeergelee
+    food: { nutrition: 2, saturation: 1.6 }
+  erdbeergelee:
+    material: PAPER
+    display-name: "<#ce3030>Strawberry Jelly"
+    lore: ["<dark_gray>Smoke & Salt - Ingredient"]
+    provider-id: sas_erdbeergelee
+    food: { nutrition: 2, saturation: 1.6 }
+  ananasgelee:
+    material: PAPER
+    display-name: "<#e0b440>Pineapple Jelly"
+    lore: ["<dark_gray>Smoke & Salt - Ingredient"]
+    provider-id: sas_ananasgelee
+    food: { nutrition: 2, saturation: 1.6 }
+  wein:
+    material: HONEY_BOTTLE
+    display-name: "<#8c1c3a>Wine"
+    lore: ["<dark_gray>Smoke & Salt - Drink"]
+    provider-id: sas_wein
+    food: { nutrition: 3, saturation: 2.4 }
+  schokolade:
+    material: PAPER
+    display-name: "<#5a3418>Chocolate"
+    lore: ["<dark_gray>Smoke & Salt - Snack"]
+    provider-id: sas_schokolade
+    food: { nutrition: 3, saturation: 2.0 }
+
+  # --- 0.9.0: lava cauldron ---
+  fluessige_schokolade:
+    material: PAPER
+    display-name: "<#5a3418>Liquid Chocolate"
+    lore: ["<dark_gray>Smoke & Salt - Ingredient"]
+    provider-id: sas_fluessige_schokolade
+    food: { nutrition: 2, saturation: 1.2 }
+
+  # --- 0.9.0: crafting dishes ---
+  erdbeermarmeladenbrot:
+    material: BREAD
+    display-name: "<#ce3030>Strawberry Jam Bread"
+    lore: ["<dark_gray>Smoke & Salt - Dish"]
+    provider-id: sas_erdbeermarmeladenbrot
+    food: { nutrition: 6, saturation: 6.0 }
+  blaubeermarmeladenbrot:
+    material: BREAD
+    display-name: "<#5a6ec0>Blueberry Jam Bread"
+    lore: ["<dark_gray>Smoke & Salt - Dish"]
+    provider-id: sas_blaubeermarmeladenbrot
+    food: { nutrition: 6, saturation: 6.0 }
+  ananasmarmeladenbrot:
+    material: BREAD
+    display-name: "<#e0b440>Pineapple Jam Bread"
+    lore: ["<dark_gray>Smoke & Salt - Dish"]
+    provider-id: sas_ananasmarmeladenbrot
+    food: { nutrition: 6, saturation: 6.0 }
+  erdbeersoda:
+    material: HONEY_BOTTLE
+    display-name: "<#ce3030>Strawberry Soda"
+    lore: ["<dark_gray>Smoke & Salt - Drink"]
+    provider-id: sas_erdbeersoda
+    food:
+      nutrition: 3
+      saturation: 2.0
+      effects:
+        - { type: SPEED, duration-ticks: 80, amplifier: 0 }
+  blaubeersoda:
+    material: HONEY_BOTTLE
+    display-name: "<#5a6ec0>Blueberry Soda"
+    lore: ["<dark_gray>Smoke & Salt - Drink"]
+    provider-id: sas_blaubeersoda
+    food:
+      nutrition: 3
+      saturation: 2.0
+      effects:
+        - { type: SPEED, duration-ticks: 80, amplifier: 0 }
+  ananassoda:
+    material: HONEY_BOTTLE
+    display-name: "<#e0b440>Pineapple Soda"
+    lore: ["<dark_gray>Smoke & Salt - Drink"]
+    provider-id: sas_ananassoda
+    food:
+      nutrition: 3
+      saturation: 2.0
+      effects:
+        - { type: SPEED, duration-ticks: 80, amplifier: 0 }
+  knobi_pilze:
+    material: PAPER
+    display-name: "<#c0a060>Garlic Mushrooms"
+    lore: ["<dark_gray>Smoke & Salt - Dish"]
+    provider-id: sas_knobi_pilze
+    food: { nutrition: 5, saturation: 5.2 }
+  glitzer_apfelscheiben:
+    material: APPLE
+    display-name: "<#ffe27a>Glittering Apple Slices"
+    lore: ["<dark_gray>Smoke & Salt - Snack"]
+    provider-id: sas_glitzer_apfelscheiben
+    glow: true
+    food:
+      nutrition: 4
+      saturation: 2.4
+      effects:
+        - { type: REGENERATION, duration-ticks: 100, amplifier: 0 }
+  obstsalat:
+    material: PAPER
+    display-name: "<#e2564a>Fruit Salad"
+    lore: ["<dark_gray>Smoke & Salt - Dish"]
+    provider-id: sas_obstsalat
+    food:
+      nutrition: 6
+      saturation: 6.0
+      effects:
+        - { type: REGENERATION, duration-ticks: 80, amplifier: 0 }
+  smores:
+    material: PAPER
+    display-name: "<#8c5e3c>S'mores"
+    lore: ["<dark_gray>Smoke & Salt - Snack"]
+    provider-id: sas_smores
+    food: { nutrition: 6, saturation: 4.8 }
+  schokoladenobst:
+    material: PAPER
+    display-name: "<#5a3418>Chocolate-Covered Fruit"
+    lore: ["<dark_gray>Smoke & Salt - Snack"]
+    provider-id: sas_schokoladenobst
+    food: { nutrition: 5, saturation: 4.0 }
+  grilled_cheese:
+    material: BREAD
+    display-name: "<#f2c94c>Grilled Cheese Sandwich"
+    lore: ["<dark_gray>Smoke & Salt - Dish"]
+    provider-id: sas_grilled_cheese
+    food: { nutrition: 6, saturation: 7.2 }
+  mac_and_cheese:
+    material: PAPER
+    display-name: "<#f2c94c>Mac and Cheese"
+    lore: ["<dark_gray>Smoke & Salt - Dish"]
+    provider-id: sas_mac_and_cheese
+    food: { nutrition: 7, saturation: 8.4 }
+  knobibrot:
+    material: BREAD
+    display-name: "<#e6d8a0>Garlic Bread"
+    lore: ["<dark_gray>Smoke & Salt - Dish"]
+    provider-id: sas_knobibrot
+    food: { nutrition: 5, saturation: 5.2 }
+  pizza:
+    material: PAPER
+    display-name: "<#d94a2a>Pizza"
+    lore: ["<dark_gray>Smoke & Salt - Dish"]
+    provider-id: sas_pizza
+    food:
+      nutrition: 8
+      saturation: 9.6
+      effects:
+        - { type: REGENERATION, duration-ticks: 100, amplifier: 0 }

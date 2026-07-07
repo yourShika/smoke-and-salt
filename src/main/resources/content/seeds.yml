@@ -19,7 +19,7 @@ seeds:
         - swamp
         - ocean
         - mangrove_swamp
-      chance: 0.08
+      chance: 0.1
       grass-chance: 0.0
       seagrass-chance: 0.0
       composter-chance: 0.0
@@ -51,7 +51,7 @@ seeds:
       biomes:
         - plains
         - forest
-      chance: 0.035
+      chance: 0.05
     onion_seeds:
       material: WHEAT_SEEDS
       display-name: "<#e0c39a>Onion Seeds"
@@ -67,7 +67,7 @@ seeds:
       biomes:
         - plains
         - meadow
-      chance: 0.035
+      chance: 0.05
     lettuce_seeds:
       material: WHEAT_SEEDS
       display-name: "<#6fbe57>Lettuce Seeds"
@@ -83,7 +83,7 @@ seeds:
       biomes:
         - plains
         - meadow
-      chance: 0.035
+      chance: 0.05
     corn_seeds:
       material: WHEAT_SEEDS
       display-name: "<#e8c447>Corn Seeds"
@@ -99,7 +99,7 @@ seeds:
       biomes:
         - plains
         - savanna
-      chance: 0.03
+      chance: 0.045
     cucumber_seeds:
       material: WHEAT_SEEDS
       display-name: "<#5fa64a>Cucumber Seeds"
@@ -116,7 +116,7 @@ seeds:
       biomes:
         - jungle
         - lush_caves
-      chance: 0.03
+      chance: 0.045
     garlic_seeds:
       material: WHEAT_SEEDS
       display-name: "<#e6e0d6>Garlic Seeds"
@@ -134,7 +134,7 @@ seeds:
         - taiga
         - old_growth_pine_taiga
         - old_growth_spruce_taiga
-      chance: 0.03
+      chance: 0.045
     chili_seeds:
       material: WHEAT_SEEDS
       display-name: "<#c62c26>Chili Seeds"
@@ -152,7 +152,7 @@ seeds:
         - desert
         - badlands
         - savanna
-      chance: 0.02
+      chance: 0.03
     strawberry_seeds:
       material: WHEAT_SEEDS
       display-name: "<#ce3030>Strawberry Seeds"
@@ -168,7 +168,7 @@ seeds:
       biomes:
         - taiga
         - meadow
-      chance: 0.06
+      chance: 0.08
     blueberry_seeds:
       material: WHEAT_SEEDS
       display-name: "<#5a6ec0>Blueberry Seeds"
@@ -184,7 +184,7 @@ seeds:
       biomes:
         - taiga
         - snowy_taiga
-      chance: 0.06
+      chance: 0.08
     soybean_seeds:
       material: WHEAT_SEEDS
       display-name: "<#78a848>Soybean Seeds"
@@ -200,7 +200,7 @@ seeds:
       biomes:
         - plains
         - sunflower_plains
-      chance: 0.035
+      chance: 0.05
     cotton_seeds:
       material: WHEAT_SEEDS
       display-name: "<#f0f0ec>Cotton Seeds"
@@ -216,7 +216,7 @@ seeds:
       biomes:
         - savanna
         - plains
-      chance: 0.035
+      chance: 0.05
     cabbage_seeds:
       material: WHEAT_SEEDS
       display-name: "<#68a850>Cabbage Seeds"
@@ -232,7 +232,7 @@ seeds:
       biomes:
         - plains
         - meadow
-      chance: 0.035
+      chance: 0.05
     bell_pepper_seeds:
       material: WHEAT_SEEDS
       display-name: "<#c6302a>Bell Pepper Seeds"
@@ -248,7 +248,7 @@ seeds:
       biomes:
         - savanna
         - sparse_jungle
-      chance: 0.03
+      chance: 0.045
     pineapple_seeds:
       material: WHEAT_SEEDS
       display-name: "<#e0b440>Pineapple Seeds"
@@ -264,7 +264,7 @@ seeds:
       biomes:
         - jungle
         - bamboo_jungle
-      chance: 0.02
+      chance: 0.03
     grapes_seeds:
       material: WHEAT_SEEDS
       display-name: "<#8c5aaa>Grapes Seeds"
@@ -281,7 +281,7 @@ seeds:
       biomes:
         - forest
         - jungle
-      chance: 0.02
+      chance: 0.03
     coffee_beans_seeds:
       material: WHEAT_SEEDS
       display-name: "<#8c5e3c>Coffee Beans Seeds"
@@ -297,7 +297,7 @@ seeds:
       biomes:
         - jungle
         - bamboo_jungle
-      chance: 0.02
+      chance: 0.03
     zucchini_seeds:
       material: WHEAT_SEEDS
       display-name: "<#407c34>Zucchini Seeds"
@@ -313,7 +313,7 @@ seeds:
       biomes:
         - plains
         - forest
-      chance: 0.035
+      chance: 0.05
     eggplant_seeds:
       material: WHEAT_SEEDS
       display-name: "<#7846a0>Eggplant Seeds"
@@ -329,4 +329,4 @@ seeds:
       biomes:
         - savanna
         - plains
-      chance: 0.03
+      chance: 0.045

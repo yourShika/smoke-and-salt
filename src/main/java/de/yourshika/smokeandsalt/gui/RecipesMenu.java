@@ -160,9 +160,14 @@ public final class RecipesMenu {
         }
 
         for (SeedDefinition seed : plugin.seeds().all()) {
-            ItemStack result = plugin.seeds().create(seed.id(), 1);
+            ItemStack seedItem = plugin.seeds().create(seed.id(), 1);
+            ItemStack produce = seedProduce(plugin, seed);
             var drops = plugin.seeds().dropsFor(seed.id());
             List<ItemStack> inputs = new ArrayList<>();
+            // Show what you plant (the seed) and where (farmland); the harvested
+            // produce is the result so players see the item this seed yields.
+            if (produce != null) inputs.add(seedItem);
+            inputs.add(iconFor(Material.FARMLAND));
             StringBuilder note = new StringBuilder();
             if (!drops.isEmpty()) {
                 java.util.LinkedHashSet<Material> blocks = new java.util.LinkedHashSet<>();
@@ -174,15 +179,13 @@ public final class RecipesMenu {
                     chance = Math.max(chance, drop.chance());
                 }
                 for (Material m : blocks) inputs.add(iconFor(m));
-                note.append("Drops from ")
+                note.append("Seeds drop from ")
                         .append(String.join(", ", blocks.stream().map(RecipesMenu::pretty).toList()));
                 if (!biomes.isEmpty()) note.append(" in ").append(String.join(", ", biomes));
                 note.append(" (~").append(Math.round(chance * 100)).append("%). ");
-            } else {
-                inputs.add(iconFor(Material.SHORT_GRASS));
             }
-            inputs.add(iconFor(Material.FARMLAND));
             note.append("Plant on farmland; harvest yields ").append(seedResultName(seed)).append(" + seeds.");
+            ItemStack result = produce != null ? produce : seedItem;
             out.add(RecipeView.single("seed_" + seed.id(), RecipeCategory.SEEDS, "Seed Drop & Farming",
                     Material.WHEAT_SEEDS, inputs, result, 0, note.toString()));
         }
@@ -220,16 +223,49 @@ public final class RecipesMenu {
         return out;
     }
 
+    /** Kinds (aus der Lore) die als fertiges Gericht zaehlen, auch wenn das Item
+     *  woanders als Zutat dient (z.B. Kaiser Roll im Burger). */
+    private static final Set<String> DISH_KINDS = Set.of("dish", "snack", "soup", "drink", "dessert", "meal");
+
     /** Passt eine Rezept-Ansicht in die Kategorie? Beruecksichtigt Gericht/Zwischenprodukt. */
     private static boolean matchesCategory(SmokeAndSalt plugin, RecipeView view,
                                            RecipeCategory category, Set<String> intermediates) {
         return switch (category) {
+            // Fertige Gerichte: essbar und entweder kein Zwischenprodukt ODER als
+            // Gericht deklariert (Kaiser Roll ist ein Gericht, auch wenn er im Burger steckt).
             case DISHES -> view.category() != RecipeCategory.SEEDS
-                    && !isIntermediate(plugin, view, intermediates)
-                    && hasFood(plugin, view);
-            case INGREDIENTS -> isIntermediate(plugin, view, intermediates);
+                    && hasFood(plugin, view)
+                    && (!isIntermediate(plugin, view, intermediates) || isDishKind(plugin, view));
+            // Zutaten: als Zwischenprodukt genutzt, aber selbst kein deklariertes Gericht.
+            case INGREDIENTS -> view.category() != RecipeCategory.SEEDS
+                    && isIntermediate(plugin, view, intermediates)
+                    && !isDishKind(plugin, view);
+            // Vanilla-Ausgaben: Rezepte, deren Ergebnis ein Vanilla-Item ist (Teig -> Brot, Cotton -> Wolle/Faden).
+            case VANILLA -> view.category() != RecipeCategory.SEEDS && isVanillaResult(plugin, view);
             default -> view.category() == category;
         };
+    }
+
+    /** Ist das Ergebnis ein reines Vanilla-Item (kein Custom-Item/Seed)? */
+    private static boolean isVanillaResult(SmokeAndSalt plugin, RecipeView view) {
+        ItemStack result = view.result();
+        if (result == null || result.getType().isAir()) return false;
+        return plugin.items().idOf(result) == null && plugin.seeds().idOf(result) == null;
+    }
+
+    /** Ist das Ergebnis-Item laut Lore-Kind ein fertiges Gericht (Dish/Snack/...)? */
+    private static boolean isDishKind(SmokeAndSalt plugin, RecipeView view) {
+        String id = plugin.items().idOf(view.result());
+        if (id == null) return false;
+        var def = plugin.items().definition(id);
+        if (def == null) return false;
+        for (String line : def.lore()) {
+            int dash = line.lastIndexOf(" - ");
+            if (dash < 0) continue;
+            String kind = line.substring(dash + 3).trim().toLowerCase(java.util.Locale.ROOT);
+            if (DISH_KINDS.contains(kind)) return true;
+        }
+        return false;
     }
 
     /** IDs aller Custom-Items, die irgendwo als Zutat verwendet werden. */
@@ -296,6 +332,19 @@ public final class RecipesMenu {
         List<ItemStack> out = new ArrayList<>();
         for (Ingredient ingredient : ingredients) out.add(ingredient.icon(plugin));
         return out;
+    }
+
+    /** Baut das Ernte-Item eines Seeds (Custom-Item oder Vanilla-Material), oder {@code null}. */
+    private static ItemStack seedProduce(SmokeAndSalt plugin, SeedDefinition seed) {
+        int amount = Math.max(1, seed.resultAmount());
+        if (seed.resultItemId() != null) {
+            ItemStack item = plugin.items().create(seed.resultItemId(), amount);
+            if (item != null) return item;
+        }
+        if (seed.resultMaterial() != null) {
+            return new ItemStack(seed.resultMaterial(), amount);
+        }
+        return null;
     }
 
     private static String seedResultName(SeedDefinition seed) {

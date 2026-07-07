@@ -10,3 +10,19 @@ recipes:
     input-item: teig
     result-item: kaiserbroetchen
     duration-ticks: 160
+
+  # --- 0.9.0 ---
+  campfire_gegrillter_mais:
+    input-item: corn
+    result-item: gegrillter_mais
+    duration-ticks: 140
+
+  campfire_gegrillte_ananas:
+    input-item: pineapple
+    result-item: gegrillte_ananas
+    duration-ticks: 140
+
+  campfire_gegrillter_pilz:
+    input-material: RED_MUSHROOM
+    result-item: gegrillter_pilz
+    duration-ticks: 120

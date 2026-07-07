@@ -15,3 +15,30 @@ recipes:
     input-material: CARROT
     result-item: geroestete_karotte
     duration-ticks: 140
+
+  # --- 0.9.0 ---
+  # Dough baked in the smoker becomes plain vanilla Bread.
+  smoker_bread:
+    input-item: teig
+    result-material: BREAD
+    duration-ticks: 140
+
+  smoker_gebackene_zucchini:
+    input-item: zucchini
+    result-item: gebackene_zucchini
+    duration-ticks: 140
+
+  smoker_gebackene_aubergine:
+    input-item: eggplant
+    result-item: gebackene_aubergine
+    duration-ticks: 140
+
+  smoker_popcorn:
+    input-item: corn
+    result-item: popcorn
+    duration-ticks: 120
+
+  smoker_geschmolzener_kaese:
+    input-item: kaese
+    result-item: geschmolzener_kaese
+    duration-ticks: 120

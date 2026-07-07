@@ -959,3 +959,313 @@ sas_schmalzgebaeck:
       - sas/schmalzgebaeck.png
     custom_model_data: 3100
 
+sas_apfelscheiben:
+  displayname: "<#e2564a>Apple Slices"
+  material: APPLE
+  Pack:
+    generate_model: true
+    parent_model: "item/generated"
+    textures:
+      - sas/apfelscheiben.png
+    custom_model_data: 3101
+
+sas_steakstreifen:
+  displayname: "<#b5651d>Steak Strips"
+  material: COOKED_BEEF
+  Pack:
+    generate_model: true
+    parent_model: "item/generated"
+    textures:
+      - sas/steakstreifen.png
+    custom_model_data: 3102
+
+sas_ananasslice:
+  displayname: "<#e0b440>Pineapple Slice"
+  material: PAPER
+  Pack:
+    generate_model: true
+    parent_model: "item/generated"
+    textures:
+      - sas/ananasslice.png
+    custom_model_data: 3103
+
+sas_gebackene_zucchini:
+  displayname: "<#6fbe57>Baked Zucchini"
+  material: PAPER
+  Pack:
+    generate_model: true
+    parent_model: "item/generated"
+    textures:
+      - sas/gebackene_zucchini.png
+    custom_model_data: 3104
+
+sas_gebackene_aubergine:
+  displayname: "<#9b6fbe>Baked Eggplant"
+  material: PAPER
+  Pack:
+    generate_model: true
+    parent_model: "item/generated"
+    textures:
+      - sas/gebackene_aubergine.png
+    custom_model_data: 3105
+
+sas_popcorn:
+  displayname: "<#f0e0a0>Popcorn"
+  material: PAPER
+  Pack:
+    generate_model: true
+    parent_model: "item/generated"
+    textures:
+      - sas/popcorn.png
+    custom_model_data: 3106
+
+sas_geschmolzener_kaese:
+  displayname: "<#f2c94c>Melted Cheese"
+  material: PAPER
+  Pack:
+    generate_model: true
+    parent_model: "item/generated"
+    textures:
+      - sas/geschmolzener_kaese.png
+    custom_model_data: 3107
+
+sas_gegrillter_mais:
+  displayname: "<#e8c447>Grilled Corn"
+  material: PAPER
+  Pack:
+    generate_model: true
+    parent_model: "item/generated"
+    textures:
+      - sas/gegrillter_mais.png
+    custom_model_data: 3108
+
+sas_gegrillte_ananas:
+  displayname: "<#e0b440>Grilled Pineapple"
+  material: PAPER
+  Pack:
+    generate_model: true
+    parent_model: "item/generated"
+    textures:
+      - sas/gegrillte_ananas.png
+    custom_model_data: 3109
+
+sas_gegrillter_pilz:
+  displayname: "<#c08a5a>Grilled Mushroom"
+  material: PAPER
+  Pack:
+    generate_model: true
+    parent_model: "item/generated"
+    textures:
+      - sas/gegrillter_pilz.png
+    custom_model_data: 3110
+
+sas_blaubeergelee:
+  displayname: "<#5a6ec0>Blueberry Jelly"
+  material: PAPER
+  Pack:
+    generate_model: true
+    parent_model: "item/generated"
+    textures:
+      - sas/blaubeergelee.png
+    custom_model_data: 3111
+
+sas_erdbeergelee:
+  displayname: "<#ce3030>Strawberry Jelly"
+  material: PAPER
+  Pack:
+    generate_model: true
+    parent_model: "item/generated"
+    textures:
+      - sas/erdbeergelee.png
+    custom_model_data: 3112
+
+sas_ananasgelee:
+  displayname: "<#e0b440>Pineapple Jelly"
+  material: PAPER
+  Pack:
+    generate_model: true
+    parent_model: "item/generated"
+    textures:
+      - sas/ananasgelee.png
+    custom_model_data: 3113
+
+sas_wein:
+  displayname: "<#8c1c3a>Wine"
+  material: HONEY_BOTTLE
+  Pack:
+    generate_model: true
+    parent_model: "item/generated"
+    textures:
+      - sas/wein.png
+    custom_model_data: 3114
+
+sas_schokolade:
+  displayname: "<#5a3418>Chocolate"
+  material: PAPER
+  Pack:
+    generate_model: true
+    parent_model: "item/generated"
+    textures:
+      - sas/schokolade.png
+    custom_model_data: 3115
+
+sas_fluessige_schokolade:
+  displayname: "<#5a3418>Liquid Chocolate"
+  material: PAPER
+  Pack:
+    generate_model: true
+    parent_model: "item/generated"
+    textures:
+      - sas/fluessige_schokolade.png
+    custom_model_data: 3116
+
+sas_erdbeermarmeladenbrot:
+  displayname: "<#ce3030>Strawberry Jam Bread"
+  material: BREAD
+  Pack:
+    generate_model: true
+    parent_model: "item/generated"
+    textures:
+      - sas/erdbeermarmeladenbrot.png
+    custom_model_data: 3117
+
+sas_blaubeermarmeladenbrot:
+  displayname: "<#5a6ec0>Blueberry Jam Bread"
+  material: BREAD
+  Pack:
+    generate_model: true
+    parent_model: "item/generated"
+    textures:
+      - sas/blaubeermarmeladenbrot.png
+    custom_model_data: 3118
+
+sas_ananasmarmeladenbrot:
+  displayname: "<#e0b440>Pineapple Jam Bread"
+  material: BREAD
+  Pack:
+    generate_model: true
+    parent_model: "item/generated"
+    textures:
+      - sas/ananasmarmeladenbrot.png
+    custom_model_data: 3119
+
+sas_erdbeersoda:
+  displayname: "<#ce3030>Strawberry Soda"
+  material: HONEY_BOTTLE
+  Pack:
+    generate_model: true
+    parent_model: "item/generated"
+    textures:
+      - sas/erdbeersoda.png
+    custom_model_data: 3120
+
+sas_blaubeersoda:
+  displayname: "<#5a6ec0>Blueberry Soda"
+  material: HONEY_BOTTLE
+  Pack:
+    generate_model: true
+    parent_model: "item/generated"
+    textures:
+      - sas/blaubeersoda.png
+    custom_model_data: 3121
+
+sas_ananassoda:
+  displayname: "<#e0b440>Pineapple Soda"
+  material: HONEY_BOTTLE
+  Pack:
+    generate_model: true
+    parent_model: "item/generated"
+    textures:
+      - sas/ananassoda.png
+    custom_model_data: 3122
+
+sas_knobi_pilze:
+  displayname: "<#c0a060>Garlic Mushrooms"
+  material: PAPER
+  Pack:
+    generate_model: true
+    parent_model: "item/generated"
+    textures:
+      - sas/knobi_pilze.png
+    custom_model_data: 3123
+
+sas_glitzer_apfelscheiben:
+  displayname: "<#ffe27a>Glittering Apple Slices"
+  material: APPLE
+  Pack:
+    generate_model: true
+    parent_model: "item/generated"
+    textures:
+      - sas/glitzer_apfelscheiben.png
+    custom_model_data: 3124
+
+sas_obstsalat:
+  displayname: "<#e2564a>Fruit Salad"
+  material: PAPER
+  Pack:
+    generate_model: true
+    parent_model: "item/generated"
+    textures:
+      - sas/obstsalat.png
+    custom_model_data: 3125
+
+sas_smores:
+  displayname: "<#8c5e3c>S'mores"
+  material: PAPER
+  Pack:
+    generate_model: true
+    parent_model: "item/generated"
+    textures:
+      - sas/smores.png
+    custom_model_data: 3126
+
+sas_schokoladenobst:
+  displayname: "<#5a3418>Chocolate-Covered Fruit"
+  material: PAPER
+  Pack:
+    generate_model: true
+    parent_model: "item/generated"
+    textures:
+      - sas/schokoladenobst.png
+    custom_model_data: 3127
+
+sas_grilled_cheese:
+  displayname: "<#f2c94c>Grilled Cheese Sandwich"
+  material: BREAD
+  Pack:
+    generate_model: true
+    parent_model: "item/generated"
+    textures:
+      - sas/grilled_cheese.png
+    custom_model_data: 3128
+
+sas_mac_and_cheese:
+  displayname: "<#f2c94c>Mac and Cheese"
+  material: PAPER
+  Pack:
+    generate_model: true
+    parent_model: "item/generated"
+    textures:
+      - sas/mac_and_cheese.png
+    custom_model_data: 3129
+
+sas_knobibrot:
+  displayname: "<#e6d8a0>Garlic Bread"
+  material: BREAD
+  Pack:
+    generate_model: true
+    parent_model: "item/generated"
+    textures:
+      - sas/knobibrot.png
+    custom_model_data: 3130
+
+sas_pizza:
+  displayname: "<#d94a2a>Pizza"
+  material: PAPER
+  Pack:
+    generate_model: true
+    parent_model: "item/generated"
+    textures:
+      - sas/pizza.png
+    custom_model_data: 3131
+

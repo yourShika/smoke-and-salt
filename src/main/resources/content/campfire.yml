@@ -22,7 +22,13 @@ recipes:
     result-item: gegrillte_ananas
     duration-ticks: 140
 
+  # Grilled mushroom works with every mushroom type (red + brown).
   campfire_gegrillter_pilz:
     input-material: RED_MUSHROOM
+    result-item: gegrillter_pilz
+    duration-ticks: 120
+
+  campfire_gegrillter_pilz_brown:
+    input-material: BROWN_MUSHROOM
     result-item: gegrillter_pilz
     duration-ticks: 120

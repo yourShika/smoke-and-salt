@@ -8,8 +8,18 @@ GUIs, and optional Oraxen textures.
 ![Minecraft](https://img.shields.io/badge/Minecraft-26.1.2-62b47a?style=flat-square&logo=minecraft&logoColor=white)
 ![Platform](https://img.shields.io/badge/Platform-Paper%2FSpigot-f7a41d?style=flat-square)
 ![Java](https://img.shields.io/badge/Java-25-ED8B00?style=flat-square&logo=openjdk&logoColor=white)
-![Version](https://img.shields.io/badge/Version-0.9.0-blue?style=flat-square)
+![Version](https://img.shields.io/badge/Version-0.9.1-blue?style=flat-square)
 ![License](https://img.shields.io/badge/License-MIT-blue?style=flat-square)
+
+## What's new in 0.9.1
+
+**Balance buffs** — these foods now give a bit more hunger/saturation and/or an effect: Garlic Bread (Haste), Grilled Cheese (Absorption), Garlic Mushrooms (Regeneration), the three Jam Breads (Speed), Chocolate (Speed), Onigiri (Regeneration), Popcorn, Candy Apple, Burger, Cheeseburger, Miso Soup, and Glittering Apple Slices (now Regeneration + Absorption, closer to a golden apple).
+
+**Changes**
+- **Wine** now gives **Nausea** and **stacking Luck** — each glass extends the Luck timer (up to a 10-minute cap), so the more you drink the luckier (and dizzier) you get.
+- **Cheesecake with Berry Sauce** recipe simplified to **Dough + Sauce**.
+- **Grilled Mushroom** now works with **every mushroom** (red *and* brown) on the campfire.
+- Effect parsing made more robust (modern effect keys like `haste`, `absorption`, `nausea` resolve reliably).
 
 ## What's new in 0.9.0
 

@@ -8,6 +8,7 @@ import org.bukkit.Tag;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Item;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.EntityPickupItemEvent;
@@ -73,8 +74,10 @@ public final class ChainListener implements Listener {
         }
     }
 
-    /** Wird der Ketten-Block abgebaut, das aufgehaengte Item zurueckgeben. */
-    @EventHandler(ignoreCancelled = true)
+    /** Wird der Ketten-Block abgebaut, das aufgehaengte Item zurueckgeben.
+     *  MONITOR: erst handeln, wenn der Abbau wirklich durchgeht (kein Abbruch durch
+     *  ein Schutz-Plugin -> sonst Item abgenommen, aber Block bleibt stehen). */
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onBreak(org.bukkit.event.block.BlockBreakEvent event) {
         Block block = event.getBlock();
         if (!Tag.CHAINS.isTagged(block.getType())) return;

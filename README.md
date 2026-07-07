@@ -8,8 +8,21 @@ GUIs, and optional Oraxen textures.
 ![Minecraft](https://img.shields.io/badge/Minecraft-26.1.2-62b47a?style=flat-square&logo=minecraft&logoColor=white)
 ![Platform](https://img.shields.io/badge/Platform-Paper%2FSpigot-f7a41d?style=flat-square)
 ![Java](https://img.shields.io/badge/Java-25-ED8B00?style=flat-square&logo=openjdk&logoColor=white)
-![Version](https://img.shields.io/badge/Version-0.9.1-blue?style=flat-square)
+![Version](https://img.shields.io/badge/Version-1.0.0-blue?style=flat-square)
 ![License](https://img.shields.io/badge/License-MIT-blue?style=flat-square)
+
+## 1.0.0 — first stable release
+
+A hardening pass focused on **anti-dupe and robustness** rounds out the feature set for the first stable release. Fixed in this release:
+
+- **Cauldron GUI, multi-player**: two players opening the same cauldron now share **one** inventory instead of two divergent copies — closes a stale-view dupe/loss window.
+- **Cauldron deposit vs. open GUI**: throwing an item onto a cauldron while its GUI is open no longer overwrites the player's un-synced edits (no item loss).
+- **Floating cauldron ingredients** are now `ItemDisplay` entities — they can't be picked up or hoppered by anything, removing a whole class of "decoration is a real item" risk (they still show the ingredients, still non-persistent, no crash-orphans).
+- **Break/unload ordering**: a broken or unloaded cauldron is removed from tracking *before* its GUI is closed, so its contents can't be both dropped and re-persisted (no restart dupe).
+- **Wine & consumables**: effects apply at `MONITOR` priority, so nothing is granted if another plugin cancels the drink (no effect-farming).
+- **Chains**: breaking a chain acts at `MONITOR` priority (no retrieve-on-cancelled-break); and a malformed `chains.yml` key can no longer kill the chain tick task.
+- **Cutting**: the consumed ingredient is cleared cleanly at a stack of one (no lingering amount-0 slot).
+- **`/sas give`**: the give action re-checks the admin permission on each click.
 
 ## What's new in 0.9.1
 

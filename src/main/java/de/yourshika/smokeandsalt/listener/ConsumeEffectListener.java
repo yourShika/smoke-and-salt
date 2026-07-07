@@ -7,6 +7,7 @@ import org.bukkit.Sound;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerItemConsumeEvent;
 import org.bukkit.potion.PotionEffect;
@@ -34,7 +35,9 @@ public final class ConsumeEffectListener implements Listener {
         this.plugin = plugin;
     }
 
-    @EventHandler(ignoreCancelled = true)
+    // MONITOR + ignoreCancelled: nur reagieren, wenn der Konsum wirklich stattfindet
+    // (verhindert Effekt-Farming, falls ein anderes Plugin den Konsum abbricht).
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onConsume(PlayerItemConsumeEvent event) {
         String id = plugin.items().idOf(event.getItem());
         if (id == null) return;

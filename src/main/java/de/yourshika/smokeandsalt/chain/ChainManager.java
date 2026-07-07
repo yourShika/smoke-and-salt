@@ -156,13 +156,19 @@ public final class ChainManager {
     private Block block(String key) {
         String[] p = key.split(":");
         if (p.length < 4) return null;
-        org.bukkit.World world = plugin.getServer().getWorld(p[0]);
+        // Weltnamen koennen ":" enthalten -> Koordinaten sind die letzten drei Teile.
+        org.bukkit.World world = plugin.getServer().getWorld(
+                String.join(":", java.util.Arrays.copyOfRange(p, 0, p.length - 3)));
         if (world == null) return null;
-        int x = Integer.parseInt(p[1]);
-        int y = Integer.parseInt(p[2]);
-        int z = Integer.parseInt(p[3]);
-        if (!world.isChunkLoaded(x >> 4, z >> 4)) return null;
-        return world.getBlockAt(x, y, z);
+        try {
+            int x = Integer.parseInt(p[p.length - 3]);
+            int y = Integer.parseInt(p[p.length - 2]);
+            int z = Integer.parseInt(p[p.length - 1]);
+            if (!world.isChunkLoaded(x >> 4, z >> 4)) return null;
+            return world.getBlockAt(x, y, z);
+        } catch (NumberFormatException ex) {
+            return null;
+        }
     }
 
     // --- Persistenz ---------------------------------------------------------

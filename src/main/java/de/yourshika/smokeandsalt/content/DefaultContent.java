@@ -297,9 +297,7 @@ public final class DefaultContent {
 
         if (!cm.contains("kaesekuchen_beeren")) cm.register(new CraftingRecipe("kaesekuchen_beeren",
                 List.of(Ingredient.item("teig", "Dough"),
-                        Ingredient.material(Material.SWEET_BERRIES, "Sweet Berries"),
-                        Ingredient.material(Material.SUGAR, "Sugar"),
-                        Ingredient.material(Material.MILK_BUCKET, "Milk")),
+                        Ingredient.item("sauce", "Sauce")),
                 ResultSpec.item("kaesekuchen_beeren", 1)));
 
         if (!cm.contains("sushi")) cm.register(new CraftingRecipe("sushi",

@@ -142,7 +142,13 @@ public final class ItemRegistry {
 
     private PotionEffectType potionType(String name) {
         if (name == null || name.isBlank()) return null;
-        PotionEffectType type = PotionEffectType.getByName(name.toUpperCase(Locale.ROOT));
+        // Zuerst ueber die moderne Registry (akzeptiert Keys wie "haste",
+        // "absorption", "dolphins_grace"), dann der Legacy-Name als Fallback.
+        String key = name.toLowerCase(Locale.ROOT).replace("minecraft:", "").trim();
+        PotionEffectType type = org.bukkit.Registry.EFFECT.get(org.bukkit.NamespacedKey.minecraft(key));
+        if (type == null) {
+            type = PotionEffectType.getByName(name.toUpperCase(Locale.ROOT));
+        }
         if (type == null) {
             plugin.getLogger().warning("Unbekannter Food-Effekt: " + name);
         }

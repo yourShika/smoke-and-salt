@@ -109,12 +109,8 @@ crafting-recipes:
     ingredients:
       - item: teig
         display: Dough
-      - material: SWEET_BERRIES
-        display: Sweet Berries
-      - material: SUGAR
-        display: Sugar
-      - material: MILK_BUCKET
-        display: Milk
+      - item: sauce
+        display: Sauce
     result:
       item: kaesekuchen_beeren
       amount: 1

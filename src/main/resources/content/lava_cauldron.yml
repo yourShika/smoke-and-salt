@@ -54,6 +54,16 @@ cauldron-recipes:
       amount: 1
     duration-ticks: 160
 
+  # --- 0.9.0 ---
+  lava_fluessige_schokolade:
+    ingredients:
+      - material: MILK_BUCKET
+        display: Milk
+      - material: COCOA_BEANS
+        display: Cocoa Beans
+    result: { item: fluessige_schokolade, amount: 1 }
+    duration-ticks: 160
+
   lava_pommes:
     ingredients:
       - material: POTATO

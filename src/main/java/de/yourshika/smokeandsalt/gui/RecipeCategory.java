@@ -7,6 +7,8 @@ public enum RecipeCategory {
     // Uebergreifende Kategorien: fertige Gerichte (essbar) vs. Zwischenprodukte.
     DISHES("Finished Dishes", Material.COOKED_BEEF),
     INGREDIENTS("Ingredients", Material.WHEAT),
+    // Rezepte, die ein Vanilla-Item ausgeben (z.B. Teig -> Brot, Cotton -> Wolle/Faden).
+    VANILLA("Vanilla Outputs", Material.STRING),
     // Nach Station.
     SMOKER("Smoker", Material.SMOKER),
     CAMPFIRE("Campfire", Material.CAMPFIRE),
@@ -18,7 +20,7 @@ public enum RecipeCategory {
 
     /** Ist dies eine uebergreifende (nicht stationsgebundene) Kategorie? */
     public boolean isCrossCutting() {
-        return this == DISHES || this == INGREDIENTS;
+        return this == DISHES || this == INGREDIENTS || this == VANILLA;
     }
 
     private final String displayName;

@@ -19,3 +19,25 @@ recipes:
     result-amount-min: 1
     result-amount-max: 4
     duration-ticks: 60
+
+  # --- 0.9.0 ---
+  cutting_apfelscheiben:
+    input-material: APPLE
+    result-item: apfelscheiben
+    result-amount-min: 2
+    result-amount-max: 3
+    duration-ticks: 50
+
+  cutting_ananasslice:
+    input-item: pineapple
+    result-item: ananasslice
+    result-amount-min: 2
+    result-amount-max: 3
+    duration-ticks: 50
+
+  cutting_steakstreifen:
+    input-material: COOKED_BEEF
+    result-item: steakstreifen
+    result-amount-min: 2
+    result-amount-max: 3
+    duration-ticks: 60

@@ -8,8 +8,27 @@ GUIs, and optional Oraxen textures.
 ![Minecraft](https://img.shields.io/badge/Minecraft-26.1.2-62b47a?style=flat-square&logo=minecraft&logoColor=white)
 ![Platform](https://img.shields.io/badge/Platform-Paper%2FSpigot-f7a41d?style=flat-square)
 ![Java](https://img.shields.io/badge/Java-25-ED8B00?style=flat-square&logo=openjdk&logoColor=white)
-![Version](https://img.shields.io/badge/Version-0.8.1-blue?style=flat-square)
+![Version](https://img.shields.io/badge/Version-0.9.0-blue?style=flat-square)
 ![License](https://img.shields.io/badge/License-MIT-blue?style=flat-square)
+
+## What's new in 0.9.0
+
+**30+ new dishes across every station** (all with hand-made textures)
+
+- **Cutting**: Apple Slices, Pineapple Slice, Steak Strips.
+- **Smoker**: Baked Zucchini, Baked Eggplant, Popcorn, Melted Cheese — and **Dough now smokes into plain Bread**.
+- **Campfire**: Grilled Corn, Grilled Pineapple, Grilled Mushroom.
+- **Water cauldron**: Blueberry / Strawberry / Pineapple Jelly, Wine, Chocolate.
+- **Lava cauldron**: Liquid Chocolate.
+- **Crafting**: three Jam Breads, three fruit Sodas, Garlic Mushrooms, Glittering Apple Slices, Fruit Salad, S'mores, Chocolate-Covered Fruit, Grilled Cheese, Mac & Cheese, Garlic Bread, and a six-ingredient **Pizza**.
+
+**Fixes & QoL**
+
+- **Chain-hung items are now static** — they hang under the chain as a fixed display and no longer spin.
+- **Cotton → textiles**: 1 Cotton → 2 String, 3 Cotton → 1 Wool. These and *Dough → Bread* appear under a new **Vanilla Outputs** category in `/sas recipes`.
+- **`/sas give` is now paginated** (arrows at the bottom) so every item and seed is reachable.
+- **Seeds drop from grass more reliably** — grass/leaf drop chances were raised.
+- **Balance pass**: the strongest foods were toned down (Burger/Cheeseburger/Shashlik 8 hunger, shorter Strength; Baked Potato, Miso Soup and Candy Apple slightly reduced) so nothing is too strong or exploitable, and every new dish uses conservative hunger/saturation/effects.
 
 ## What's new in 0.8.1
 

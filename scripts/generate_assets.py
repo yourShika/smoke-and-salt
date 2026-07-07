@@ -13,7 +13,7 @@ OX = os.path.join(ROOT, "src", "main", "resources", "oraxen")
 TEX_DIR = os.path.join(OX, "pack", "textures", "sas")
 ITEMS_DIR = os.path.join(OX, "items")
 MANIFEST = os.path.join(OX, "asset-manifest.properties")
-ASSET_VERSION = "12"
+ASSET_VERSION = "13"
 
 # ---------------------------------------------------------------------------
 #  Zeichen-Primitive auf einer 16x16 RGBA-Leinwand
@@ -945,6 +945,48 @@ OVERRIDES = {
     "zucchini_seeds": "pixellab-Zucchini-Seeds-Vegetable-1783247780349.png",
 }
 
+# ---------------------------------------------------------------------------
+#  0.9.0: neue Gerichte - alle mit fertiger Textur aus textures/ (nur Override,
+#  keine prozedurale Zeichnung). (id, display, material, cmd, textures/-Datei)
+# ---------------------------------------------------------------------------
+
+NEW_FOODS_090 = [
+    ("apfelscheiben", "<#e2564a>Apple Slices", "APPLE", 3101, "pixellab-Apple-slice-1783435022415.png"),
+    ("steakstreifen", "<#b5651d>Steak Strips", "COOKED_BEEF", 3102, "pixellab-grilled-Steak-strips-1783434958372.png"),
+    ("ananasslice", "<#e0b440>Pineapple Slice", "PAPER", 3103, "pixellab-Pineapple-slice-1783434912438.png"),
+    ("gebackene_zucchini", "<#6fbe57>Baked Zucchini", "PAPER", 3104, "pixellab-Baked-zucchini-1783433762345.png"),
+    ("gebackene_aubergine", "<#9b6fbe>Baked Eggplant", "PAPER", 3105, "pixellab-Baked-eggplant-1783433794856.png"),
+    ("popcorn", "<#f0e0a0>Popcorn", "PAPER", 3106, "pixellab-Popcorn-1783433824769.png"),
+    ("geschmolzener_kaese", "<#f2c94c>Melted Cheese", "PAPER", 3107, "pixellab-Melted-cheese-1783433869109.png"),
+    ("gegrillter_mais", "<#e8c447>Grilled Corn", "PAPER", 3108, "pixellab-Grilled-corn-1783434168597.png"),
+    ("gegrillte_ananas", "<#e0b440>Grilled Pineapple", "PAPER", 3109, "pixellab-Grilled-pineapple-1783434224413.png"),
+    ("gegrillter_pilz", "<#c08a5a>Grilled Mushroom", "PAPER", 3110, "pixellab-Grilled-mushroom-1783434264512.png"),
+    ("blaubeergelee", "<#5a6ec0>Blueberry Jelly", "PAPER", 3111, "pixellab-Blueberry-jelly-1783433892553.png"),
+    ("erdbeergelee", "<#ce3030>Strawberry Jelly", "PAPER", 3112, "pixellab-Strawberry-jelly-jar-1783433981123.png"),
+    ("ananasgelee", "<#e0b440>Pineapple Jelly", "PAPER", 3113, "pixellab-Pineapple-jelly-jar-1783434013559.png"),
+    ("wein", "<#8c1c3a>Wine", "HONEY_BOTTLE", 3114, "pixellab-Wine-1783434044643.png"),
+    ("schokolade", "<#5a3418>Chocolate", "PAPER", 3115, "pixellab-Chocolate-bar-1783434071488.png"),
+    ("fluessige_schokolade", "<#5a3418>Liquid Chocolate", "PAPER", 3116, "pixellab-Liquid-chocolate-1783434129920.png"),
+    ("erdbeermarmeladenbrot", "<#ce3030>Strawberry Jam Bread", "BREAD", 3117, "pixellab-Strawberry-jam-bread-1783434296897.png"),
+    ("blaubeermarmeladenbrot", "<#5a6ec0>Blueberry Jam Bread", "BREAD", 3118, "pixellab-Blueberry-jam-bread-1783434321067.png"),
+    ("ananasmarmeladenbrot", "<#e0b440>Pineapple Jam Bread", "BREAD", 3119, "pixellab-Pineapple-jam-bread-1783434355848.png"),
+    ("erdbeersoda", "<#ce3030>Strawberry Soda", "HONEY_BOTTLE", 3120, "pixellab-Strawberry-soda-1783434374664.png"),
+    ("blaubeersoda", "<#5a6ec0>Blueberry Soda", "HONEY_BOTTLE", 3121, "pixellab-Blueberry-soda-1783434404859.png"),
+    ("ananassoda", "<#e0b440>Pineapple Soda", "HONEY_BOTTLE", 3122, "pixellab-Pineapple-soda-1783434439804.png"),
+    ("knobi_pilze", "<#c0a060>Garlic Mushrooms", "PAPER", 3123, "pixellab-Garlic-mushrooms-1783434478247.png"),
+    ("glitzer_apfelscheiben", "<#ffe27a>Glittering Apple Slices", "APPLE", 3124, "pixellab-Glittering-apple-slices-1783434504022.png"),
+    ("obstsalat", "<#e2564a>Fruit Salad", "PAPER", 3125, "pixellab-Fruit-salad-1783434543304.png"),
+    ("smores", "<#8c5e3c>S'mores", "PAPER", 3126, "pixellab-S-mores-1783434615084.png"),
+    ("schokoladenobst", "<#5a3418>Chocolate-Covered Fruit", "PAPER", 3127, "pixellab-Chocolate-covered-fruit--1783434650308.png"),
+    ("grilled_cheese", "<#f2c94c>Grilled Cheese Sandwich", "BREAD", 3128, "pixellab-Grilled-cheese-sandwich--1783434747050.png"),
+    ("mac_and_cheese", "<#f2c94c>Mac and Cheese", "PAPER", 3129, "pixellab-Mac-and-cheese-1783434781106.png"),
+    ("knobibrot", "<#e6d8a0>Garlic Bread", "BREAD", 3130, "pixellab-Garlic-bread-1783434814810.png"),
+    ("pizza", "<#d94a2a>Pizza", "PAPER", 3131, "pixellab-Pizza-1783434868609.png"),
+]
+for _fid, _fname, _fmat, _fcmd, _ffile in NEW_FOODS_090:
+    ITEMS[_fid] = (_fname, _fmat, _fcmd)
+    OVERRIDES[_fid] = _ffile
+
 
 def override_image(item_id):
     """Fertige Override-Textur (16x16 RGBA) fuer item_id oder None."""
@@ -985,6 +1027,14 @@ def generate():
         os.makedirs(os.path.dirname(out), exist_ok=True)
         img.save(out)
 
+    # Override-only Items (fertige Textur, keine prozedurale Zeichnung).
+    for item_id in OVERRIDES:
+        if item_id in DRAW:
+            continue
+        override = override_image(item_id)
+        if override is not None:
+            override.save(os.path.join(TEX_DIR, item_id + ".png"))
+
     # Oraxen-Item-YAML
     lines = ["# Auto-generiert von scripts/generate_assets.py - Smoke & Salt Custom-Items.\n"]
     for item_id, data in ITEMS.items():
@@ -1008,12 +1058,14 @@ def generate():
 
 def write_manifest():
     entries = {}
-    for item_id in DRAW:
-        rel = f"oraxen/pack/textures/sas/{item_id}.png"
-        entries[rel] = sha256(os.path.join(OX, "pack", "textures", "sas", item_id + ".png"))
-    for tex_id in EXTRA_TEXTURES:
-        rel = f"oraxen/pack/textures/sas/{tex_id}.png"
-        entries[rel] = sha256(os.path.join(OX, "pack", "textures", "sas", tex_id + ".png"))
+    # Alle Texturen unter sas/ erfassen (inkl. Override-only und crops/).
+    for root, _dirs, files in os.walk(TEX_DIR):
+        for name in files:
+            if not name.endswith(".png"):
+                continue
+            full = os.path.join(root, name)
+            rel = "oraxen/pack/textures/sas/" + os.path.relpath(full, TEX_DIR).replace(os.sep, "/")
+            entries[rel] = sha256(full)
     yml = "oraxen/items/smoke_and_salt.yml"
     entries[yml] = sha256(os.path.join(ITEMS_DIR, "smoke_and_salt.yml"))
 

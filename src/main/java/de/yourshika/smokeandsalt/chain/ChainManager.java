@@ -5,11 +5,15 @@ import de.yourshika.smokeandsalt.item.ItemKeys;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.entity.Display;
 import org.bukkit.entity.Item;
+import org.bukkit.entity.ItemDisplay;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.scheduler.BukkitTask;
-import org.bukkit.util.Vector;
+import org.bukkit.util.Transformation;
+import org.joml.AxisAngle4f;
+import org.joml.Vector3f;
 
 import java.io.File;
 import java.util.HashMap;
@@ -20,10 +24,12 @@ import java.util.Map;
 /**
  * Verwaltet an Ketten aufgehaengte Items (Kessel-Behang, Raeucherware).
  *
- * <p>Der Inhalt wird in {@code chains.yml} persistiert; die schwebenden
- * {@link Item}-Entities sind bewusst NICHT persistent und werden vom Tick-Task
- * pro geladenem Chunk selbst erzeugt/aktualisiert. Dadurch ueberstehen Behaenge
- * Neustart und Chunk-Reload und es entstehen keine Karteileichen.</p>
+ * <p>Der Inhalt wird in {@code chains.yml} persistiert; das schwebende Item wird
+ * als <b>{@link ItemDisplay}</b> dargestellt - dadurch haengt es <b>statisch</b>
+ * unter der Kette und dreht sich nicht (anders als eine normale Item-Entity). Die
+ * Displays sind bewusst NICHT persistent und werden vom Tick-Task pro geladenem
+ * Chunk selbst erzeugt, sodass Behaenge Neustart und Chunk-Reload ueberstehen und
+ * keine Karteileichen entstehen.</p>
  */
 public final class ChainManager {
 
@@ -33,7 +39,7 @@ public final class ChainManager {
     private final ItemKeys keys;
     private final File file;
     private final Map<String, ItemStack> hung = new LinkedHashMap<>();
-    private final Map<String, Item> entities = new HashMap<>();
+    private final Map<String, ItemDisplay> entities = new HashMap<>();
 
     private BukkitTask task;
 
@@ -55,7 +61,7 @@ public final class ChainManager {
             task.cancel();
             task = null;
         }
-        for (Item entity : entities.values()) {
+        for (ItemDisplay entity : entities.values()) {
             if (entity.isValid()) entity.remove();
         }
         entities.clear();
@@ -84,7 +90,7 @@ public final class ChainManager {
         return stack;
     }
 
-    /** Ist diese Entity ein aufgehaengtes Item? */
+    /** Ist diese (Item-)Entity ein aufgehaengtes Item? (Alt-Behaenge vor 0.9.0.) */
     public boolean isHungEntity(Item item) {
         return item.getPersistentDataContainer().has(keys.chainHung, PersistentDataType.BYTE);
     }
@@ -96,20 +102,19 @@ public final class ChainManager {
         for (Map.Entry<String, ItemStack> entry : hung.entrySet()) {
             Block chain = block(entry.getKey());
             if (chain == null) continue; // Chunk nicht geladen
-            Item entity = entities.get(entry.getKey());
+            ItemDisplay entity = entities.get(entry.getKey());
             if (entity == null || !entity.isValid() || entity.isDead()) {
                 spawn(chain);
             } else {
-                // Am Platz halten.
+                // Statisch am Platz halten.
                 Location at = chain.getLocation().add(0.5, -0.35, 0.5);
                 if (entity.getLocation().distanceSquared(at) > 0.01) entity.teleport(at);
-                entity.setVelocity(new Vector(0, 0, 0));
             }
         }
         // Verwaiste Entity-Referenzen aufraeumen.
-        Iterator<Map.Entry<String, Item>> it = entities.entrySet().iterator();
+        Iterator<Map.Entry<String, ItemDisplay>> it = entities.entrySet().iterator();
         while (it.hasNext()) {
-            Map.Entry<String, Item> e = it.next();
+            Map.Entry<String, ItemDisplay> e = it.next();
             if (!hung.containsKey(e.getKey())) {
                 if (e.getValue().isValid()) e.getValue().remove();
                 it.remove();
@@ -124,19 +129,27 @@ public final class ChainManager {
         despawn(key);
         Location at = chain.getLocation().add(0.5, -0.35, 0.5);
         if (at.getWorld() == null) return;
-        Item item = at.getWorld().dropItem(at, stack.clone());
-        item.setGravity(false);
-        item.setVelocity(new Vector(0, 0, 0));
-        item.setPickupDelay(Integer.MAX_VALUE);
-        item.setUnlimitedLifetime(true);
-        item.setCanMobPickup(false);
-        item.setPersistent(false);
-        item.getPersistentDataContainer().set(keys.chainHung, PersistentDataType.BYTE, (byte) 1);
-        entities.put(key, item);
+        ItemDisplay display = at.getWorld().spawn(at, ItemDisplay.class, d -> {
+            d.setItemStack(stack.clone());
+            d.setItemDisplayTransform(ItemDisplay.ItemDisplayTransform.FIXED);
+            // FIXED-Billboard: dreht sich NICHT (weder Spin noch zum Spieler).
+            d.setBillboard(Display.Billboard.FIXED);
+            // Etwas kleiner als volle Groesse, damit es wie ein Behang wirkt.
+            d.setTransformation(new Transformation(
+                    new Vector3f(0f, 0f, 0f),
+                    new AxisAngle4f(0f, 0f, 0f, 1f),
+                    new Vector3f(0.5f, 0.5f, 0.5f),
+                    new AxisAngle4f(0f, 0f, 0f, 1f)));
+            d.setShadowRadius(0.0f);
+            d.setShadowStrength(0.0f);
+            d.setPersistent(false);
+            d.getPersistentDataContainer().set(keys.chainHung, PersistentDataType.BYTE, (byte) 1);
+        });
+        entities.put(key, display);
     }
 
     private void despawn(String key) {
-        Item entity = entities.remove(key);
+        ItemDisplay entity = entities.remove(key);
         if (entity != null && entity.isValid()) entity.remove();
     }
 

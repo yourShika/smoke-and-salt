@@ -150,3 +150,122 @@ crafting-recipes:
     result:
       item: onigiri
       amount: 1
+
+  # --- 0.8.2: Cotton fibre QoL ---
+  # Turn harvested Cotton into vanilla textiles.
+  cotton_wool:
+    ingredients:
+      - item: cotton
+        display: Cotton
+      - item: cotton
+        display: Cotton
+      - item: cotton
+        display: Cotton
+    result:
+      material: WHITE_WOOL
+      amount: 1
+
+  cotton_string:
+    ingredients:
+      - item: cotton
+        display: Cotton
+    result:
+      material: STRING
+      amount: 2
+
+  # --- 0.9.0: jam breads, sodas and dishes ---
+  erdbeermarmeladenbrot:
+    ingredients:
+      - { item: erdbeergelee, display: Strawberry Jelly }
+      - { material: BREAD, display: Bread }
+    result: { item: erdbeermarmeladenbrot, amount: 1 }
+  blaubeermarmeladenbrot:
+    ingredients:
+      - { item: blaubeergelee, display: Blueberry Jelly }
+      - { material: BREAD, display: Bread }
+    result: { item: blaubeermarmeladenbrot, amount: 1 }
+  ananasmarmeladenbrot:
+    ingredients:
+      - { item: ananasgelee, display: Pineapple Jelly }
+      - { material: BREAD, display: Bread }
+    result: { item: ananasmarmeladenbrot, amount: 1 }
+
+  erdbeersoda:
+    ingredients:
+      - { item: erdbeergelee, display: Strawberry Jelly }
+      - { material: POTION, display: Water Bottle }
+    result: { item: erdbeersoda, amount: 1 }
+  blaubeersoda:
+    ingredients:
+      - { item: blaubeergelee, display: Blueberry Jelly }
+      - { material: POTION, display: Water Bottle }
+    result: { item: blaubeersoda, amount: 1 }
+  ananassoda:
+    ingredients:
+      - { item: ananasgelee, display: Pineapple Jelly }
+      - { material: POTION, display: Water Bottle }
+    result: { item: ananassoda, amount: 1 }
+
+  knobi_pilze:
+    ingredients:
+      - { item: gegrillter_pilz, display: Grilled Mushroom }
+      - { material: MILK_BUCKET, display: Milk }
+      - { item: garlic, display: Garlic }
+    result: { item: knobi_pilze, amount: 1 }
+
+  glitzer_apfelscheiben:
+    ingredients:
+      - { item: apfelscheiben, display: Apple Slices }
+      - { material: GOLD_NUGGET, display: Gold Nugget }
+      - { material: GOLD_NUGGET, display: Gold Nugget }
+      - { material: GOLD_NUGGET, display: Gold Nugget }
+      - { material: GOLD_NUGGET, display: Gold Nugget }
+    result: { item: glitzer_apfelscheiben, amount: 1 }
+
+  obstsalat:
+    ingredients:
+      - { item: ananasslice, display: Pineapple Slice }
+      - { item: apfelscheiben, display: Apple Slices }
+      - { item: grapes, display: Grapes }
+    result: { item: obstsalat, amount: 1 }
+
+  smores:
+    ingredients:
+      - { item: schokolade, display: Chocolate }
+      - { item: marshmallow, display: Marshmallow }
+      - { material: COOKIE, display: Cookie }
+    result: { item: smores, amount: 1 }
+
+  schokoladenobst:
+    ingredients:
+      - { item: fluessige_schokolade, display: Liquid Chocolate }
+      - { material: APPLE, display: Fruit }
+    result: { item: schokoladenobst, amount: 1 }
+
+  grilled_cheese:
+    ingredients:
+      - { item: geschmolzener_kaese, display: Melted Cheese }
+      - { material: BREAD, display: Bread }
+    result: { item: grilled_cheese, amount: 1 }
+
+  mac_and_cheese:
+    ingredients:
+      - { item: geschmolzener_kaese, display: Melted Cheese }
+      - { item: nudeln, display: Noodles }
+    result: { item: mac_and_cheese, amount: 1 }
+
+  knobibrot:
+    ingredients:
+      - { item: garlic, display: Garlic }
+      - { material: BREAD, display: Bread }
+    result: { item: knobibrot, amount: 1 }
+
+  pizza:
+    ingredients:
+      - { item: garlic, display: Garlic }
+      - { item: teig, display: Dough }
+      - { item: kaese, display: Cheese }
+      - { item: steakstreifen, display: Steak Strips }
+      - { material: RED_MUSHROOM, display: Mushroom }
+      - { item: sauce, display: Tomato Sauce }
+    result: { item: pizza, amount: 1 }

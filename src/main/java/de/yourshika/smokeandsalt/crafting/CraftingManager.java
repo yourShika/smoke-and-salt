@@ -108,6 +108,13 @@ public final class CraftingManager implements Listener {
         if (ingredient instanceof Ingredient.TagIngredient ti) {
             return new RecipeChoice.MaterialChoice(ti.tag());
         }
+        if (ingredient instanceof Ingredient.WaterBottleIngredient) {
+            // Bukkit-Ebene grob (jeder Trank), die genaue Wasser-Pruefung macht onPrepare.
+            return new RecipeChoice.MaterialChoice(Material.POTION);
+        }
+        if (ingredient instanceof Ingredient.MaterialsIngredient ms) {
+            return new RecipeChoice.MaterialChoice(new ArrayList<>(ms.materials()));
+        }
         return new RecipeChoice.MaterialChoice(Material.PAPER);
     }
 

@@ -175,6 +175,7 @@ public final class SmokeAndSalt extends JavaPlugin {
         stationRecipes.unregisterAll();
         ContentFileLoader.load(this);
         de.yourshika.smokeandsalt.content.DefaultContent.register(this);
+        ContentFileLoader.validateReferences(this);
         // Smoker-/Lagerfeuer-Rezepte als Vanilla-Rezepte registrieren (nach DefaultContent).
         stationRecipes.registerAll();
     }

@@ -189,17 +189,17 @@ crafting-recipes:
   erdbeersoda:
     ingredients:
       - { item: erdbeergelee, display: Strawberry Jelly }
-      - { material: POTION, display: Water Bottle }
+      - { material: WATER_BOTTLE, display: Water Bottle }
     result: { item: erdbeersoda, amount: 1 }
   blaubeersoda:
     ingredients:
       - { item: blaubeergelee, display: Blueberry Jelly }
-      - { material: POTION, display: Water Bottle }
+      - { material: WATER_BOTTLE, display: Water Bottle }
     result: { item: blaubeersoda, amount: 1 }
   ananassoda:
     ingredients:
       - { item: ananasgelee, display: Pineapple Jelly }
-      - { material: POTION, display: Water Bottle }
+      - { material: WATER_BOTTLE, display: Water Bottle }
     result: { item: ananassoda, amount: 1 }
 
   knobi_pilze:
@@ -262,6 +262,6 @@ crafting-recipes:
       - { item: teig, display: Dough }
       - { item: kaese, display: Cheese }
       - { item: steakstreifen, display: Steak Strips }
-      - { material: RED_MUSHROOM, display: Mushroom }
+      - { materials: [RED_MUSHROOM, BROWN_MUSHROOM], display: Mushroom }
       - { item: sauce, display: Tomato Sauce }
     result: { item: pizza, amount: 1 }

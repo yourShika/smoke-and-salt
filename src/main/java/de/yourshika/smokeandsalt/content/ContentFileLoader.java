@@ -44,7 +44,7 @@ public final class ContentFileLoader {
 
     /** Bei Bump wird der content-Ordner gesichert und aus dem JAR neu erzeugt,
      *  damit Fixes/neue Inhalte auf bestehenden Servern automatisch ankommen. */
-    private static final int CONTENT_VERSION = 6;
+    private static final int CONTENT_VERSION = 7;
 
     public static void saveDefaults(SmokeAndSalt plugin) {
         File dir = new File(plugin.getDataFolder(), "content");
@@ -116,6 +116,48 @@ public final class ContentFileLoader {
             loadCauldron(plugin, yaml.getConfigurationSection("cauldron-recipes"), source, cauldronTarget);
             loadCrafting(plugin, yaml.getConfigurationSection("crafting-recipes"), source);
         }
+    }
+
+    /**
+     * Prueft nach dem Laden aller Inhalte, ob Rezepte auf nicht existierende
+     * Custom-Items verweisen, und loggt Warnungen. Faengt Tippfehler in eigenen
+     * content-Dateien fruehzeitig ab (statt still beim Craften fehlzuschlagen).
+     */
+    public static void validateReferences(SmokeAndSalt plugin) {
+        int[] warnings = {0};
+        for (de.yourshika.smokeandsalt.cooking.CookingRecipe r : plugin.cooking().registry().all()) {
+            if (r.inputIsCustom() && !plugin.items().contains(r.inputItemId())) {
+                warn(plugin, warnings, r.id(), "Zutat", r.inputItemId());
+            }
+            if (r.resultIsCustom() && !plugin.items().contains(r.resultItemId())) {
+                warn(plugin, warnings, r.id(), "Ergebnis", r.resultItemId());
+            }
+        }
+        for (CauldronRecipe r : plugin.cauldron().recipes()) checkMulti(plugin, warnings, r.id(), r.ingredients(), r.result());
+        for (CauldronRecipe r : plugin.lavaCauldron().recipes()) checkMulti(plugin, warnings, r.id(), r.ingredients(), r.result());
+        for (CraftingRecipe r : plugin.crafting().recipes()) checkMulti(plugin, warnings, r.id(), r.ingredients(), r.result());
+        if (warnings[0] > 0) {
+            plugin.getLogger().warning("Rezept-Pruefung: " + warnings[0]
+                    + " Verweis(e) auf unbekannte Custom-Items (siehe Warnungen oben).");
+        }
+    }
+
+    private static void checkMulti(SmokeAndSalt plugin, int[] w, String id,
+                                   List<Ingredient> ingredients, ResultSpec result) {
+        for (Ingredient ing : ingredients) {
+            if (ing instanceof Ingredient.CustomItemIngredient ci && !plugin.items().contains(ci.id())) {
+                warn(plugin, w, id, "Zutat", ci.id());
+            }
+        }
+        if (result.itemId() != null && !plugin.items().contains(result.itemId())) {
+            warn(plugin, w, id, "Ergebnis", result.itemId());
+        }
+    }
+
+    private static void warn(SmokeAndSalt plugin, int[] w, String recipeId, String role, String itemId) {
+        plugin.getLogger().warning("Rezept '" + recipeId + "': " + role
+                + " verweist auf unbekanntes Custom-Item '" + itemId + "'.");
+        w[0]++;
     }
 
     private static void loadItems(SmokeAndSalt plugin, YamlConfiguration yaml, String source) {
@@ -195,15 +237,31 @@ public final class ContentFileLoader {
         String seed = string(raw, "seed", null);
         if (seed != null) return Ingredient.seed(seed.toLowerCase(Locale.ROOT), fallback(display, seed));
 
+        // Mehrere erlaubte Materialien: materials: [RED_MUSHROOM, BROWN_MUSHROOM]
+        Object materialsRaw = raw.get("materials");
+        if (materialsRaw instanceof List<?> list && !list.isEmpty()) {
+            java.util.Set<Material> mats = new java.util.LinkedHashSet<>();
+            for (Object o : list) {
+                Material m = Material.matchMaterial(String.valueOf(o).toUpperCase(Locale.ROOT));
+                if (m != null) mats.add(m);
+            }
+            if (mats.isEmpty()) throw new IllegalArgumentException("materials leer oder unbekannt");
+            Material icon = mats.iterator().next();
+            return Ingredient.materials(mats, icon, fallback(display, icon.name()));
+        }
+
         String materialName = string(raw, "material", null);
         if (materialName != null) {
+            if (materialName.equalsIgnoreCase("WATER_BOTTLE")) {
+                return Ingredient.waterBottle(fallback(display, "Water Bottle"));
+            }
             Material material = Material.matchMaterial(materialName.toUpperCase(Locale.ROOT));
             if (material == null) {
                 throw new IllegalArgumentException("unbekanntes Material: " + materialName);
             }
             return Ingredient.material(material, fallback(display, materialName));
         }
-        throw new IllegalArgumentException("Zutat braucht item, seed oder material");
+        throw new IllegalArgumentException("Zutat braucht item, seed, materials oder material");
     }
 
     private static ResultSpec parseResult(ConfigurationSection sec) {

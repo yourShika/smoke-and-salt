@@ -90,6 +90,11 @@ public final class GiveMenu {
     }
 
     private static void giveItem(SmokeAndSalt plugin, Player player, String id, int amount, boolean seed) {
+        // Berechtigung erneut pruefen: der Spieler koennte sie seit dem Oeffnen verloren haben.
+        if (!player.hasPermission("smokeandsalt.admin.give")) {
+            player.closeInventory();
+            return;
+        }
         ItemStack stack = seed ? plugin.seeds().create(id, amount) : plugin.items().create(id, amount);
         if (stack == null) return;
         var leftover = player.getInventory().addItem(stack);

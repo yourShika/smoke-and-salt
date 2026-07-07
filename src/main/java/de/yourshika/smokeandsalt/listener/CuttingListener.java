@@ -107,7 +107,12 @@ public final class CuttingListener implements Listener {
         ItemStack ingredient = itemIn(player, session.ingredientHand);
         if (!isAxe(axe.getType()) || ingredient.getType().isAir()) return;
 
-        ingredient.setAmount(ingredient.getAmount() - 1);
+        // Zutat verbrauchen: bei Menge 1 den Slot leeren (nicht auf Menge 0 lassen).
+        if (ingredient.getAmount() <= 1) {
+            player.getInventory().setItem(session.ingredientHand, null);
+        } else {
+            ingredient.setAmount(ingredient.getAmount() - 1);
+        }
         ItemStack result = plugin.cooking().registry().buildResult(recipe);
         if (result != null) {
             result.setAmount(recipe.rollResultAmount());
@@ -115,6 +120,7 @@ public final class CuttingListener implements Listener {
             leftover.values().forEach(s -> player.getWorld().dropItemNaturally(player.getLocation(), s));
         }
         damageAxe(player, axe);
+        player.updateInventory();
         plugin.effects().cut(cutLocation(player));
     }
 

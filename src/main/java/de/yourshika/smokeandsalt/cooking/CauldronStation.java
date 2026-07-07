@@ -12,8 +12,10 @@ import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.World;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.entity.Display;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Item;
+import org.bukkit.entity.ItemDisplay;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -151,6 +153,10 @@ public abstract class CauldronStation {
     public ItemStack deposit(Block block, ItemStack stack) {
         if (stack == null || stack.getType().isAir()) return null;
         Station station = station(block, true);
+        // Offene GUI zuerst einlesen, damit ungespeicherte Spieler-Edits nicht
+        // vom Wurf ueberschrieben werden.
+        Inventory open = openInventory(station);
+        if (open != null) readContainer(station, open);
         ItemStack leftover = addToInput(station, stack);
         syncOpenInventory(station);
         refreshDisplay(station);
@@ -176,11 +182,16 @@ public abstract class CauldronStation {
 
     public void open(Player player, Block block) {
         Station station = station(block, true);
-        Inventory inv = Bukkit.createInventory(new CauldronMenuHolder(this, key(block)),
-                GUI_SIZE, menuTitle(block));
-        renderStatic(inv);
-        writeContainer(station, inv);
-        renderStatus(station, inv);
+        // Ist die GUI schon offen (anderer Spieler)? Dieselbe Inventar-Instanz teilen,
+        // damit es keine zwei divergierenden Kopien gibt (sonst Desync/Dupe).
+        Inventory inv = openInventory(station);
+        if (inv == null) {
+            inv = Bukkit.createInventory(new CauldronMenuHolder(this, key(block)),
+                    GUI_SIZE, menuTitle(block));
+            renderStatic(inv);
+            writeContainer(station, inv);
+            renderStatus(station, inv);
+        }
         player.openInventory(inv);
         refreshDisplay(station);
     }
@@ -214,9 +225,11 @@ public abstract class CauldronStation {
         if (station == null) return;
         Inventory open = openInventory(station);
         if (open != null) readContainer(station, open);
+        // Zuerst aus der Map entfernen -> ein durch closeViewers ausgeloester
+        // handleClose findet die Station nicht mehr und persistiert sie nicht erneut.
+        stations.remove(key(block));
         closeViewers(station);
         dropAll(station);
-        stations.remove(key(block));
         save();
     }
 
@@ -277,10 +290,10 @@ public abstract class CauldronStation {
             if (!isStationBlock(block)) {
                 Inventory openNow = openInventory(station);
                 if (openNow != null) readContainer(station, openNow);
+                it.remove(); // zuerst aus der Map -> handleClose wird zum No-Op
                 closeViewers(station);
                 clearDisplay(station);
                 dropAll(station);
-                it.remove();
                 save();
                 continue;
             }
@@ -650,9 +663,10 @@ public abstract class CauldronStation {
     // --- Schwebende Zutaten-Anzeige -----------------------------------------
 
     /**
-     * Zeigt die eingelegten Zutaten als schwebende Items im Kessel an. Die Entities
-     * sind bewusst NICHT persistent (kein Crash-Orphan) und werden bei Bedarf pro
-     * Tick neu erzeugt/aktualisiert.
+     * Zeigt die eingelegten Zutaten als schwebende {@link ItemDisplay}s im Kessel an.
+     * ItemDisplays koennen NICHT aufgesammelt/gehoppert werden (kein Dupe-Risiko wie
+     * echte Item-Entities) und sind bewusst NICHT persistent (kein Crash-Orphan) -
+     * sie werden bei Bedarf pro Tick neu erzeugt/aktualisiert.
      */
     private void refreshDisplay(Station station) {
         Block block = station.block;
@@ -669,7 +683,7 @@ public abstract class CauldronStation {
             return;
         }
         while (station.display.size() > shown.size()) {
-            Item e = station.display.remove(station.display.size() - 1);
+            ItemDisplay e = station.display.remove(station.display.size() - 1);
             if (e != null && e.isValid()) e.remove();
         }
         Location center = block.getLocation().add(0.5, displayHeight(), 0.5);
@@ -680,33 +694,30 @@ public abstract class CauldronStation {
                     Math.sin(2 * Math.PI * i / n) * 0.22);
             ItemStack one = shown.get(i).clone();
             one.setAmount(1);
-            Item entity;
             if (i < station.display.size()) {
-                entity = station.display.get(i);
+                ItemDisplay entity = station.display.get(i);
                 if (!one.isSimilar(entity.getItemStack())) entity.setItemStack(one);
                 if (entity.getLocation().distanceSquared(loc) > 0.01) entity.teleport(loc);
             } else {
-                entity = world.dropItem(loc, one);
-                freezeDisplay(entity);
-                station.display.add(entity);
+                station.display.add(spawnDisplay(world, loc, one));
             }
-            entity.setVelocity(new Vector(0, 0, 0));
         }
     }
 
-    private void freezeDisplay(Item entity) {
-        entity.setGravity(false);
-        entity.setVelocity(new Vector(0, 0, 0));
-        entity.setPickupDelay(Integer.MAX_VALUE);
-        entity.setUnlimitedLifetime(true);
-        entity.setCanMobPickup(false);
-        entity.setPersistent(false);
-        entity.setInvulnerable(true);
-        entity.getPersistentDataContainer().set(plugin.keys().cookingFloat, PersistentDataType.BYTE, (byte) 1);
+    private ItemDisplay spawnDisplay(World world, Location loc, ItemStack stack) {
+        return world.spawn(loc, ItemDisplay.class, d -> {
+            d.setItemStack(stack);
+            d.setItemDisplayTransform(ItemDisplay.ItemDisplayTransform.GROUND);
+            d.setBillboard(Display.Billboard.FIXED);
+            d.setShadowRadius(0.0f);
+            d.setShadowStrength(0.0f);
+            d.setPersistent(false);
+            d.getPersistentDataContainer().set(plugin.keys().cookingFloat, PersistentDataType.BYTE, (byte) 1);
+        });
     }
 
     private void clearDisplay(Station station) {
-        for (Item entity : station.display) {
+        for (ItemDisplay entity : station.display) {
             if (entity != null && entity.isValid()) entity.remove();
         }
         station.display.clear();
@@ -776,8 +787,8 @@ public abstract class CauldronStation {
         private final Block block;
         private final ItemStack[] input = new ItemStack[INPUT_SLOTS.length];
         private final Map<Integer, ItemStack> output = new LinkedHashMap<>();
-        /** Schwebende Anzeige-Items im Kessel (nicht persistent). */
-        private final List<Item> display = new ArrayList<>();
+        /** Schwebende Anzeige-Items im Kessel (ItemDisplay, nicht persistent). */
+        private final List<ItemDisplay> display = new ArrayList<>();
         private CauldronRecipe active;
         private int elapsed;
 

@@ -23,11 +23,9 @@ import org.bukkit.inventory.meta.Damageable;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.EnumSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 /**
  * Verwaltet die formfreien Crafting-Rezepte in der Werkbank. Registriert echte
@@ -36,9 +34,6 @@ import java.util.Set;
  * PDC. Werkzeuge (Schwert) bleiben erhalten, Eimer werden geleert zurueckgegeben.
  */
 public final class CraftingManager implements Listener {
-
-    private static final Set<Material> BUCKETS = EnumSet.of(
-            Material.MILK_BUCKET, Material.WATER_BUCKET, Material.LAVA_BUCKET, Material.POWDER_SNOW_BUCKET);
 
     private final SmokeAndSalt plugin;
     private final Map<String, CraftingRecipe> recipes = new LinkedHashMap<>();
@@ -149,7 +144,7 @@ public final class CraftingManager implements Listener {
         List<ItemStack> special = collectSpecial(matrix);
 
         if (!special.isEmpty() && event.isShiftClick()) {
-            // Bei Werkzeug-/Eimer-Rezepten nur einzeln craften (sichere Rueckgabe).
+            // Bei Werkzeug-Rezepten (Schwert) nur einzeln craften (sichere Rueckgabe).
             event.setCancelled(true);
             plugin.messages().send(player, "crafting.single-only");
             return;
@@ -159,7 +154,7 @@ public final class CraftingManager implements Listener {
         plugin.effects().craft(player.getLocation());
 
         if (special.isEmpty()) return;
-        // Werkzeuge/Eimer nach dem Verbrauch zurueckgeben - nur wenn der Craft
+        // Werkzeuge (Schwert) nach dem Verbrauch zurueckgeben - nur wenn der Craft
         // wirklich durchlief (kein spaeter Abbruch -> sonst Dupe).
         Bukkit.getScheduler().runTask(plugin, () -> {
             if (event.isCancelled()) return;
@@ -171,7 +166,14 @@ public final class CraftingManager implements Listener {
         });
     }
 
-    /** Sammelt zurueckzugebende Werkzeuge (Schwert, leicht abgenutzt) und Eimer. */
+    /**
+     * Sammelt zurueckzugebende Werkzeuge (Schwert, leicht abgenutzt).
+     *
+     * <p>Eimer werden bewusst NICHT hier behandelt: Minecraft gibt den leeren Eimer
+     * beim Craften bereits selbst ueber das Crafting-Remainder in die Werkbank
+     * zurueck. Ein zusaetzlicher Eimer hier fuehrte zu einem Dupe (ein Eimer bleibt
+     * im Grid, ein zweiter landete im Inventar).</p>
+     */
     private List<ItemStack> collectSpecial(ItemStack[] matrix) {
         List<ItemStack> out = new ArrayList<>();
         for (ItemStack item : matrix) {
@@ -184,8 +186,6 @@ public final class CraftingManager implements Listener {
                     sword.setItemMeta(dmg);
                 }
                 out.add(sword);
-            } else if (BUCKETS.contains(item.getType())) {
-                out.add(new ItemStack(Material.BUCKET));
             }
         }
         return out;

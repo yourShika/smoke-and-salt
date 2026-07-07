@@ -8,8 +8,12 @@ GUIs, and optional Oraxen textures.
 ![Minecraft](https://img.shields.io/badge/Minecraft-26.1.2-62b47a?style=flat-square&logo=minecraft&logoColor=white)
 ![Platform](https://img.shields.io/badge/Platform-Paper%2FSpigot-f7a41d?style=flat-square)
 ![Java](https://img.shields.io/badge/Java-25-ED8B00?style=flat-square&logo=openjdk&logoColor=white)
-![Version](https://img.shields.io/badge/Version-1.0.1-blue?style=flat-square)
+![Version](https://img.shields.io/badge/Version-1.0.2-blue?style=flat-square)
 ![License](https://img.shields.io/badge/License-MIT-blue?style=flat-square)
+
+## What's new in 1.0.2
+
+- **Bucket dupe fixed**: crafting a recipe that uses a bucket (e.g. Sour Cream, Garlic Mushrooms) no longer gave back **two** empty buckets. Minecraft already returns the empty bucket to the crafting grid itself, so the plugin no longer adds a second one to the inventory. (The cauldron system, which returns buckets on its own, is unaffected.)
 
 ## What's new in 1.0.1
 

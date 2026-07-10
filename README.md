@@ -8,8 +8,12 @@ GUIs, and optional Oraxen textures.
 ![Minecraft](https://img.shields.io/badge/Minecraft-26.1.2-62b47a?style=flat-square&logo=minecraft&logoColor=white)
 ![Platform](https://img.shields.io/badge/Platform-Paper%2FSpigot-f7a41d?style=flat-square)
 ![Java](https://img.shields.io/badge/Java-25-ED8B00?style=flat-square&logo=openjdk&logoColor=white)
-![Version](https://img.shields.io/badge/Version-1.0.2-blue?style=flat-square)
+![Version](https://img.shields.io/badge/Version-1.0.3-blue?style=flat-square)
 ![License](https://img.shields.io/badge/License-MIT-blue?style=flat-square)
+
+## What's new in 1.0.3
+
+- **Custom food is eatable again while aiming at a block / holding an offhand item.** The safety listener used to deny *all* right-click-on-block use of custom items, which blocked eating whenever you looked at the ground or a wall — and with something in your offhand, the offhand item was used instead of eating. Food now eats normally on any normal block and in the air; only genuinely item-consuming interactions (composting) are still blocked, and planting a custom-food's base crop is still prevented separately.
 
 ## What's new in 1.0.2
 

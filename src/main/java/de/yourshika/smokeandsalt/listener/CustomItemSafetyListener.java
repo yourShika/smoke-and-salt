@@ -37,6 +37,13 @@ public final class CustomItemSafetyListener implements Listener {
             Material.FIREWORK_ROCKET
     );
 
+    /** Bloecke, die das Basis-Material eines Essens sonst VERBRAUCHEN wuerden (statt
+     *  es essen zu lassen) - dort wird die Nutzung geblockt. Pflanzen auf Ackerland
+     *  faengt separat {@link #onBlockPlace} ab. */
+    private static final Set<Material> ITEM_CONSUMING_BLOCKS = EnumSet.of(
+            Material.COMPOSTER
+    );
+
     private final SmokeAndSalt plugin;
 
     public CustomItemSafetyListener(SmokeAndSalt plugin) {
@@ -55,11 +62,21 @@ public final class CustomItemSafetyListener implements Listener {
 
         if (isAllowedCookingUse(event, item)) return;
 
-        if (def == null
-                || def.food() == null
-                || event.getAction() == Action.RIGHT_CLICK_BLOCK
-                || THROWABLES.contains(item.getType())) {
+        // Nicht-Essen (reine Zutaten) und Wurf-Items: jede Nutzung unterbinden.
+        if (def == null || def.food() == null || THROWABLES.contains(item.getType())) {
             event.setUseItemInHand(Event.Result.DENY);
+            return;
+        }
+
+        // Essbare Custom-Items sollen sich immer normal essen lassen - auch wenn man
+        // dabei auf einen Block zeigt oder etwas in der Offhand haelt. Nur bei Bloecken,
+        // die das Basis-Material sonst verbrauchen wuerden (z.B. Komposter), wird die
+        // Nutzung geblockt.
+        if (event.getAction() == Action.RIGHT_CLICK_BLOCK) {
+            Block block = event.getClickedBlock();
+            if (block != null && ITEM_CONSUMING_BLOCKS.contains(block.getType())) {
+                event.setUseItemInHand(Event.Result.DENY);
+            }
         }
     }
 

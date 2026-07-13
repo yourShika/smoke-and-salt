@@ -97,12 +97,6 @@ seeds:
   definitions: {}
 
 # --------------------------------------------------------------------------
-#  Ketten (Aufhaengung fuer Kessel-Behang / Raeucherware)
-# --------------------------------------------------------------------------
-chain:
-  enabled: true
-
-# --------------------------------------------------------------------------
 #  Custom-Items (Zutaten, Werkzeuge, Ergebnisse)
 #  Standardmaessig leer. Schema pro Eintrag:
 #    <item_id>:

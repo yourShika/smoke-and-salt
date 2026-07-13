@@ -2,14 +2,18 @@
 
 Smoke & Salt is a vanilla-faithful cooking expansion for Paper/Spigot servers.
 It adds deeper food progression without large machines: smokers, campfires,
-water cauldrons, lava cauldrons, cutting, hanging chains, custom seeds, recipe
-GUIs, and optional Oraxen textures.
+water cauldrons, lava cauldrons, cutting, custom seeds, recipe GUIs, and
+optional Oraxen textures.
 
 ![Minecraft](https://img.shields.io/badge/Minecraft-26.1.2-62b47a?style=flat-square&logo=minecraft&logoColor=white)
 ![Platform](https://img.shields.io/badge/Platform-Paper%2FSpigot-f7a41d?style=flat-square)
 ![Java](https://img.shields.io/badge/Java-25-ED8B00?style=flat-square&logo=openjdk&logoColor=white)
-![Version](https://img.shields.io/badge/Version-1.0.3-blue?style=flat-square)
+![Version](https://img.shields.io/badge/Version-1.0.4-blue?style=flat-square)
 ![License](https://img.shields.io/badge/License-MIT-blue?style=flat-square)
+
+## What's new in 1.0.4
+
+- **Removed the chain-hanging feature.** Right-clicking a chain no longer hangs food or cauldron ware under it, and the `chain:` config section and messages are gone. Any leftover hung items from older versions are cleaned up automatically when their chunk loads. The `chains.yml` file left behind by previous versions is simply ignored and can be deleted.
 
 ## What's new in 1.0.3
 
@@ -185,7 +189,6 @@ All twelve ship with their own 16×16 Oraxen textures. **Oil** is a new intermed
 | Water Cauldron | A water cauldron above a heat source boils, accepts ingredients, and can consume water levels. |
 | Lava Cauldron | Used for frying/roasting recipes such as fries. |
 | Cutting | Hold an axe in either hand and the ingredient in the other hand, then right-click. |
-| Chains | Right-click chains to hang or retrieve food items. |
 | Custom Seeds | Rice seeds drop from seagrass, can be planted on farmland, and show custom crop stages when Oraxen is active. |
 
 Water cauldrons boil only when a heat source is directly beneath them. Supported

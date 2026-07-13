@@ -26,7 +26,6 @@ public final class PluginConfig {
     private boolean cauldronLavaEnabled;
     private boolean cuttingEnabled;
     private boolean seedsEnabled;
-    private boolean chainEnabled;
     private List<String> worldWhitelist;
     private List<String> worldBlacklist;
 
@@ -47,7 +46,6 @@ public final class PluginConfig {
         cauldronLavaEnabled = c.getBoolean("cooking.stations.cauldron-lava", true);
         cuttingEnabled = c.getBoolean("cooking.stations.cutting", true);
         seedsEnabled = c.getBoolean("seeds.enabled", true);
-        chainEnabled = c.getBoolean("chain.enabled", true);
         worldWhitelist = c.getStringList("worlds.whitelist");
         worldBlacklist = c.getStringList("worlds.blacklist");
     }
@@ -78,7 +76,6 @@ public final class PluginConfig {
     public boolean cauldronLavaEnabled() { return cauldronLavaEnabled; }
     public boolean cuttingEnabled() { return cuttingEnabled; }
     public boolean seedsEnabled() { return seedsEnabled; }
-    public boolean chainEnabled() { return chainEnabled; }
 
     /** Bequemer, tolerant getippter Language-Key in Kleinbuchstaben. */
     public String languageKey() {

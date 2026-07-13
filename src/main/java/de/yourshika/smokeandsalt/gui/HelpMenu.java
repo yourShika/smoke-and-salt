@@ -53,9 +53,6 @@ public final class HelpMenu {
         holder.set(24, station(Material.WHEAT_SEEDS, "Custom Seeds",
                 "Plantable on farmland.",
                 "Drops from grass, seagrass, composter."));
-        holder.set(25, station(Material.IRON_CHAIN, "Chains",
-                "A hanger for cauldron ware",
-                "or smoked goods."));
 
         // --- Command buttons ---
         holder.set(37, Icons.of(Material.BOOK, "<yellow><bold>Recipes</bold>",

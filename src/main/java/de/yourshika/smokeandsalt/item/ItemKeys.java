@@ -15,7 +15,8 @@ public final class ItemKeys {
     public final NamespacedKey seedId;
     /** Aktuelle Stufe innerhalb eines sequentiellen Koch-Ablaufs. */
     public final NamespacedKey stage;
-    /** Markiert eine an einer Kette aufgehaengte Item-Entity. */
+    /** Markierte fruehere Ketten-Behaenge (Feature entfernt); nur noch zum
+     *  Aufraeumen verwaister Alt-Behang-Items durch den {@code OrphanSweeper}. */
     public final NamespacedKey chainHung;
     /** Markiert eine im Kessel schwebende, kochende Item-Entity. */
     public final NamespacedKey cookingFloat;

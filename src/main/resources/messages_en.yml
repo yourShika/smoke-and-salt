@@ -71,8 +71,3 @@ cauldron:
   cancelled: "<yellow>Cauldron process cancelled - ingredients returned."
   served: "<green>You filled a bowl from the cauldron."
   serving: "<yellow>This cauldron is serving food - use bowls until it is empty."
-
-chain:
-  hung: "<green>Hung on the chain."
-  removed: "<green>Removed from the chain."
-  occupied: "<red>Something is already hanging on this chain."

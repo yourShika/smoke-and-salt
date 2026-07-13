@@ -11,13 +11,13 @@ import org.bukkit.event.world.ChunkLoadEvent;
 import org.bukkit.persistence.PersistentDataType;
 
 /**
- * Raeumt verwaiste, eingefrorene Item-Entities auf (Kessel-Float, Ketten-Behang),
- * die durch einen fruehen Server-Crash (vor der Nicht-Persistenz-Umstellung) im
- * Boden liegen geblieben sind.
+ * Raeumt verwaiste, eingefrorene Item-Entities auf (Kessel-Float sowie Behaenge
+ * der entfernten Ketten-Funktion), die durch einen fruehen Server-Crash (vor der
+ * Nicht-Persistenz-Umstellung) im Boden liegen geblieben sind.
  *
- * <p>Neu erzeugte Float-/Behang-Items sind nicht persistent und werden von ihren
- * Managern selbst verwaltet; auf einem gerade geladenen Chunk kann daher jedes
- * markierte Item nur eine Karteileiche sein.</p>
+ * <p>Neu erzeugte Float-Items sind nicht persistent und werden von ihrem Manager
+ * selbst verwaltet; Ketten-Behaenge gibt es nicht mehr. Auf einem gerade geladenen
+ * Chunk kann ein markiertes Item daher nur eine Karteileiche sein.</p>
  */
 public final class OrphanSweeper implements Listener {
 

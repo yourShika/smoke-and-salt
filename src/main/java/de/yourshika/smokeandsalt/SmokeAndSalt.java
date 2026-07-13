@@ -1,6 +1,5 @@
 package de.yourshika.smokeandsalt;
 
-import de.yourshika.smokeandsalt.chain.ChainManager;
 import de.yourshika.smokeandsalt.command.SmokeAndSaltCommand;
 import de.yourshika.smokeandsalt.config.MessageManager;
 import de.yourshika.smokeandsalt.config.PluginConfig;
@@ -11,7 +10,6 @@ import de.yourshika.smokeandsalt.item.ItemKeys;
 import de.yourshika.smokeandsalt.item.ItemRegistry;
 import de.yourshika.smokeandsalt.listener.BoilingAmbientTask;
 import de.yourshika.smokeandsalt.listener.CauldronListener;
-import de.yourshika.smokeandsalt.listener.ChainListener;
 import de.yourshika.smokeandsalt.listener.CustomItemSafetyListener;
 import de.yourshika.smokeandsalt.listener.CuttingListener;
 import de.yourshika.smokeandsalt.listener.GuiListener;
@@ -30,8 +28,8 @@ import java.io.File;
 
 /**
  * Hauptklasse von Smoke &amp; Salt. Initialisiert Konfiguration, Nachrichten,
- * Item-/Seed-/Rezept-Registries, das Koch-System (Stationen + Partikel), das
- * Ketten-System sowie das externe Modul-System (Oraxen, PlaceholderAPI).
+ * Item-/Seed-/Rezept-Registries, das Koch-System (Stationen + Partikel) sowie
+ * das externe Modul-System (Oraxen, PlaceholderAPI).
  *
  * <p>Konkrete Rezepte, Zutaten und Gerichte werden bewusst nicht mitgeliefert -
  * die Funktionen greifen automatisch, sobald sie ueber die config.yml definiert
@@ -55,7 +53,6 @@ public final class SmokeAndSalt extends JavaPlugin {
     private de.yourshika.smokeandsalt.cooking.CauldronManager cauldron;
     private de.yourshika.smokeandsalt.cooking.LavaCauldronManager lavaCauldron;
     private de.yourshika.smokeandsalt.crafting.CraftingManager crafting;
-    private ChainManager chains;
     private Effects effects;
     private GitHubUpdater updater;
 
@@ -78,7 +75,6 @@ public final class SmokeAndSalt extends JavaPlugin {
         this.items = new ItemRegistry(this, keys);
         this.seeds = new SeedManager(this, keys);
         this.crops = new de.yourshika.smokeandsalt.seed.CropManager(this);
-        this.chains = new ChainManager(this, keys);
         this.cookingRegistry = new CookingRegistry(this, items);
         this.cooking = new CookingManager(this, cookingRegistry, effects, keys);
         this.stationRecipes = new de.yourshika.smokeandsalt.cooking.StationRecipeManager(this);
@@ -104,7 +100,6 @@ public final class SmokeAndSalt extends JavaPlugin {
                 new de.yourshika.smokeandsalt.listener.ConsumeEffectListener(this), this);
         Bukkit.getPluginManager().registerEvents(new CustomItemSafetyListener(this), this);
         Bukkit.getPluginManager().registerEvents(new SeedListener(this, seeds), this);
-        Bukkit.getPluginManager().registerEvents(new ChainListener(this, chains), this);
         Bukkit.getPluginManager().registerEvents(
                 new de.yourshika.smokeandsalt.listener.UpdateNotifyListener(this), this);
         Bukkit.getPluginManager().registerEvents(new de.yourshika.smokeandsalt.listener.LeafDropListener(this), this);
@@ -123,8 +118,7 @@ public final class SmokeAndSalt extends JavaPlugin {
         cauldron.start();
         lavaCauldron.start();
         crops.start();
-        chains.start();
-        // Verwaiste Float-/Behang-Items aus fruehen Crashes aufraeumen.
+        // Verwaiste Float-Items (und Alt-Ketten-Behaenge) aus fruehen Crashes aufraeumen.
         de.yourshika.smokeandsalt.listener.OrphanSweeper sweeper =
                 new de.yourshika.smokeandsalt.listener.OrphanSweeper(this);
         Bukkit.getPluginManager().registerEvents(sweeper, this);
@@ -143,7 +137,6 @@ public final class SmokeAndSalt extends JavaPlugin {
         if (lavaCauldron != null) lavaCauldron.stop();
         if (crafting != null) crafting.unregisterAll();
         if (stationRecipes != null) stationRecipes.unregisterAll();
-        if (chains != null) chains.stop();
         if (seeds != null) seeds.cropStore().save();
         if (moduleManager != null) moduleManager.shutdown();
         getLogger().info("Smoke & Salt deaktiviert.");
@@ -292,7 +285,6 @@ public final class SmokeAndSalt extends JavaPlugin {
     public de.yourshika.smokeandsalt.cooking.CauldronManager cauldron() { return cauldron; }
     public de.yourshika.smokeandsalt.cooking.LavaCauldronManager lavaCauldron() { return lavaCauldron; }
     public de.yourshika.smokeandsalt.crafting.CraftingManager crafting() { return crafting; }
-    public ChainManager chains() { return chains; }
     public Effects effects() { return effects; }
     public GitHubUpdater updater() { return updater; }
 }

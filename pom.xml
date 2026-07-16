@@ -6,7 +6,7 @@
 
     <groupId>de.yourshika</groupId>
     <artifactId>smoke-and-salt</artifactId>
-    <version>1.0.4</version>
+    <version>1.0.5</version>
     <packaging>jar</packaging>
 
     <name>Smoke &amp; Salt</name>

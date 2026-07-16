@@ -60,7 +60,7 @@ sas_marshmallow:
     custom_model_data: 3006
 
 sas_kaiserbroetchen:
-  displayname: "<#d9a441>Kaiser Roll"
+  displayname: "<#d9a441>Bread on a Stick"
   material: BREAD
   Pack:
     generate_model: true

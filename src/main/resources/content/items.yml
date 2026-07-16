@@ -97,7 +97,7 @@ items:
 
   kaiserbroetchen:
     material: BREAD
-    display-name: "<#d9a441>Kaiser Roll"
+    display-name: "<#d9a441>Bread on a Stick"
     lore: ["<dark_gray>Smoke & Salt - Dish"]
     provider-id: sas_kaiserbroetchen
     food:

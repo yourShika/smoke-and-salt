@@ -17,12 +17,6 @@ recipes:
     duration-ticks: 140
 
   # --- 0.9.0 ---
-  # Dough baked in the smoker becomes plain vanilla Bread.
-  smoker_bread:
-    input-item: teig
-    result-material: BREAD
-    duration-ticks: 140
-
   smoker_gebackene_zucchini:
     input-item: zucchini
     result-item: gebackene_zucchini

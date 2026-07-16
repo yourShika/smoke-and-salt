@@ -83,11 +83,6 @@ public final class CraftingManager implements Listener {
         recipes.clear();
     }
 
-    /** Entfernt das Vanilla-Rezept fuer Brot, damit Teig/Kaiser Roll die Progression fuehren. */
-    public void disableVanillaBreadRecipe() {
-        Bukkit.removeRecipe(NamespacedKey.minecraft("bread"));
-    }
-
     private RecipeChoice choice(Ingredient ingredient) {
         if (ingredient instanceof Ingredient.CustomItemIngredient ci) {
             ItemDefinition def = plugin.items().definition(ci.id());

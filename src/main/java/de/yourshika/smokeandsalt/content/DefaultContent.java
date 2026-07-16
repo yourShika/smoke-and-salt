@@ -52,7 +52,7 @@ public final class DefaultContent {
                 FoodProfile.of(5, 6.0f));
         item(plugin, "marshmallow", Material.PAPER, "<#ffeef2>Marshmallow", "Snack",
                 FoodProfile.withEffect(3, 1.8f, effect(PotionEffectType.SPEED, 80)));
-        item(plugin, "kaiserbroetchen", Material.BREAD, "<#d9a441>Kaiser Roll", "Dish",
+        item(plugin, "kaiserbroetchen", Material.BREAD, "<#d9a441>Bread on a Stick", "Dish",
                 FoodProfile.of(5, 6.0f));
         item(plugin, "nudeln", Material.PAPER, "<#f0e2b0>Noodles", "Ingredient",
                 FoodProfile.of(4, 4.8f));
@@ -244,12 +244,12 @@ public final class DefaultContent {
         var cm = plugin.crafting();
 
         if (!cm.contains("burger")) cm.register(new CraftingRecipe("burger",
-                List.of(Ingredient.item("kaiserbroetchen", "Kaiser Roll"),
+                List.of(Ingredient.material(Material.BREAD, "Bread"),
                         Ingredient.material(Material.COOKED_BEEF, "Meat")),
                 ResultSpec.item("burger", 1)));
 
         if (!cm.contains("cheeseburger")) cm.register(new CraftingRecipe("cheeseburger",
-                List.of(Ingredient.item("kaiserbroetchen", "Kaiser Roll"),
+                List.of(Ingredient.material(Material.BREAD, "Bread"),
                         Ingredient.item("kaese", "Cheese"),
                         Ingredient.material(Material.COOKED_BEEF, "Meat")),
                 ResultSpec.item("cheeseburger", 1)));

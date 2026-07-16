@@ -8,8 +8,14 @@ optional Oraxen textures.
 ![Minecraft](https://img.shields.io/badge/Minecraft-26.1.2-62b47a?style=flat-square&logo=minecraft&logoColor=white)
 ![Platform](https://img.shields.io/badge/Platform-Paper%2FSpigot-f7a41d?style=flat-square)
 ![Java](https://img.shields.io/badge/Java-25-ED8B00?style=flat-square&logo=openjdk&logoColor=white)
-![Version](https://img.shields.io/badge/Version-1.0.4-blue?style=flat-square)
+![Version](https://img.shields.io/badge/Version-1.0.5-blue?style=flat-square)
 ![License](https://img.shields.io/badge/License-MIT-blue?style=flat-square)
+
+## What's new in 1.0.5
+
+- **Vanilla bread is back.** The plugin no longer disables the vanilla bread recipe, and dough no longer smokes into bread — plain bread is crafted the normal way again.
+- **"Kaiser Roll" is now "Bread on a Stick."** Same item, baked from dough on a campfire; only the name changed.
+- **Burgers use plain bread.** Burger and Cheeseburger now take vanilla **Bread** instead of the roll, so Bread on a Stick is a standalone snack.
 
 ## What's new in 1.0.4
 
@@ -209,7 +215,7 @@ heat sources include campfires, fire, lava, and magma blocks.
 | Input | Result |
 | --- | --- |
 | Sugar | Marshmallow |
-| Dough | Kaiser Roll |
+| Dough | Bread on a Stick |
 
 ### Water cauldron
 
@@ -237,8 +243,8 @@ heat sources include campfires, fire, lava, and magma blocks.
 
 | Input | Result |
 | --- | --- |
-| Kaiser Roll + Cooked Beef | Burger |
-| Kaiser Roll + Cheese + Cooked Beef | Cheeseburger |
+| Bread + Cooked Beef | Burger |
+| Bread + Cheese + Cooked Beef | Cheeseburger |
 | Milk Bucket + Sweet Berries + Bowl | Sour Cream |
 | Stick + Cooked Beef + Carrot | Shashlik |
 | Stick + Cooked Beef + Potato | Shashlik |

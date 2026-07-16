@@ -4,8 +4,8 @@
 crafting-recipes:
   burger:
     ingredients:
-      - item: kaiserbroetchen
-        display: Kaiser Roll
+      - material: BREAD
+        display: Bread
       - material: COOKED_BEEF
         display: Meat
     result:
@@ -14,8 +14,8 @@ crafting-recipes:
 
   cheeseburger:
     ingredients:
-      - item: kaiserbroetchen
-        display: Kaiser Roll
+      - material: BREAD
+        display: Bread
       - item: kaese
         display: Cheese
       - material: COOKED_BEEF

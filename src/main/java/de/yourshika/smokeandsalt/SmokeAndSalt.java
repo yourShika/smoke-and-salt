@@ -164,7 +164,6 @@ public final class SmokeAndSalt extends JavaPlugin {
         cauldron.clearRecipes();
         lavaCauldron.clearRecipes();
         crafting.unregisterAll();
-        crafting.disableVanillaBreadRecipe();
         stationRecipes.unregisterAll();
         ContentFileLoader.load(this);
         de.yourshika.smokeandsalt.content.DefaultContent.register(this);

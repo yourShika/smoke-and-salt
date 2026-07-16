@@ -224,7 +224,7 @@ public final class RecipesMenu {
     }
 
     /** Kinds (aus der Lore) die als fertiges Gericht zaehlen, auch wenn das Item
-     *  woanders als Zutat dient (z.B. Kaiser Roll im Burger). */
+     *  woanders als Zutat dient. */
     private static final Set<String> DISH_KINDS = Set.of("dish", "snack", "soup", "drink", "dessert", "meal");
 
     /** Passt eine Rezept-Ansicht in die Kategorie? Beruecksichtigt Gericht/Zwischenprodukt. */
@@ -232,7 +232,7 @@ public final class RecipesMenu {
                                            RecipeCategory category, Set<String> intermediates) {
         return switch (category) {
             // Fertige Gerichte: essbar und entweder kein Zwischenprodukt ODER als
-            // Gericht deklariert (Kaiser Roll ist ein Gericht, auch wenn er im Burger steckt).
+            // Gericht deklariert (ein Gericht bleibt ein Gericht, auch wenn es als Zutat dient).
             case DISHES -> view.category() != RecipeCategory.SEEDS
                     && hasFood(plugin, view)
                     && (!isIntermediate(plugin, view, intermediates) || isDishKind(plugin, view));

@@ -3,6 +3,7 @@ package de.yourshika.smokeandsalt.listener;
 import de.yourshika.smokeandsalt.SmokeAndSalt;
 import de.yourshika.smokeandsalt.cooking.CauldronStation;
 import org.bukkit.Material;
+import org.bukkit.Tag;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
@@ -12,6 +13,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.entity.EntityCombustEvent;
+import org.bukkit.event.entity.EntityDamageByBlockEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityPickupItemEvent;
 import org.bukkit.event.inventory.InventoryPickupItemEvent;
@@ -59,7 +61,7 @@ public final class CauldronListener implements Listener {
     @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
     public void onItemDamage(EntityDamageEvent event) {
         if (!(event.getEntity() instanceof Item item)) return;
-        if (!isFireDamage(event.getCause())) return;
+        if (!isFireDamage(event)) return;
         if (!protectLavaIngredient(item)) return;
         event.setCancelled(true);
         item.setFireTicks(0);
@@ -184,10 +186,26 @@ public final class CauldronListener implements Listener {
         return plugin.lavaCauldron().acceptsIngredient(item.getItemStack());
     }
 
-    private boolean isFireDamage(EntityDamageEvent.DamageCause cause) {
-        return cause == EntityDamageEvent.DamageCause.LAVA
-                || cause == EntityDamageEvent.DamageCause.FIRE
-                || cause == EntityDamageEvent.DamageCause.FIRE_TICK
-                || cause == EntityDamageEvent.DamageCause.HOT_FLOOR;
+    /** Feuer-/Hitzeschaden an einem Item. Magmabloecke und Lagerfeuer melden sich
+     *  seit 26.2 nicht mehr als {@code HOT_FLOOR}/{@code CAMPFIRE}, sondern als
+     *  {@code CONTACT} mit dem ausloesenden Block im Event. CONTACT deckt aber
+     *  auch Kaktus und Beerenbusch ab, daher wird der Block zusaetzlich geprueft. */
+    private boolean isFireDamage(EntityDamageEvent event) {
+        return switch (event.getCause()) {
+            case LAVA, FIRE, FIRE_TICK -> true;
+            case CONTACT -> isHotBlock(event);
+            default -> false;
+        };
+    }
+
+    /** Stammt der CONTACT-Schaden von einem heissen Block? Laesst sich der Block
+     *  nicht ermitteln, wird zugelassen - {@code protectLavaIngredient} grenzt
+     *  ohnehin auf Zutaten am Lavakessel ein. */
+    private boolean isHotBlock(EntityDamageEvent event) {
+        if (!(event instanceof EntityDamageByBlockEvent byBlock)) return true;
+        Block damager = byBlock.getDamager();
+        if (damager == null) return true;
+        return damager.getType() == Material.MAGMA_BLOCK
+                || Tag.CAMPFIRES.isTagged(damager.getType());
     }
 }

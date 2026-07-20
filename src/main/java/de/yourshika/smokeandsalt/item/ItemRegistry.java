@@ -140,15 +140,30 @@ public final class ItemRegistry {
                 ambient, particles, icon);
     }
 
+    /**
+     * Alte Bukkit-Effektnamen, die nicht dem Registry-Key entsprechen. Frueher
+     * fing {@code PotionEffectType.getByName(..)} diese ab; die Methode ist
+     * inzwischen deprecated, daher wird hier explizit uebersetzt, damit
+     * bestehende Configs mit Legacy-Namen weiter funktionieren.
+     */
+    private static final Map<String, String> LEGACY_EFFECT_KEYS = Map.of(
+            "slow", "slowness",
+            "fast_digging", "haste",
+            "slow_digging", "mining_fatigue",
+            "increase_damage", "strength",
+            "heal", "instant_health",
+            "harm", "instant_damage",
+            "jump", "jump_boost",
+            "confusion", "nausea",
+            "damage_resistance", "resistance");
+
     private PotionEffectType potionType(String name) {
         if (name == null || name.isBlank()) return null;
-        // Zuerst ueber die moderne Registry (akzeptiert Keys wie "haste",
-        // "absorption", "dolphins_grace"), dann der Legacy-Name als Fallback.
+        // Ueber die Registry aufloesen (akzeptiert Keys wie "haste", "absorption",
+        // "dolphins_grace"); Legacy-Namen werden vorher uebersetzt.
         String key = name.toLowerCase(Locale.ROOT).replace("minecraft:", "").trim();
+        key = LEGACY_EFFECT_KEYS.getOrDefault(key, key);
         PotionEffectType type = org.bukkit.Registry.EFFECT.get(org.bukkit.NamespacedKey.minecraft(key));
-        if (type == null) {
-            type = PotionEffectType.getByName(name.toUpperCase(Locale.ROOT));
-        }
         if (type == null) {
             plugin.getLogger().warning("Unbekannter Food-Effekt: " + name);
         }

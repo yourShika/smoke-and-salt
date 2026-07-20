@@ -126,7 +126,7 @@ public final class SmokeAndSalt extends JavaPlugin {
         new BoilingAmbientTask(this).runTaskTimer(this, 40L, 10L);
 
         getLogger().info("Smoke & Salt v" + getPluginMeta().getVersion()
-                + " aktiviert (Paper 26.1.x / Java 25).");
+                + " aktiviert (Paper 26.2.x / Java 25).");
     }
 
     @Override

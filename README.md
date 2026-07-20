@@ -5,11 +5,17 @@ It adds deeper food progression without large machines: smokers, campfires,
 water cauldrons, lava cauldrons, cutting, custom seeds, recipe GUIs, and
 optional Oraxen textures.
 
-![Minecraft](https://img.shields.io/badge/Minecraft-26.1.2-62b47a?style=flat-square&logo=minecraft&logoColor=white)
+![Minecraft](https://img.shields.io/badge/Minecraft-26.2-62b47a?style=flat-square&logo=minecraft&logoColor=white)
 ![Platform](https://img.shields.io/badge/Platform-Paper%2FSpigot-f7a41d?style=flat-square)
 ![Java](https://img.shields.io/badge/Java-25-ED8B00?style=flat-square&logo=openjdk&logoColor=white)
-![Version](https://img.shields.io/badge/Version-1.0.5-blue?style=flat-square)
+![Version](https://img.shields.io/badge/Version-1.1.0-blue?style=flat-square)
 ![License](https://img.shields.io/badge/License-MIT-blue?style=flat-square)
+
+## What's new in 1.1.0
+
+- **Updated to Minecraft 26.2.** The plugin now builds against `paper-api 26.2` and declares `api-version: '26.2'`. Java 25 is still the requirement.
+- **Adventure 5 ready.** Paper 26.2 ships Adventure 5, which drops long-deprecated API. Smoke & Salt only uses core Adventure (`Component`, MiniMessage, tag resolvers, plain-text serializer) and needed no code changes — no `BookMeta` and no deprecated `ClickEvent`/`HoverEvent` usage.
+- **Note:** because `api-version` is now `26.2`, servers still on 26.1.x will refuse to load this build. Stay on 1.0.5 if you have not updated your server yet.
 
 ## What's new in 1.0.5
 
@@ -317,7 +323,7 @@ recipes, so a new cut food can live entirely in `content/cutting.yml`.
 
 ## Requirements
 
-- Paper or Spigot compatible with Minecraft `26.1.2`
+- Paper or Spigot compatible with Minecraft `26.2`
 - Java `25+`
 - Optional: Oraxen, PlaceholderAPI
 

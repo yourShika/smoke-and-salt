@@ -1,7 +1,7 @@
 name: SmokeAndSalt
 version: '${project.version}'
 main: de.yourshika.smokeandsalt.SmokeAndSalt
-api-version: '1.21'
+api-version: '26.2'
 author: yourShika
 description: Vanilla-treues Koch-System (Smoker, Lagerfeuer, Kessel, Schneiden) mit Custom-Items und Seeds.
 website: https://github.com/yourShika/smoke-and-salt

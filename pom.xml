@@ -6,7 +6,7 @@
 
     <groupId>de.yourshika</groupId>
     <artifactId>smoke-and-salt</artifactId>
-    <version>1.0.5</version>
+    <version>1.1.0</version>
     <packaging>jar</packaging>
 
     <name>Smoke &amp; Salt</name>
@@ -15,11 +15,13 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <!-- Minecraft 26.1.x benoetigt Java 25 (Microsoft OpenJDK 25). -->
+        <!-- Minecraft 26.x benoetigt Java 25 (Microsoft OpenJDK 25). -->
         <maven.compiler.release>25</maven.compiler.release>
         <!-- Ziel-Paper-/Minecraft-Version. Seit dem YY.D.H-Schema verwendet die
-             Paper-API "<version>.build.<n>-<stage>" statt "-R0.1-SNAPSHOT". -->
-        <paper.version>26.1.2.build.72-stable</paper.version>
+             Paper-API "<version>.build.<n>-<stage>" statt "-R0.1-SNAPSHOT".
+             26.2 hat noch keinen "-stable"-Build; build.62-beta ist der aktuell
+             neueste und in der Maven-Metadata als <release> gefuehrte Stand. -->
+        <paper.version>26.2.build.62-beta</paper.version>
     </properties>
 
     <repositories>

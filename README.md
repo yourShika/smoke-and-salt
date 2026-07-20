@@ -8,13 +8,18 @@ optional Oraxen textures.
 ![Minecraft](https://img.shields.io/badge/Minecraft-26.2-62b47a?style=flat-square&logo=minecraft&logoColor=white)
 ![Platform](https://img.shields.io/badge/Platform-Paper%2FSpigot-f7a41d?style=flat-square)
 ![Java](https://img.shields.io/badge/Java-25-ED8B00?style=flat-square&logo=openjdk&logoColor=white)
-![Version](https://img.shields.io/badge/Version-1.1.0-blue?style=flat-square)
+![Version](https://img.shields.io/badge/Version-26.2--1.10-blue?style=flat-square)
 ![License](https://img.shields.io/badge/License-MIT-blue?style=flat-square)
 
-## What's new in 1.1.0
+## What's new in 26.2-1.10
+
+From this release the version number carries the target Minecraft version:
+`<minecraft>-<plugin>`, so `26.2-1.10` is plugin build 1.10 for Minecraft 26.2.
 
 - **Updated to Minecraft 26.2.** The plugin now builds against `paper-api 26.2` and declares `api-version: '26.2'`. Java 25 is still the requirement.
 - **Adventure 5 ready.** Paper 26.2 ships Adventure 5, which drops long-deprecated API. Smoke & Salt only uses core Adventure (`Component`, MiniMessage, tag resolvers, plain-text serializer) and needed no code changes — no `BookMeta` and no deprecated `ClickEvent`/`HoverEvent` usage.
+- **Magma/campfire item protection fixed for 26.2.** Hot blocks no longer report `HOT_FLOOR`; they now arrive as `CONTACT` with the block attached. Ingredients resting on a lava cauldron are protected again, and cactus/berry-bush contact is correctly ignored.
+- **Potion effect names** now resolve purely through the registry, with an explicit legacy-name table (`fast_digging` → `haste`, `increase_damage` → `strength`, …) replacing the deprecated `PotionEffectType.getByName`. Existing configs keep working.
 - **Note:** because `api-version` is now `26.2`, servers still on 26.1.x will refuse to load this build. Stay on 1.0.5 if you have not updated your server yet.
 
 ## What's new in 1.0.5

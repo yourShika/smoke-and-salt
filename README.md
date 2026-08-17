@@ -1,5 +1,9 @@
 # Smoke & Salt
 
+<!-- ai-disclaimer -->
+> ⚠️ **Disclaimer:** This project — its code and its project artwork — was created with the help of AI. The plugin itself is tested by real people, and bugs and issues are actively fixed.
+
+
 Smoke & Salt is a vanilla-faithful cooking expansion for Paper/Spigot servers.
 It adds deeper food progression without large machines: smokers, campfires,
 water cauldrons, lava cauldrons, cutting, custom seeds, recipe GUIs, and
